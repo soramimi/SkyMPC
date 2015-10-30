@@ -4,6 +4,7 @@
 #include <QFile>
 #include <QXmlStreamWriter>
 #include <QTime>
+#include <stdint.h>
 #include "misc.h"
 
 static const char SERVERS_XML[] = "servers.xml";
