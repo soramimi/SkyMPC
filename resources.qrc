@@ -1,0 +1,28 @@
+<RCC>
+    <qresource prefix="/">
+        <file>image/next.svgz</file>
+        <file>image/pause.svgz</file>
+        <file>image/play.svgz</file>
+        <file>image/prev.svgz</file>
+        <file>image/stop.svgz</file>
+        <file>image/repeat.svgz</file>
+        <file>image/random.svgz</file>
+        <file>image/speaker.svgz</file>
+        <file>image/about.png</file>
+        <file>image/appicon.png</file>
+        <file>image/single.svgz</file>
+        <file>image/song.png</file>
+        <file>image/qt.png</file>
+        <file>image/silence.svgz</file>
+        <file>MainWindow_win.ss</file>
+        <file>MainWindow_osx.ss</file>
+        <file>image/notplaying.png</file>
+        <file>image/pause.png</file>
+        <file>MainWindow_lin.ss</file>
+        <file>image/consume.svgz</file>
+        <file>image/macfolder.png</file>
+        <file>image/winfolder.png</file>
+        <file>image/playing.svgz</file>
+        <file>image/server.png</file>
+    </qresource>
+</RCC>
