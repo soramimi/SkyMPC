@@ -40,7 +40,7 @@ enum e {
 };
 }
 
-struct MainWindow::Private {
+struct MainWindow::Impl {
     QLabel *status_label;
 	bool connected;
 	MusicPlayerClient mpc;
@@ -76,7 +76,7 @@ struct MainWindow::Private {
 
 	QMenu menu;
 
-	QIcon server_icon;
+//	QIcon server_icon;
 	QIcon folder_icon;
 
 	std::map<QString, QAction *> command_action_map;

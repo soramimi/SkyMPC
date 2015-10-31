@@ -77,10 +77,9 @@ class MainWindow : public QMainWindow
 {
 	Q_OBJECT
 private:
-	struct Private;
-	Private *priv;
-	QIcon serverIcon();
-	QIcon folderIcon();
+    struct Impl;
+    Impl *impl;
+    QIcon folderIcon();
 	void displayProgress(double elapsed);
 	void updatePlayingStatus();
 	void updateCurrentSongIndicator();
