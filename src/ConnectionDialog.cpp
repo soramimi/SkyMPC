@@ -21,6 +21,8 @@ ConnectionDialog::ConnectionDialog(QWidget *parent, Host const &host) :
 	flags &= ~Qt::WindowContextHelpButtonHint;
 	setWindowFlags(flags);
 
+    ui->tableWidget->horizontalHeader()->setVisible(true);
+
 #if defined(Q_OS_MAC)
 	removeKeyAcceleratorText(this);
 #endif

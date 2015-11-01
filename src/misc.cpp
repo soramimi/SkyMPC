@@ -95,7 +95,7 @@ template <> void remove_key_accelerator_test_<QGroupBox>(QObject *o)
 void removeKeyAcceleratorText(QObject *obj)
 {
 	QObjectList list = obj->children();
-	for each (QObject *o in list) {
+    for (QObject *o : list) {
 		removeKeyAcceleratorText(o);
 		remove_key_accelerator_test_<QLabel>(o);
 		remove_key_accelerator_test_<QGroupBox>(o);

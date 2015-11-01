@@ -6,6 +6,8 @@
 
 QT       += core gui xml network svg widgets
 
+CONFIG += c++11
+
 TARGET = SkyMPC
 TEMPLATE = app
 

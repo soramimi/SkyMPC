@@ -455,12 +455,12 @@ void MainWindow::keyPressEvent(QKeyEvent *event)
 		if (focus == ui->treeWidget) {
 			if (key == Qt::Key_Insert) {
 				QList<QTreeWidgetItem *> items = ui->treeWidget->selectedItems();
-				for each (QTreeWidgetItem *item in items) {
+                for (QTreeWidgetItem *item : items) {
 					QString path = item->data(0, ITEM_PathRole).toString();
 					if (path.isEmpty()) continue;
 					std::vector<MusicPlayerClient::Item> mpcitems;
                     if (impl->mpc.do_listall(path, &mpcitems)) {
-						for each (MusicPlayerClient::Item const &mpcitem in mpcitems) {
+                        for (MusicPlayerClient::Item const &mpcitem : mpcitems) {
 							if (mpcitem.kind == "file") {
 								QString path = mpcitem.text;
                                 impl->mpc.do_add(path);
@@ -793,7 +793,7 @@ void MainWindow::invalidateCurrentSongIndicator()
 
 static void sort(std::vector<MusicPlayerClient::Item> *vec)
 {
-	std::sort(vec->begin(), vec->end(), [](MusicPlayerClient::Item const &left, MusicPlayerClient::Item const &right){
+    std::sort(vec->begin(), vec->end(), [](MusicPlayerClient::Item const &left, MusicPlayerClient::Item const &right){
 		int i;
 		i = QString::compare(left.kind, right.kind, Qt::CaseInsensitive);
 		if (i == 0) {
@@ -816,7 +816,7 @@ void MainWindow::updateTreeTopLevel()
 	sort(&vec);
 
 	ui->treeWidget->setRootIsDecorated(true);
-	for each (MusicPlayerClient::Item const &item in vec) {
+    for (MusicPlayerClient::Item const &item : vec) {
 		if (item.kind == "directory") {
 			QString path = item.text;
 			QTreeWidgetItem *treeitem = new_RootQTreeWidgetItem(ui->treeWidget);
@@ -855,7 +855,7 @@ void MainWindow::updatePlaylist()
 	std::vector<MusicPlayerClient::Item> vec;
     impl->mpc.do_playlistinfo(QString(), &vec);
 
-	for each (MusicPlayerClient::Item const &mpcitem in vec) {
+    for (MusicPlayerClient::Item const &mpcitem : vec) {
 		if (mpcitem.kind == "file") {
 			QString path = mpcitem.text;
 			QString text;
@@ -933,7 +933,7 @@ void MainWindow::updateTree(ResultItem *info)
 			}
 		}
 		sort(&info->vec);
-		for each (MusicPlayerClient::Item const &mpcitem in info->vec) {
+        for (MusicPlayerClient::Item const &mpcitem : info->vec) {
 			ushort const *str = mpcitem.text.utf16();
 			ushort const *ptr = ucsrchr(str, '/');
 			if (ptr) {
@@ -1066,7 +1066,7 @@ void MainWindow::clearPlaylist()
 	int count = 0;
 	std::vector<MusicPlayerClient::Item> vec;
     impl->mpc.do_playlistinfo(QString(), &vec);
-	for each (MusicPlayerClient::Item const &item in vec) {
+    for (MusicPlayerClient::Item const &item : vec) {
 		if (item.kind == "file") {
 			count++;
 		}
@@ -1157,7 +1157,7 @@ void MainWindow::addToPlaylist(QString const &path, int to, bool update)
 
 	std::vector<MusicPlayerClient::Item> mpcitems;
     if (impl->mpc.do_listall(path, &mpcitems)) {
-		for each (MusicPlayerClient::Item const &mpcitem in mpcitems) {
+        for (MusicPlayerClient::Item const &mpcitem : mpcitems) {
 			if (mpcitem.kind == "file") {
 				if (to < 0) {
                     impl->mpc.do_add(mpcitem.text);
@@ -1203,7 +1203,7 @@ void MainWindow::onDropEvent(bool done)
 				std::vector<MusicPlayerClient::Item> mpcitems;
                 if (impl->mpc.do_listall(a.path, &mpcitems)) {
 					size_t j = i;
-					for each (MusicPlayerClient::Item const &item in mpcitems) {
+                    for (MusicPlayerClient::Item const &item : mpcitems) {
 						if (item.kind == "file") {
 							QString path = item.text;
                             impl->mpc.do_addid(path, (int)j);
@@ -1486,13 +1486,13 @@ void MainWindow::on_action_edit_copy_triggered()
 	QWidget *focus = focusWidget();
 	if (focus == ui->treeWidget) {
 		QList<QTreeWidgetItem *> items = ui->treeWidget->selectedItems();
-		for each (QTreeWidgetItem const *item in items) {
+        for (QTreeWidgetItem const *item : items) {
 			QString path = item->data(0, ITEM_PathRole).toString();
 			list.append(path);
 		}
 	} else if (focus == ui->listWidget_playlist) {
 		QList<QListWidgetItem *> items = ui->listWidget_playlist->selectedItems();
-		for each (QListWidgetItem const *item in items) {
+        for (QListWidgetItem const *item : items) {
 			QString path = item->data(ITEM_PathRole).toString();
 			list.append(path);
 		}
@@ -1515,7 +1515,7 @@ void MainWindow::on_action_edit_paste_bottom_triggered()
 		QClipboard *cb = qApp->clipboard();
 		QString text = cb->text();
 		QStringList list = text.split('\n');
-		for each (QString const &str in list) {
+        for (QString const &str : list) {
 			QString path = str.trimmed();
 			addToPlaylist(path, -1, false);
 		}
@@ -1532,7 +1532,7 @@ void MainWindow::on_action_edit_paste_insert_triggered()
 		QClipboard *cb = qApp->clipboard();
 		QString text = cb->text();
 		QStringList list = text.split('\n');
-		for each (QString const &str in list) {
+        for (QString const &str : list) {
 			QString path = str.trimmed();
 			addToPlaylist(path, row, false);
 			row++;
@@ -1561,7 +1561,7 @@ void MainWindow::on_comboBox_currentIndexChanged(int index)
 		Host host;
 		std::vector<ServerItem> servers;
 		loadPresetServers(&servers);
-		for each (ServerItem const &server in servers) {
+        for (ServerItem const &server : servers) {
 			if (name == server.name) {
 				host = server.host;
 			}

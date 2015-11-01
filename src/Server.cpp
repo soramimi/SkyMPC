@@ -111,7 +111,7 @@ bool savePresetServers(std::vector<ServerItem> const *servers)
 		writer.setAutoFormatting(true);
 		writer.writeStartDocument();
 		writer.writeStartElement("servers");
-		for each (ServerItem const &server in *servers) {
+        for (ServerItem const &server : *servers) {
 			writer.writeStartElement("item");
 			writer.writeAttribute("name", server.name);
 			writer.writeAttribute("address", server.host.address());

@@ -91,7 +91,7 @@ MusicPlayerClient::OpenResult MusicPlayerClient::open(QTcpSocket *sock, Host con
 				result.success = true;
 				result.incorrect_password = false;
 			} else {
-				for each (QString const &line in lines) {
+                for (QString const &line : lines) {
 					result.log += line + '\n';
 				}
 				result.incorrect_password = true;
@@ -217,7 +217,7 @@ void MusicPlayerClient::parse_result(std::vector<QString> const &lines, StringMa
 	out->clear();
 	std::vector<KeyValue> vec;
 	parse_result(lines, &vec);
-	for each (KeyValue const &item in vec) {
+    for (KeyValue const &item : vec) {
 		out->map[item.key] = item.value;
 	}
 }
