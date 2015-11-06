@@ -12,6 +12,8 @@
 #include <windows.h>
 #include <shlobj.h>
 
+char const *KEY_AutoReconnect = "AutoReconnect";
+
 QString makeApplicationDataDir()
 {
 	QString dir;
