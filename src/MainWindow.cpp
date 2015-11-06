@@ -89,10 +89,13 @@ MainWindow::MainWindow(QWidget *parent) :
 		setStyleSheet(ss);
 	}
 
-#ifdef Q_OS_WIN
-	ui->action_help_about->setText(tr("&About SkyMPC"));
-	ui->menu_Help->addAction(ui->action_diagnostic);
+#ifdef Q_OS_MAC
 #else
+	ui->action_help_about->setText(tr("&About SkyMPC"));
+#endif
+
+#ifdef Q_OS_WIN
+    ui->menu_Help->addAction(ui->action_diagnostic);
 #endif
 
 #ifdef QT_NO_DEBUG
