@@ -17,4 +17,6 @@ public slots:
 
 QString makeApplicationDataDir();
 
+extern char const *KEY_AutoReconnect;
+
 #endif // MYSETTINGS_H

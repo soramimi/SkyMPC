@@ -103,6 +103,8 @@ public:
 	explicit MainWindow(QWidget *parent = 0);
 	~MainWindow();
 
+	static bool isAutoReconnectAtStartup();
+
 	bool execCommand(Command const &c);
 
 	static QString fixMenuText(QString const &s);

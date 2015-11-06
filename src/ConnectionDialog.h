@@ -20,8 +20,10 @@ private:
 	Host current_host;
 	QTimer timer;
 	void updateList();
+	bool isAutoReconnect() const;
 	void loadServers();
 	void saveServers();
+	void saveAutoReconnect();
 	ServerItem *selectedServer();
 	ServerItem const *selectedServer() const;
 	void selectServer(ServerItem const *server);

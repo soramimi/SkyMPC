@@ -271,17 +271,39 @@ void MainWindow::fixActionText(QList<QAction*> &)
 
 #endif
 
+bool MainWindow::isAutoReconnectAtStartup()
+{
+	bool f = true;
+	MySettings settings;
+	settings.beginGroup("Connection");
+	if (settings.contains(KEY_AutoReconnect)) {
+		f = settings.value(KEY_AutoReconnect).toBool();
+	}
+	settings.endGroup();
+	return f;
+}
+
 void MainWindow::preExec()
 {
-    if (!impl->host.isValid()) {
-		ConnectionDialog dlg(this, QString());
+	bool conndlg = false;
+
+	if (impl->host.isValid()) {
+		if (!isAutoReconnectAtStartup()) {
+			conndlg = true;
+		}
+	} else {
+		conndlg = true;
+	}
+
+	if (conndlg) {
+		ConnectionDialog dlg(this, impl->host);
 		if (dlg.exec() == QDialog::Accepted) {
             impl->host = dlg.host();
 		}
 	}
 	updateServersComboBox();
 
-    connectToMPD(impl->host);
+	connectToMPD(impl->host);
 	startTimer(10);
 }
 

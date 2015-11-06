@@ -1,6 +1,8 @@
 #include "ConnectionDialog.h"
 #include "ui_ConnectionDialog.h"
 #include "TestConnectResultDialog.h"
+#include "MySettings.h"
+#include "MainWindow.h"
 #include <QMessageBox>
 
 void removeKeyAcceleratorText(QObject *obj);
@@ -59,6 +61,11 @@ ConnectionDialog::ConnectionDialog(QWidget *parent, Host const &host) :
         ui->lineEdit_name->setFocus();
         ui->lineEdit_name->selectAll();
 	}
+
+	{
+		bool f = the_mainwindow->isAutoReconnectAtStartup();
+		ui->checkBox_auto_reconnect->setChecked(f);
+	}
 }
 
 ConnectionDialog::~ConnectionDialog()
@@ -69,6 +76,7 @@ ConnectionDialog::~ConnectionDialog()
 void ConnectionDialog::accept()
 {
 	savePresetServers(&servers);
+	saveAutoReconnect();
 	QDialog::accept();
 }
 
@@ -76,6 +84,7 @@ void ConnectionDialog::accept()
 void ConnectionDialog::on_pushButton_save_and_close_clicked()
 {
 	savePresetServers(&servers);
+	saveAutoReconnect();
 	reject();
 }
 
@@ -141,6 +150,20 @@ void ConnectionDialog::saveServers()
 	if (!savePresetServers(&servers)) {
 		QMessageBox::critical(this, QApplication::applicationName(), tr("Could not create the file."));
 	}
+}
+
+bool ConnectionDialog::isAutoReconnect() const
+{
+	return ui->checkBox_auto_reconnect->isChecked();
+}
+
+void ConnectionDialog::saveAutoReconnect()
+{
+	MySettings settings;
+	settings.beginGroup("Connection");
+	bool f = isAutoReconnect();
+	settings.setValue(KEY_AutoReconnect, f);
+	settings.endGroup();
 }
 
 ServerItem *ConnectionDialog::selectedServer()
