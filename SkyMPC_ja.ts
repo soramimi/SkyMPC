@@ -337,7 +337,7 @@
         <location filename="src/MainWindow.ui" line="211"/>
         <location filename="src/MainWindow.ui" line="882"/>
         <location filename="src/MainWindow.ui" line="1123"/>
-        <location filename="src/MainWindow.cpp" line="780"/>
+        <location filename="src/MainWindow.cpp" line="778"/>
         <source>Play</source>
         <translation>再生</translation>
     </message>
@@ -381,7 +381,7 @@
     </message>
     <message>
         <location filename="src/MainWindow.ui" line="499"/>
-        <location filename="src/MainWindow.cpp" line="587"/>
+        <location filename="src/MainWindow.cpp" line="585"/>
         <source>Volume</source>
         <translation>ボリューム</translation>
     </message>
@@ -448,7 +448,7 @@
     <message>
         <location filename="src/MainWindow.ui" line="879"/>
         <location filename="src/MainWindow.ui" line="1120"/>
-        <location filename="src/MainWindow.cpp" line="784"/>
+        <location filename="src/MainWindow.cpp" line="782"/>
         <source>&amp;Play</source>
         <translation>再生(&amp;P)</translation>
     </message>
@@ -704,7 +704,7 @@
     </message>
     <message>
         <location filename="src/MainWindow.ui" line="1017"/>
-        <location filename="src/MainWindow.cpp" line="1134"/>
+        <location filename="src/MainWindow.cpp" line="1132"/>
         <source>Paste (Insert)</source>
         <translation>ここに貼り付け</translation>
     </message>
@@ -749,88 +749,88 @@
         <translation>プレイリストに{n}曲あります</translation>
     </message>
     <message>
-        <location filename="src/MainWindow.cpp" line="557"/>
+        <location filename="src/MainWindow.cpp" line="555"/>
         <source>Connecting to MPD server: </source>
         <translation>MPDサーバに接続:</translation>
     </message>
     <message>
-        <location filename="src/MainWindow.cpp" line="773"/>
+        <location filename="src/MainWindow.cpp" line="771"/>
         <source>Pause</source>
         <translation>一時停止</translation>
     </message>
     <message>
-        <location filename="src/MainWindow.cpp" line="777"/>
+        <location filename="src/MainWindow.cpp" line="775"/>
         <source>&amp;Pause</source>
         <translation>一時停止(&amp;P)</translation>
     </message>
     <message>
-        <location filename="src/MainWindow.cpp" line="1111"/>
+        <location filename="src/MainWindow.cpp" line="1109"/>
         <source>Add to play list</source>
         <translation>プレイリストに追加</translation>
     </message>
     <message>
-        <location filename="src/MainWindow.cpp" line="1131"/>
+        <location filename="src/MainWindow.cpp" line="1129"/>
         <source>Play from here</source>
         <translation>ここから再生</translation>
     </message>
     <message>
-        <location filename="src/MainWindow.cpp" line="1132"/>
+        <location filename="src/MainWindow.cpp" line="1130"/>
         <source>Cut</source>
         <translation>切り取り</translation>
     </message>
     <message>
-        <location filename="src/MainWindow.cpp" line="1133"/>
+        <location filename="src/MainWindow.cpp" line="1131"/>
         <source>Copy</source>
         <translation>コピー</translation>
     </message>
     <message>
-        <location filename="src/MainWindow.cpp" line="1135"/>
+        <location filename="src/MainWindow.cpp" line="1133"/>
         <source>Paste (Append)</source>
         <translation>最後に貼り付け</translation>
     </message>
     <message>
-        <location filename="src/MainWindow.cpp" line="1136"/>
+        <location filename="src/MainWindow.cpp" line="1134"/>
         <source>Delete</source>
         <translation>削除</translation>
     </message>
     <message>
-        <location filename="src/MainWindow.cpp" line="1137"/>
+        <location filename="src/MainWindow.cpp" line="1135"/>
         <source>Clear play list</source>
         <translation>プレイリストを消去</translation>
     </message>
     <message>
-        <location filename="src/MainWindow.cpp" line="1112"/>
-        <location filename="src/MainWindow.cpp" line="1138"/>
+        <location filename="src/MainWindow.cpp" line="1110"/>
+        <location filename="src/MainWindow.cpp" line="1136"/>
         <source>Property</source>
         <translation>プロパティ</translation>
     </message>
     <message>
-        <location filename="src/MainWindow.cpp" line="584"/>
+        <location filename="src/MainWindow.cpp" line="582"/>
         <source>Volume change is not supported</source>
         <translation>ボリュームの変更はサポートされていません</translation>
     </message>
     <message>
-        <location filename="src/MainWindow.cpp" line="1491"/>
+        <location filename="src/MainWindow.cpp" line="1489"/>
         <source>The name is invalid.</source>
         <translation>名前が不正です。</translation>
     </message>
     <message>
-        <location filename="src/MainWindow.cpp" line="1606"/>
+        <location filename="src/MainWindow.cpp" line="1604"/>
         <source>Location is empty.</source>
         <translation>場所が空です。</translation>
     </message>
     <message>
-        <location filename="src/MainWindow.cpp" line="1641"/>
+        <location filename="src/MainWindow.cpp" line="1639"/>
         <source>Overlapped item was not found.</source>
         <translation>重複したアイテムは見つかりませんでした。</translation>
     </message>
     <message>
-        <location filename="src/MainWindow.cpp" line="1700"/>
+        <location filename="src/MainWindow.cpp" line="1698"/>
         <source>Quick Save 1 was completed.</source>
         <translation>クイックセーブ1が完了しました。</translation>
     </message>
     <message>
-        <location filename="src/MainWindow.cpp" line="1706"/>
+        <location filename="src/MainWindow.cpp" line="1704"/>
         <source>Quick Save 2 was completed.</source>
         <translation>クイックセーブ2が完了しました。</translation>
     </message>
