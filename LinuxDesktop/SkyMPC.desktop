@@ -1,0 +1,6 @@
+[Desktop Entry]
+Name=SkyMPC
+Exec=/opt/SkyMPC/SkyMPC
+Icon=/opt/SkyMPC/SkyMPC.svg
+Terminal=false
+Type=Application

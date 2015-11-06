@@ -1123,11 +1123,6 @@
     <string>Play</string>
    </property>
   </action>
-  <action name="action_diagnostic">
-   <property name="text">
-    <string>Diagnostic</string>
-   </property>
-  </action>
   <action name="action_playlist_unify">
    <property name="text">
     <string>Unify</string>

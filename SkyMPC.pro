@@ -41,8 +41,7 @@ SOURCES += src/main.cpp\
     src/version.cpp \
     src/LegacyWindowsStyleTreeControl.cpp \
     src/win32.cpp \
-    src/platform.cpp \
-    src/DiagnosticDialog.cpp
+	src/platform.cpp
 
 HEADERS  += src/MainWindow.h \
 	src/MusicPlayerClient.h \
@@ -73,8 +72,7 @@ HEADERS  += src/MainWindow.h \
     src/version.h \
     src/LegacyWindowsStyleTreeControl.h \
     src/win32.h \
-    src/platform.h \
-    src/DiagnosticDialog.h
+	src/platform.h
 
 FORMS    += src/MainWindow.ui \
 	src/VerticalVolumePopup.ui \
@@ -90,8 +88,7 @@ FORMS    += src/MainWindow.ui \
 	src/NotifyOverlayWindow.ui \
 	src/KeyboardCustomizeDialog.ui \
     src/ConnectionDialog.ui \
-    src/AskRemoveDuplicatedFileDialog.ui \
-    src/DiagnosticDialog.ui
+	src/AskRemoveDuplicatedFileDialog.ui
 
 RESOURCES += \
     resources.qrc \
