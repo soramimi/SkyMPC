@@ -8,11 +8,11 @@
 #include "pathcat.h"
 #endif
 
+char const *KEY_AutoReconnect = "AutoReconnect";
+
 #if defined(Q_OS_WIN)
 #include <windows.h>
 #include <shlobj.h>
-
-char const *KEY_AutoReconnect = "AutoReconnect";
 
 QString makeApplicationDataDir()
 {
