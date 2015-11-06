@@ -94,10 +94,6 @@ MainWindow::MainWindow(QWidget *parent) :
 	ui->action_help_about->setText(tr("&About SkyMPC"));
 #endif
 
-#ifdef Q_OS_WIN
-    ui->menu_Help->addAction(ui->action_diagnostic);
-#endif
-
 #ifdef QT_NO_DEBUG
 	ui->toolButton_menu->hide();
 #else
@@ -1746,11 +1742,6 @@ void MainWindow::on_action_edit_keyboard_customize_triggered()
 }
 
 #include "platform.h"
-
-void MainWindow::on_action_diagnostic_triggered()
-{
-	diagnostic();
-}
 
 void MainWindow::on_action_test_triggered()
 {

@@ -185,10 +185,8 @@ private slots:
 	void on_action_play_always_triggered();
 	void on_action_playlist_unify_triggered();
 	void on_toolButton_consume_clicked();
-
 	void on_action_test_triggered();
 
-	void on_action_diagnostic_triggered();
 
 private:
 	Ui::MainWindow *ui;
