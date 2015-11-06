@@ -1,7 +1,4 @@
 cd build
-rm -fr SkyMPC
-mkdir SkyMPC
-cp -a Release/SkyMPC.app SkyMPC
-cp ../SkyMPC_ja.qm SkyMPC
-/opt/Qt5.5.1/5.5/clang_64/bin/macdeployqt SkyMPC/SkyMPC.app
-
+cp -a Release/SkyMPC.app .
+/opt/Qt5.5.1/5.5/clang_64/bin/macdeployqt SkyMPC.app
+tar zcvf SkyMPC.zip SkyMPC.app
