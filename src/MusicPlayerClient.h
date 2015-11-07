@@ -137,11 +137,11 @@ private:
 	QTcpSocket sock;
 	QString exception;
 private:
-	static bool recv(QTcpSocket *sock, std::vector<QString> *lines);
-	bool exec(QString const &command, std::vector<QString> *lines);
-	void parse_result(std::vector<QString> const &lines, std::vector<Item> *out);
-	void parse_result(std::vector<QString> const &lines, std::vector<KeyValue> *out);
-	void parse_result(std::vector<QString> const &lines, StringMap *out);
+	static bool recv(QTcpSocket *sock, QStringList *lines);
+	bool exec(QString const &command, QStringList *lines);
+	void parse_result(QStringList const &lines, QList<Item> *out);
+	void parse_result(QStringList const &lines, std::vector<KeyValue> *out);
+	void parse_result(QStringList const &lines, StringMap *out);
 	template <typename T> bool info_(QString const &command, QString const &path, T *out);
 	bool send_password(QString const &password);
 public:
@@ -164,12 +164,12 @@ public:
 	bool isOpen() const;
 	bool ping();
 	bool do_status(StringMap *out);
-	bool do_lsinfo(QString const &path, std::vector<Item> *out);
-	bool do_listall(QString const &path, std::vector<Item> *out);
+	bool do_lsinfo(QString const &path, QList<Item> *out);
+	bool do_listall(QString const &path, QList<Item> *out);
 	bool do_listallinfo(QString const &path, std::vector<KeyValue> *out);
-	bool do_listallinfo(QString const &path, std::vector<Item> *out);
+	bool do_listallinfo(QString const &path, QList<Item> *out);
 	bool do_clear();
-	bool do_playlistinfo(QString const &path, std::vector<Item> *out);
+	bool do_playlistinfo(QString const &path, QList<Item> *out);
 	bool do_add(QString const &path);
 	bool do_deleteid(int id);
 	bool do_move(int from, int to);
@@ -189,7 +189,7 @@ public:
 	bool do_seek(int song, int pos);
 	bool do_save(QString const &name);
 	bool do_load(QString const &name);
-	bool do_listplaylistinfo(QString const &name, std::vector<Item> *out);
+	bool do_listplaylistinfo(QString const &name, QList<Item> *out);
 	bool do_rename(QString const &curname, QString const &newname);
 	bool do_rm(QString const &name);
 	bool do_update();

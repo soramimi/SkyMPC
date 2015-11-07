@@ -26,7 +26,7 @@ struct RequestItem {
 
 struct ResultItem {
 	RequestItem req;
-	std::vector<MusicPlayerClient::Item> vec;
+	QList<MusicPlayerClient::Item> vec;
 };
 
 class Command {

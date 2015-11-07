@@ -33,7 +33,7 @@ void EditPlaylistDialog::updatePlaylistList()
 {
 	ui->listWidget_list->clear();
 	ui->listWidget_songs->clear();
-	std::vector<MusicPlayerClient::Item> items;
+	QList<MusicPlayerClient::Item> items;
 	mpc->do_lsinfo(QString(), &items);
 	std::sort(items.begin(), items.end());
 	for (MusicPlayerClient::Item const &item : items) {
@@ -79,9 +79,10 @@ void EditPlaylistDialog::on_listWidget_list_itemSelectionChanged()
 	if (!listitem) return;
 	QString name = listitem->text();
 	ui->listWidget_songs->clear();
-	std::vector<MusicPlayerClient::Item> songs;
+	using mpcitem_t = MusicPlayerClient::Item;
+	QList<mpcitem_t> songs;
 	mpc->do_listplaylistinfo(name, &songs);
-	for (MusicPlayerClient::Item const &song : songs) {
+	for (mpcitem_t const &song : songs) {
 		QString path = song.text;
 		QString text = song.map.get("Title");
 		QString artist = song.map.get("Artist");

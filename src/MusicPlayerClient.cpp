@@ -10,7 +10,7 @@ MusicPlayerClient::~MusicPlayerClient()
 	close();
 }
 
-bool MusicPlayerClient::recv(QTcpSocket *sock, std::vector<QString> *lines)
+bool MusicPlayerClient::recv(QTcpSocket *sock, QStringList *lines)
 {
 	int timeout = 5000;
 	while (sock->waitForReadyRead(timeout)) {
@@ -48,7 +48,7 @@ bool MusicPlayerClient::recv(QTcpSocket *sock, std::vector<QString> *lines)
 	return false;
 }
 
-bool MusicPlayerClient::exec(QString const &command, std::vector<QString> *lines)
+bool MusicPlayerClient::exec(QString const &command, QStringList *lines)
 {
 	lines->clear();
 	exception = QString();
@@ -86,7 +86,7 @@ MusicPlayerClient::OpenResult MusicPlayerClient::open(QTcpSocket *sock, Host con
 		if (!pw.isEmpty()) {
 			QString str = "password " + pw + '\n';
 			sock->write(str.toUtf8());
-			std::vector<QString> lines;
+			QStringList lines;
 			if (recv(sock, &lines)) {
 				result.success = true;
 				result.incorrect_password = false;
@@ -139,7 +139,7 @@ bool MusicPlayerClient::isOpen() const
 bool MusicPlayerClient::ping()
 {
 	for (int i = 0; i < 3; i++) {
-		std::vector<QString> lines;
+		QStringList lines;
 		if (exec("ping", &lines)) {
 			return true;
 		}
@@ -147,7 +147,7 @@ bool MusicPlayerClient::ping()
 	return false;
 }
 
-void MusicPlayerClient::parse_result(std::vector<QString> const &lines, std::vector<Item> *out)
+void MusicPlayerClient::parse_result(QStringList const &lines, QList<Item> *out)
 {
 	Item info;
 	auto it = lines.begin();
@@ -188,7 +188,7 @@ void MusicPlayerClient::parse_result(std::vector<QString> const &lines, std::vec
 	}
 }
 
-void MusicPlayerClient::parse_result(std::vector<QString> const &lines, std::vector<KeyValue> *out)
+void MusicPlayerClient::parse_result(QStringList const &lines, std::vector<KeyValue> *out)
 {
 	out->clear();
 	auto it = lines.begin();
@@ -212,7 +212,7 @@ void MusicPlayerClient::parse_result(std::vector<QString> const &lines, std::vec
 	}
 }
 
-void MusicPlayerClient::parse_result(std::vector<QString> const &lines, StringMap *out)
+void MusicPlayerClient::parse_result(QStringList const &lines, StringMap *out)
 {
 	out->clear();
 	std::vector<KeyValue> vec;
@@ -225,7 +225,7 @@ void MusicPlayerClient::parse_result(std::vector<QString> const &lines, StringMa
 bool MusicPlayerClient::do_status(StringMap *out)
 {
 	out->map.clear();
-	std::vector<QString> lines;
+	QStringList lines;
 	if (exec("status", &lines)) {
 		parse_result(lines, out);
 		return true;
@@ -244,7 +244,7 @@ int MusicPlayerClient::get_volume()
 
 template <typename T> bool MusicPlayerClient::info_(QString const &command, QString const &path, T *out)
 {
-	std::vector<QString> lines;
+	QStringList lines;
 	QString cmd = command;
 	if (!path.isEmpty()) {
 		cmd = command + " \"" + path + '\"';
@@ -257,12 +257,12 @@ template <typename T> bool MusicPlayerClient::info_(QString const &command, QStr
 	return false;
 }
 
-bool MusicPlayerClient::do_lsinfo(QString const &path, std::vector<Item> *out)
+bool MusicPlayerClient::do_lsinfo(QString const &path, QList<Item> *out)
 {
 	return info_("lsinfo", path, out);
 }
 
-bool MusicPlayerClient::do_listall(QString const &path, std::vector<Item> *out)
+bool MusicPlayerClient::do_listall(QString const &path, QList<Item> *out)
 {
 	return info_("listall", path, out);
 }
@@ -272,49 +272,49 @@ bool MusicPlayerClient::do_listallinfo(QString const &path, std::vector<KeyValue
 	return info_("listallinfo", path, out);
 }
 
-bool MusicPlayerClient::do_listallinfo(QString const &path, std::vector<Item> *out)
+bool MusicPlayerClient::do_listallinfo(QString const &path, QList<Item> *out)
 {
 	return info_("listallinfo", path, out);
 }
 
 bool MusicPlayerClient::do_clear()
 {
-	std::vector<QString> lines;
+	QStringList lines;
 	return exec("clear", &lines);
 }
 
-bool MusicPlayerClient::do_playlistinfo(QString const &path, std::vector<Item> *out)
+bool MusicPlayerClient::do_playlistinfo(QString const &path, QList<Item> *out)
 {
 	return info_("playlistinfo", path, out);
 }
 
 bool MusicPlayerClient::do_add(QString const &path)
 {
-	std::vector<QString> lines;
+	QStringList lines;
 	return exec(QString("add \"") + path + "\"", &lines);
 }
 
 bool MusicPlayerClient::do_deleteid(int id)
 {
-	std::vector<QString> lines;
+	QStringList lines;
 	return exec(QString("deleteid ") + QString::number(id), &lines);
 }
 
 bool MusicPlayerClient::do_move(int from, int to)
 {
-	std::vector<QString> lines;
+	QStringList lines;
 	return exec(QString("move ") + QString::number(from) + ' ' + QString::number(to), &lines);
 }
 
 bool MusicPlayerClient::do_swap(int a, int b)
 {
-	std::vector<QString> lines;
+	QStringList lines;
 	return exec(QString("swap ") + QString::number(a) + ' ' + QString::number(b), &lines);
 }
 
 int MusicPlayerClient::do_addid(QString const &path, int to)
 {
-	std::vector<QString> lines;
+	QStringList lines;
 	QString cmd = QString("addid \"") + path + '\"';
 	if (to >= 0) {
 		cmd += ' ';
@@ -337,7 +337,7 @@ int MusicPlayerClient::do_addid(QString const &path, int to)
 
 bool MusicPlayerClient::do_currentsong(StringMap *out)
 {
-	std::vector<QString> lines;
+	QStringList lines;
 	if (exec("currentsong", &lines)) {
 		parse_result(lines, out);
 		return true;
@@ -347,7 +347,7 @@ bool MusicPlayerClient::do_currentsong(StringMap *out)
 
 bool MusicPlayerClient::do_play(int i)
 {
-	std::vector<QString> lines;
+	QStringList lines;
 	QString cmd = "play";
 	if (i >= 0) {
 		cmd += ' ';
@@ -358,96 +358,96 @@ bool MusicPlayerClient::do_play(int i)
 
 bool MusicPlayerClient::do_pause(bool f)
 {
-	std::vector<QString> lines;
+	QStringList lines;
 	return exec(f ? "pause 1" : "pause 0", &lines);
 }
 
 bool MusicPlayerClient::do_stop()
 {
-	std::vector<QString> lines;
+	QStringList lines;
 	return exec("stop", &lines);
 }
 
 bool MusicPlayerClient::do_next()
 {
-	std::vector<QString> lines;
+	QStringList lines;
 	return exec("next", &lines);
 }
 
 bool MusicPlayerClient::do_previous()
 {
-	std::vector<QString> lines;
+	QStringList lines;
 	return exec("previous", &lines);
 }
 
 bool MusicPlayerClient::do_repeat(bool f)
 {
-	std::vector<QString> lines;
+	QStringList lines;
 	return exec(f ? "repeat 1" : "repeat 0", &lines);
 }
 
 bool MusicPlayerClient::do_single(bool f)
 {
-	std::vector<QString> lines;
+	QStringList lines;
 	return exec(f ? "single 1" : "single 0", &lines);
 }
 
 bool MusicPlayerClient::do_consume(bool f)
 {
-	std::vector<QString> lines;
+	QStringList lines;
 	return exec(f ? "consume 1" : "consume 0", &lines);
 }
 
 bool MusicPlayerClient::do_random(bool f)
 {
-	std::vector<QString> lines;
+	QStringList lines;
 	return exec(f ? "random 1" : "random 0", &lines);
 }
 
 bool MusicPlayerClient::do_setvol(int n)
 {
-	std::vector<QString> lines;
+	QStringList lines;
 	return exec("setvol " + QString::number(n), &lines);
 }
 
 bool MusicPlayerClient::do_seek(int song, int pos)
 {
-	std::vector<QString> lines;
+	QStringList lines;
 	return exec("seek " + QString::number(song) + ' ' + QString::number(pos), &lines);
 }
 
 bool MusicPlayerClient::do_save(QString const &name)
 {
-	std::vector<QString> lines;
+	QStringList lines;
 	return exec(QString("save \"") + name + "\"", &lines);
 }
 
 bool MusicPlayerClient::do_load(QString const &name)
 {
-	std::vector<QString> lines;
+	QStringList lines;
 	return exec(QString("load \"") + name + "\"", &lines);
 }
 
-bool MusicPlayerClient::do_listplaylistinfo(QString const &name, std::vector<Item> *out)
+bool MusicPlayerClient::do_listplaylistinfo(QString const &name, QList<Item> *out)
 {
 	return info_("listplaylistinfo", name, out);
 }
 
 bool MusicPlayerClient::do_rename(QString const &curname, QString const &newname)
 {
-	std::vector<QString> lines;
+	QStringList lines;
 	return exec(QString("rename \"") + curname + "\" \"" + newname + "\"", &lines);
 }
 
 bool MusicPlayerClient::do_rm(QString const &name)
 {
-	std::vector<QString> lines;
+	QStringList lines;
 	return exec(QString("rm \"") + name + "\"", &lines);
 }
 
 bool MusicPlayerClient::do_update()
 {
-	std::vector<QString> lines;
+	QStringList lines;
 	return exec("update", &lines);
 }
 

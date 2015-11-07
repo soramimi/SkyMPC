@@ -39,27 +39,29 @@ ConnectionDialog::ConnectionDialog(QWidget *parent, Host const &host) :
 
 	current_host = host;
 
-	int row;
-	for (row = 0; row < (int)servers.size(); row++) {
-		if (host == servers[row].host) {
-			break;
+	if (servers.empty()) {
+		ServerItem item;
+		item.name = "New";
+		item.host = host;
+		if (item.host.port() < 1 || item.host.port() > 65535) {
+			item.host.setPort(DEFAULT_MPD_PORT);
 		}
-	}
-	if (row < (int)servers.size()) {
+		int row = (int)servers.size();
+		servers.push_back(item);
+		updateList();
 		ui->tableWidget->selectRow(row);
+		ui->lineEdit_name->setFocus();
+		ui->lineEdit_name->selectAll();
 	} else {
-        ServerItem item;
-        item.name = "New";
-        item.host = host;
-        if (item.host.port() < 1 || item.host.port() > 65535) {
-            item.host.setPort(DEFAULT_MPD_PORT);
-        }
-        int row = (int)servers.size();
-        servers.push_back(item);
-        updateList();
-        ui->tableWidget->selectRow(row);
-        ui->lineEdit_name->setFocus();
-        ui->lineEdit_name->selectAll();
+		int row;
+		for (row = 0; row < (int)servers.size(); row++) {
+			if (host == servers[row].host) {
+				break;
+			}
+		}
+		if (row < (int)servers.size()) {
+			ui->tableWidget->selectRow(row);
+		}
 	}
 
 	{

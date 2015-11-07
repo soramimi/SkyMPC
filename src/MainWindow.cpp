@@ -287,8 +287,12 @@ void MainWindow::preExec()
 {
 	bool conndlg = false;
 
-	if (impl->host.isValid()) {
-		if (!isAutoReconnectAtStartup()) {
+	if (qApp->keyboardModifiers() & Qt::ShiftModifier) {
+		conndlg = true;
+	} else if (impl->host.isValid()) {
+		if (isAutoReconnectAtStartup()) {
+			conndlg = false;
+		} else {
 			conndlg = true;
 		}
 	} else {
@@ -301,6 +305,7 @@ void MainWindow::preExec()
 			impl->host = dlg.host();
 		}
 	}
+
 	updateServersComboBox();
 
 	connectToMPD(impl->host);
@@ -480,9 +485,10 @@ void MainWindow::keyPressEvent(QKeyEvent *event)
 				for (QTreeWidgetItem *item : items) {
 					QString path = item->data(0, ITEM_PathRole).toString();
 					if (path.isEmpty()) continue;
-					std::vector<MusicPlayerClient::Item> mpcitems;
+					using mpcitem_t = MusicPlayerClient::Item;
+					QList<mpcitem_t> mpcitems;
 					if (impl->mpc.do_listall(path, &mpcitems)) {
-						for (MusicPlayerClient::Item const &mpcitem : mpcitems) {
+						for (mpcitem_t const &mpcitem : mpcitems) {
 							if (mpcitem.kind == "file") {
 								QString path = mpcitem.text;
 								impl->mpc.do_add(path);
@@ -828,7 +834,7 @@ void MainWindow::invalidateCurrentSongIndicator()
 	impl->status.current_song_indicator = -1;
 }
 
-static void sort(std::vector<MusicPlayerClient::Item> *vec)
+static void sort(QList<MusicPlayerClient::Item> *vec)
 {
 	std::sort(vec->begin(), vec->end(), [](MusicPlayerClient::Item const &left, MusicPlayerClient::Item const &right){
 		int i;
@@ -848,7 +854,7 @@ static void sort(std::vector<MusicPlayerClient::Item> *vec)
 void MainWindow::updateTreeTopLevel()
 {
 	ui->treeWidget->clear();
-	std::vector<MusicPlayerClient::Item> vec;
+	QList<MusicPlayerClient::Item> vec;
 	impl->mpc.do_lsinfo(QString(), &vec);
 	sort(&vec);
 
@@ -889,7 +895,7 @@ void MainWindow::updatePlaylist()
 
 	ui->listWidget_playlist->clear();
 
-	std::vector<MusicPlayerClient::Item> vec;
+	QList<MusicPlayerClient::Item> vec;
 	impl->mpc.do_playlistinfo(QString(), &vec);
 
 	for (MusicPlayerClient::Item const &mpcitem : vec) {
@@ -900,7 +906,7 @@ void MainWindow::updatePlaylist()
 			QString album;
 			QString time;
 			{
-				std::vector<MusicPlayerClient::Item> v;
+				QList<MusicPlayerClient::Item> v;
 				impl->mpc.do_listallinfo(path, &v);
 				if (v.size() == 1) {
 					text = v.front().map.get("Title");
@@ -970,7 +976,8 @@ void MainWindow::updateTree(ResultItem *info)
 			}
 		}
 		sort(&info->vec);
-		for (MusicPlayerClient::Item const &mpcitem : info->vec) {
+		using mpcitem_t = MusicPlayerClient::Item;
+		for (mpcitem_t const &mpcitem : info->vec) {
 			ushort const *str = mpcitem.text.utf16();
 			ushort const *ptr = ucsrchr(str, '/');
 			if (ptr) {
@@ -987,7 +994,7 @@ void MainWindow::updateTree(ResultItem *info)
 				} else if (mpcitem.kind == "file") {
 					QString path = mpcitem.text;
 					QString text;
-					std::vector<MusicPlayerClient::Item> v;
+					QList<MusicPlayerClient::Item> v;
 					if (impl->mpc.do_listallinfo(path, &v)) {
 						if (v.size() == 1) {
 							text = v.front().map.get("Title");
@@ -1059,7 +1066,7 @@ void MainWindow::deleteSelectedSongs()
 {
 	int row = ui->listWidget_playlist->currentRow();
 
-	QList<QListWidgetItem *> list = ui->listWidget_playlist->selectedItems();
+	auto list = ui->listWidget_playlist->selectedItems();
 	for (int i = 0; i < list.size(); i++) {
 		QListWidgetItem *item = list.at(i);
 		int id = item->data(ITEM_SongIdRole).toInt();
@@ -1101,9 +1108,10 @@ void MainWindow::execSongProperty(QString const &path, bool addplaylist)
 void MainWindow::clearPlaylist()
 {
 	int count = 0;
-	std::vector<MusicPlayerClient::Item> vec;
+	using mpcitem_t = MusicPlayerClient::Item;
+	QList<mpcitem_t> vec;
 	impl->mpc.do_playlistinfo(QString(), &vec);
-	for (MusicPlayerClient::Item const &item : vec) {
+	for (mpcitem_t const &item : vec) {
 		if (item.kind == "file") {
 			count++;
 		}
@@ -1192,9 +1200,10 @@ void MainWindow::addToPlaylist(QString const &path, int to, bool update)
 {
 	if (path.isEmpty()) return;
 
-	std::vector<MusicPlayerClient::Item> mpcitems;
+	using mpcitem_t = MusicPlayerClient::Item;
+	QList<mpcitem_t> mpcitems;
 	if (impl->mpc.do_listall(path, &mpcitems)) {
-		for (MusicPlayerClient::Item const &mpcitem : mpcitems) {
+		for (mpcitem_t const &mpcitem : mpcitems) {
 			if (mpcitem.kind == "file") {
 				if (to < 0) {
 					impl->mpc.do_add(mpcitem.text);
@@ -1237,7 +1246,7 @@ void MainWindow::onDropEvent(bool done)
 		for (size_t i = 0; i < drop_after.size(); i++) {
 			SongItem a = drop_after[i];
 			if (a.index == -1) {
-				std::vector<MusicPlayerClient::Item> mpcitems;
+				QList<MusicPlayerClient::Item> mpcitems;
 				if (impl->mpc.do_listall(a.path, &mpcitems)) {
 					size_t j = i;
 					for (MusicPlayerClient::Item const &item : mpcitems) {
@@ -1522,7 +1531,7 @@ void MainWindow::on_action_edit_copy_triggered()
 	QStringList list;
 	QWidget *focus = focusWidget();
 	if (focus == ui->treeWidget) {
-		QList<QTreeWidgetItem *> items = ui->treeWidget->selectedItems();
+		auto items = ui->treeWidget->selectedItems();
 		for (QTreeWidgetItem const *item : items) {
 			QString path = item->data(0, ITEM_PathRole).toString();
 			list.append(path);
@@ -1636,9 +1645,10 @@ void MainWindow::on_action_playlist_update_triggered()
 
 void MainWindow::on_action_playlist_unify_triggered()
 {
+	using mpcitem_t = MusicPlayerClient::Item;
 	QString text;
-	std::vector<MusicPlayerClient::Item> vec;
-	std::set<MusicPlayerClient::Item> set;
+	QList<mpcitem_t> vec;
+	std::set<mpcitem_t> set;
 	std::vector<int> dup;
 	impl->mpc.do_playlistinfo(QString(), &vec);
 	for (int i = 0; i < (int)vec.size(); i++) {
