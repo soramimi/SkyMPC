@@ -233,6 +233,15 @@ bool MusicPlayerClient::do_status(StringMap *out)
 	return false;
 }
 
+int MusicPlayerClient::get_volume()
+{
+	MusicPlayerClient::StringMap status;
+	if (do_status(&status)) {
+		return status.get("volume").toInt();
+	}
+	return -1;
+}
+
 template <typename T> bool MusicPlayerClient::info_(QString const &command, QString const &path, T *out)
 {
 	std::vector<QString> lines;

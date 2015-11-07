@@ -14,7 +14,7 @@ private:
 	struct Data {
 		QString address;
 		int port;
-        QString password;
+		QString password;
 	} data;
 public:
 	Host()
@@ -62,14 +62,14 @@ public:
 		}
 		data.port = port;
 	}
-    void setPassword(QString const &password)
-    {
-        data.password = password;
-    }
-    QString password() const
-    {
-        return data.password;
-    }
+	void setPassword(QString const &password)
+	{
+		data.password = password;
+	}
+	QString password() const
+	{
+		return data.password;
+	}
 	bool isValid() const
 	{
 		return !data.address.isEmpty() && data.port > 0 && data.port < 65536;
@@ -143,7 +143,7 @@ private:
 	void parse_result(std::vector<QString> const &lines, std::vector<KeyValue> *out);
 	void parse_result(std::vector<QString> const &lines, StringMap *out);
 	template <typename T> bool info_(QString const &command, QString const &path, T *out);
-    bool send_password(QString const &password);
+	bool send_password(QString const &password);
 public:
 	MusicPlayerClient();
 	MusicPlayerClient(MusicPlayerClient const &) = delete;
@@ -163,7 +163,7 @@ public:
 	void close();
 	bool isOpen() const;
 	bool ping();
-    bool do_status(StringMap *out);
+	bool do_status(StringMap *out);
 	bool do_lsinfo(QString const &path, std::vector<Item> *out);
 	bool do_listall(QString const &path, std::vector<Item> *out);
 	bool do_listallinfo(QString const &path, std::vector<KeyValue> *out);
@@ -193,6 +193,7 @@ public:
 	bool do_rename(QString const &curname, QString const &newname);
 	bool do_rm(QString const &name);
 	bool do_update();
+	int get_volume();
 };
 
 #endif // MUSICPLAYERCLIENT_H
