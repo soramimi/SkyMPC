@@ -41,12 +41,11 @@ enum e {
 }
 
 struct MainWindow::Impl {
-    QLabel *status_label;
+	QLabel *status_label;
 	bool connected;
 	MusicPlayerClient mpc;
 	Host host;
 	std::vector<SongItem> drop_before;
-//	QTimer interval_timer;
 	struct Playing {
 		PlayingStatus::e playing;
 		int current_song;
@@ -72,11 +71,10 @@ struct MainWindow::Impl {
 
 	int update_information_count;
 	int slider_down_count;
-    int notify_visible_count;
+	int notify_visible_count;
 
 	QMenu menu;
 
-//	QIcon server_icon;
 	QIcon folder_icon;
 
 	std::map<QString, QAction *> command_action_map;

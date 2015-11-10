@@ -91,7 +91,6 @@ FORMS    += src/MainWindow.ui \
 	src/AskRemoveDuplicatedFileDialog.ui
 
 RESOURCES += \
-    resources.qrc \
 	resources.qrc
 
 win32 {
