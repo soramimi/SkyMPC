@@ -41,7 +41,8 @@ SOURCES += src/main.cpp\
     src/version.cpp \
     src/LegacyWindowsStyleTreeControl.cpp \
     src/win32.cpp \
-	src/platform.cpp
+	src/platform.cpp \
+    src/TestConnectionThread.cpp
 
 HEADERS  += src/MainWindow.h \
 	src/MusicPlayerClient.h \
@@ -72,7 +73,8 @@ HEADERS  += src/MainWindow.h \
     src/version.h \
     src/LegacyWindowsStyleTreeControl.h \
     src/win32.h \
-	src/platform.h
+	src/platform.h \
+    src/TestConnectionThread.h
 
 FORMS    += src/MainWindow.ui \
 	src/VerticalVolumePopup.ui \

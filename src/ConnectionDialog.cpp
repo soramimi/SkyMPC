@@ -1,6 +1,7 @@
 #include "ConnectionDialog.h"
 #include "ui_ConnectionDialog.h"
 #include "TestConnectResultDialog.h"
+#include "TestConnectionThread.h"
 #include "MySettings.h"
 #include "MainWindow.h"
 #include <QMessageBox>
@@ -318,25 +319,11 @@ void ConnectionDialog::on_pushButton_test_connection_clicked()
 {
 	ServerItem const *s = selectedServer();
 	if (s) {
-		QString message;
-		QTcpSocket sock;
-		try {
-			MusicPlayerClient::OpenResult r = MusicPlayerClient::open(&sock, s->host);
-			message = r.log;
-			message += "\n---\n";
-			if (r.success) {
-				message += tr("Connection was successfully established.") + '\n';
-			}
-			if (r.incorrect_password) {
-				message += tr("Authentication failure.") + '\n';
-			} else if (!r.success) {
-				message += tr("Unexplained connection failure.") + '\n';
-			}
-		} catch (QString const &e) {
-			message = e;
-		}
-		sock.close();
-		TestConnectResultDialog dlg(this, message);
+		TestConnectResultDialog dlg(this);
+		dlg.show();
+		TestConnectionThread th(s, &dlg);
+		connect(&th, SIGNAL(updateMessage(QString)), &dlg, SLOT(setMessage(QString)));
+		th.start();
 		dlg.exec();
 	}
 }

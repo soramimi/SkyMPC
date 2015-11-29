@@ -1,4 +1,5 @@
 #include "MusicPlayerClient.h"
+#include <QHostAddress>
 
 
 MusicPlayerClient::MusicPlayerClient()
@@ -63,24 +64,33 @@ bool MusicPlayerClient::exec(QString const &command, QStringList *lines)
 	return recv(&sock, lines);
 }
 
-MusicPlayerClient::OpenResult MusicPlayerClient::open(QTcpSocket *sock, Host const &host)
+MusicPlayerClient::OpenResult MusicPlayerClient::open(QTcpSocket *sock, Host const &host, Logger *logger)
 {
 	OpenResult result;
 	try {
 		if (!host.isValid()) {
 			throw QString("Specified host is not valid.");
 		}
+		if (logger) logger->append(tr("Attempting to connect to '") + host.address() + "'\n");
 		sock->connectToHost(host.address(), host.port(DEFAULT_MPD_PORT));
 		if (!sock->waitForConnected(10000)) throw sock->errorString();
+		QString s = sock->peerAddress().toString();
+		if (logger) logger->append(tr("Connected to: ") + s + '\n');
 		if (!sock->waitForReadyRead(10000))  throw sock->errorString();
+
+		if (logger) logger->append("---\n");
+
+		QString text;
 		if (sock->canReadLine()) {
 			QByteArray ba = sock->readLine();
 			if (!ba.isEmpty()) {
-				result.log = QString::fromUtf8(ba.data(), ba.size());
+				text = QString::fromUtf8(ba.data(), ba.size());
 			}
 		}
-		if (result.log.isEmpty()) throw QString("The server does not respond.");
-		if (!result.log.startsWith("OK MPD ")) throw QString("Host is not MPD server.");
+		if (logger) logger->append(text);
+		if (text.isEmpty()) throw QString("The server does not respond.");
+		if (!text.startsWith("OK MPD ")) throw QString("Host is not MPD server.");
+
 		result.success = true;
 		QString pw = host.password();
 		if (!pw.isEmpty()) {
@@ -92,11 +102,13 @@ MusicPlayerClient::OpenResult MusicPlayerClient::open(QTcpSocket *sock, Host con
 				result.incorrect_password = false;
 			} else {
 				for (QString const &line : lines) {
-					result.log += line + '\n';
+					QString msg = line + '\n';
+					if (logger) logger->append(msg);
 				}
 				result.incorrect_password = true;
 			}
 		}
+		if (logger) logger->append("\n---\n");
 	} catch (...) {
 		sock->close();
 		throw;

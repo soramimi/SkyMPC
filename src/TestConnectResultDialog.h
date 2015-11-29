@@ -10,13 +10,23 @@ class TestConnectResultDialog;
 class TestConnectResultDialog : public QDialog
 {
 	Q_OBJECT
-	
+private:
+	QThread *thread;
 public:
-	explicit TestConnectResultDialog(QWidget *parent, QString const &message);
+	explicit TestConnectResultDialog(QWidget *parent);
 	~TestConnectResultDialog();
 	
+	void bindThread(QThread *t)
+	{
+		thread = t;
+	}
+
+	virtual void reject();
+
 private:
 	Ui::TestConnectResultDialog *ui;
+public slots:
+	void setMessage(QString const &message);
 };
 
 #endif // TESTCONNECTRESULTDIALOG_H

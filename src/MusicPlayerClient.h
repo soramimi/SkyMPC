@@ -84,7 +84,8 @@ public:
 	}
 };
 
-class MusicPlayerClient {
+class MusicPlayerClient : public QObject {
+	Q_OBJECT
 public:
 	struct KeyValue {
 		QString key;
@@ -133,6 +134,10 @@ public:
 		QString name;
 		std::vector<MusicPlayerClient::Item> songs;
 	};
+	class Logger {
+	public:
+		virtual void append(QString const &text) = 0;
+	};
 private:
 	QTcpSocket sock;
 	QString exception;
@@ -156,9 +161,9 @@ public:
 	struct OpenResult {
 		bool success = false;
 		bool incorrect_password = false;
-		QString log;
+//		QString log;
 	};
-	static OpenResult open(QTcpSocket *sock, Host const &host);
+	static OpenResult open(QTcpSocket *sock, Host const &host, Logger *logger = 0);
 	bool open(Host const &host);
 	void close();
 	bool isOpen() const;
