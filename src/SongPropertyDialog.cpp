@@ -27,9 +27,19 @@ SongPropertyDialog::SongPropertyDialog(QWidget *parent, std::vector<MusicPlayerC
 	item = new QTableWidgetItem(tr("Value"));
 	ui->tableWidget->setHorizontalHeaderItem(1, item);
 	for (int i = 0; i < n; i++) {
-		item = new QTableWidgetItem(data->at(i).key);
+		QString key = data->at(i).key;
+		QString val = data->at(i).value;
+		if (key == "Time") {
+			unsigned int t = val.toUInt();
+			if (t > 0) {
+				char tmp[100];
+				sprintf(tmp, " (%u:%u)", t / 60, t % 60);
+				val += tmp;
+			}
+		}
+		item = new QTableWidgetItem(key);
 		ui->tableWidget->setItem(i, 0, item);
-		item = new QTableWidgetItem(data->at(i).value);
+		item = new QTableWidgetItem(val);
 		ui->tableWidget->setItem(i, 1, item);
 		ui->tableWidget->setRowHeight(i, fontsize + 8);
 	}

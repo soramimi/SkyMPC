@@ -15,12 +15,17 @@ class EditPlaylistDialog : public QDialog
 private:
 	MusicPlayerClient *mpc;
 	void updatePlaylistList();
+	void saveSettings();
 public:
 	explicit EditPlaylistDialog(QWidget *parent, MusicPlayerClient *mpc);
 	~EditPlaylistDialog();
 	QString name() const;
 	bool forReplace() const;
 	bool forAppend() const;
+	virtual void accept();
+
+	virtual void reject();
+
 protected:
 	void changeEvent(QEvent *e);
 private slots:
@@ -33,6 +38,8 @@ private slots:
 	void on_pushButton_delete_clicked();
 
 	void on_pushButton_save_clicked();
+
+	void on_checkBox_show_temporary_clicked();
 
 private:
 	Ui::EditPlaylistDialog *ui;

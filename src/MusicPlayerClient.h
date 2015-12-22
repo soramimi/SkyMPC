@@ -102,6 +102,7 @@ public:
 	class StringMap {
 		friend class MusicPlayerClient;
 	private:
+	public:
 		std::map<QString, QString> map;
 	public:
 		QString get(QString const &name) const

@@ -40,7 +40,7 @@ enum e {
 };
 }
 
-struct MainWindow::Impl {
+struct MainWindow::Private {
 	QLabel *status_label;
 	bool connected;
 	MusicPlayerClient mpc;
@@ -79,6 +79,8 @@ struct MainWindow::Impl {
 
 	std::map<QString, QAction *> command_action_map;
 	std::map<int, QString> key_command_map;
+
+	bool release_mouse_event;
 };
 
 #endif // MAINWINDOWPRIVATE_H

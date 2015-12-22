@@ -2,6 +2,7 @@
 #include "ui_EditPlaylistDialog.h"
 #include "RenameDialog.h"
 #include <QMessageBox>
+#include "MySettings.h"
 
 void removeKeyAcceleratorText(QObject *obj);
 
@@ -19,6 +20,14 @@ EditPlaylistDialog::EditPlaylistDialog(QWidget *parent, MusicPlayerClient *mpc) 
 	removeKeyAcceleratorText(this);
 #endif
 
+	{
+		MySettings s;
+		s.beginGroup("Playlist");
+		bool showtemp = s.value("ShowTemporaryItems", false).toBool();
+		s.endGroup();
+		ui->checkBox_show_temporary->setChecked(showtemp);
+	}
+
 	updatePlaylistList();
 
 	ui->listWidget_list->setFocus();
@@ -29,8 +38,21 @@ EditPlaylistDialog::~EditPlaylistDialog()
 	delete ui;
 }
 
+void EditPlaylistDialog::saveSettings()
+{
+	bool showtemp = ui->checkBox_show_temporary->isChecked();
+	{
+		MySettings s;
+		s.beginGroup("Playlist");
+		s.setValue("ShowTemporaryItems", showtemp);
+		s.endGroup();
+	}
+}
+
 void EditPlaylistDialog::updatePlaylistList()
 {
+	bool showtemp = ui->checkBox_show_temporary->isChecked();
+
 	ui->listWidget_list->clear();
 	ui->listWidget_songs->clear();
 	QList<MusicPlayerClient::Item> items;
@@ -39,7 +61,11 @@ void EditPlaylistDialog::updatePlaylistList()
 	for (MusicPlayerClient::Item const &item : items) {
 		if (item.kind == "playlist") {
 			QString name = item.text;
-			ui->listWidget_list->addItem(name);
+			if (!showtemp && name.startsWith('_') && name.endsWith('_')) {
+				// nop
+			} else {
+				ui->listWidget_list->addItem(name);
+			}
 		}
 	}
 }
@@ -71,6 +97,18 @@ bool EditPlaylistDialog::forReplace() const
 bool EditPlaylistDialog::forAppend() const
 {
 	return ui->radioButton_append->isChecked();
+}
+
+void EditPlaylistDialog::accept()
+{
+	saveSettings();
+	QDialog::accept();
+}
+
+void EditPlaylistDialog::reject()
+{
+	saveSettings();
+	QDialog::reject();
 }
 
 void EditPlaylistDialog::on_listWidget_list_itemSelectionChanged()
@@ -164,5 +202,10 @@ void EditPlaylistDialog::on_pushButton_save_clicked()
 		return;
 	}
 	mpc->do_save(name);
+	updatePlaylistList();
+}
+
+void EditPlaylistDialog::on_checkBox_show_temporary_clicked()
+{
 	updatePlaylistList();
 }

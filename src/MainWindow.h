@@ -10,6 +10,7 @@ namespace Ui {
 class MainWindow;
 }
 class QTreeWidgetItem;
+class QListWidgetItem;
 
 struct RequestItem {
 	QString path;
@@ -77,8 +78,8 @@ class MainWindow : public QMainWindow
 {
 	Q_OBJECT
 private:
-    struct Impl;
-    Impl *impl;
+	struct Private;
+	Private *priv;
     QIcon folderIcon();
 	void displayProgress(double elapsed);
 	void updatePlayingStatus();
@@ -99,6 +100,10 @@ private:
 	bool isPlaying() const;
 	void execPrimaryCommand(QTreeWidgetItem *item);
 	void setDefaultStatusBarText();
+	QString songPath(QTreeWidgetItem const *item) const;
+	QString songPath(QListWidgetItem const *item) const;
+	void releaseMouseIfGrabbed();
+	bool isPlaceHolder(QTreeWidgetItem *item) const;
 public:
 	explicit MainWindow(QWidget *parent = 0);
 	~MainWindow();
@@ -119,6 +124,7 @@ public:
 
 	void play(bool toggle);
 
+	void eatMouse();
 protected:
 	virtual bool event(QEvent *event);
 	virtual bool eventFilter(QObject *, QEvent *);
@@ -129,6 +135,9 @@ protected:
 	void refreshTreeItem(QTreeWidgetItem *item);
 	void deleteSelectedSongs();
 	void addToPlaylist(QString const &path, int to, bool update);
+	virtual void mousePressEvent(QMouseEvent *e);
+	virtual void mouseReleaseEvent(QMouseEvent *e);
+
 	virtual void timerEvent(QTimerEvent *);
 private slots:
 	void on_toolButton_play_clicked();
@@ -190,8 +199,6 @@ private slots:
 
 private:
 	Ui::MainWindow *ui;
-
-
 public:
 	static QString tr_Module_information_could_not_be_acquired()
 	{

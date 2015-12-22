@@ -17,6 +17,7 @@ public:
 	int value();
 	void setValue(int n);
 	virtual void paintEvent(QPaintEvent *);
+	void mousePressEvent(QMouseEvent *e);
 private slots:
 	void on_spinBox_valueChanged(int arg1);
 

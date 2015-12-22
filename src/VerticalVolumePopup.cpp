@@ -2,6 +2,7 @@
 #include "ui_VerticalVolumePopup.h"
 #include "misc.h"
 #include <QPainter>
+#include "MainWindow.h"
 
 VerticalVolumePopup::VerticalVolumePopup(QWidget *parent) :
 	QDialog(parent),
@@ -39,3 +40,8 @@ void VerticalVolumePopup::paintEvent(QPaintEvent *)
 	drawBox(&painter, 0, 0, width(), height(), QColor(128, 128, 128));
 }
 
+void VerticalVolumePopup::mousePressEvent(QMouseEvent *e)
+{
+	the_mainwindow->eatMouse();
+	QWidget::mousePressEvent(e);
+}
