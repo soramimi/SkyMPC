@@ -57,20 +57,19 @@ MainWindow::MainWindow(QWidget *parent) :
 	QMainWindow(parent),
 	ui(new Ui::MainWindow)
 {
-	priv = new Private();
+	pv = new Private();
 	ui->setupUi(this);
 
-	priv->release_mouse_event = false;
+	pv->release_mouse_event = false;
 
 	//    ui->statusBar->hide();
-	priv->status_label = new QLabel();
-	ui->statusBar->addWidget(priv->status_label);
+	pv->status_label = new QLabel();
+	ui->statusBar->addWidget(pv->status_label);
 
-	// ↓常にmacフォルダ画像を使うことにした。2015-02-06
 #if 0 //def Q_OS_WIN
 	priv->folder_icon = QIcon(":/image/winfolder.png");
 #else
-	priv->folder_icon = QIcon(":/image/macfolder.png");
+	pv->folder_icon = QIcon(":/image/macfolder.png");
 #endif
 
 	//	priv->notify_overlay_window = 0;
@@ -101,12 +100,12 @@ MainWindow::MainWindow(QWidget *parent) :
 	ui->toolButton_menu->hide();
 #else
 #endif
-	priv->connected = false;
-	priv->total_seconds = 0;
+	pv->connected = false;
+	pv->total_seconds = 0;
 
-	priv->menu.addAction(ui->action_help_about);
-	priv->menu.addAction(ui->action_debug);
-	ui->toolButton_menu->setMenu(&priv->menu);
+	pv->menu.addAction(ui->action_help_about);
+	pv->menu.addAction(ui->action_debug);
+	ui->toolButton_menu->setMenu(&pv->menu);
 	ui->toolButton_menu->setPopupMode(QToolButton::InstantPopup);
 
 	QList<QAction*> list = ui->menuBar->actions();
@@ -116,17 +115,17 @@ MainWindow::MainWindow(QWidget *parent) :
 	connect(ui->treeWidget, SIGNAL(itemDoubleClicked(QTreeWidgetItem*,int)), this, SLOT(on_treeWidgetItem_doubleClicked(QTreeWidgetItem*,int)));
 	connect(ui->listWidget_playlist, SIGNAL(onContextMenu(QContextMenuEvent*)), this, SLOT(onListViewContextMenuEvent(QContextMenuEvent*)));
 	connect(ui->listWidget_playlist, SIGNAL(onDropEvent(bool)), this, SLOT(onDropEvent(bool)));
-	connect(&priv->volume_popup, SIGNAL(valueChanged()), this, SLOT(onVolumeChanged()));
+	connect(&pv->volume_popup, SIGNAL(valueChanged()), this, SLOT(onVolumeChanged()));
 	connect(ui->horizontalSlider, SIGNAL(sliderPressed()), this, SLOT(onSliderPressed()));
 	connect(ui->horizontalSlider, SIGNAL(sliderReleased()), this, SLOT(onSliderReleased()));
 
-	priv->status.current_song = -1;
-	priv->status.current_song_indicator = -1;
+	pv->status.current_song = -1;
+	pv->status.current_song_indicator = -1;
 
-	priv->repeat_enabled = false;
-	priv->single_enabled = false;
-	priv->consume_enabled = false;
-	priv->random_enabled = false;
+	pv->repeat_enabled = false;
+	pv->single_enabled = false;
+	pv->consume_enabled = false;
+	pv->random_enabled = false;
 	setRepeatEnabled(false);
 	setRandomEnabled(false);
 
@@ -149,31 +148,31 @@ MainWindow::MainWindow(QWidget *parent) :
 		int port = settings.value("Port").toInt();
 		QString password = settings.value("Password").toString();
 		settings.endGroup();
-		priv->host = Host(addr, port);
-		priv->host.setPassword(password);
+		pv->host = Host(addr, port);
+		pv->host.setPassword(password);
 	}
 
 	qApp->installEventFilter(this);
 
-	priv->update_information_count = 0;
-	priv->slider_down_count = 0;
-	priv->notify_visible_count = 0;
+	pv->update_information_count = 0;
+	pv->slider_down_count = 0;
+	pv->notify_visible_count = 0;
 
-	priv->command_action_map["random"] = ui->action_random;
-	priv->command_action_map["repeat"] = ui->action_repeat;
-	priv->command_action_map["play"] = ui->action_play_always;
-	priv->command_action_map["stop"] = ui->action_stop;
-	priv->command_action_map["prev"] = ui->action_previous;
-	priv->command_action_map["next"] = ui->action_next;
-	priv->command_action_map["single"] = ui->action_single;
-	priv->command_action_map["exit"] = ui->action_file_close;
-	priv->command_action_map["vu"] = ui->action_volume_up;
-	priv->command_action_map["vd"] = ui->action_volume_down;
-	priv->command_action_map["qs1"] = ui->action_playlist_quick_save_1;
-	priv->command_action_map["qs2"] = ui->action_playlist_quick_save_2;
-	priv->command_action_map["ql1"] = ui->action_playlist_quick_load_1;
-	priv->command_action_map["ql2"] = ui->action_playlist_quick_load_2;
-	priv->command_action_map["clear"] = ui->action_playlist_clear;
+	pv->command_action_map["random"] = ui->action_random;
+	pv->command_action_map["repeat"] = ui->action_repeat;
+	pv->command_action_map["play"] = ui->action_play_always;
+	pv->command_action_map["stop"] = ui->action_stop;
+	pv->command_action_map["prev"] = ui->action_previous;
+	pv->command_action_map["next"] = ui->action_next;
+	pv->command_action_map["single"] = ui->action_single;
+	pv->command_action_map["exit"] = ui->action_file_close;
+	pv->command_action_map["vu"] = ui->action_volume_up;
+	pv->command_action_map["vd"] = ui->action_volume_down;
+	pv->command_action_map["qs1"] = ui->action_playlist_quick_save_1;
+	pv->command_action_map["qs2"] = ui->action_playlist_quick_save_2;
+	pv->command_action_map["ql1"] = ui->action_playlist_quick_load_1;
+	pv->command_action_map["ql2"] = ui->action_playlist_quick_load_2;
+	pv->command_action_map["clear"] = ui->action_playlist_clear;
 
 	//	priv->key_command_map[Qt::Key_P] = "play";
 	//	priv->key_command_map[Qt::Key_S] = "stop";
@@ -181,9 +180,9 @@ MainWindow::MainWindow(QWidget *parent) :
 
 MainWindow::~MainWindow()
 {
-	priv->mpc.close();
+	pv->mpc.close();
 	delete ui;
-	delete priv;
+	delete pv;
 }
 
 void MainWindow::setDefaultStatusBarText()
@@ -191,7 +190,7 @@ void MainWindow::setDefaultStatusBarText()
 	int count = ui->listWidget_playlist->count();
 	QString text = tr("{n} songs in playlist");
 	text.replace("{n}", QString::number(count));
-	priv->status_label->setText(text);
+	pv->status_label->setText(text);
 }
 
 QString MainWindow::songPath(QTreeWidgetItem const *item) const
@@ -206,21 +205,21 @@ QString MainWindow::songPath(QListWidgetItem const *item) const
 
 void MainWindow::releaseMouseIfGrabbed()
 {
-	if (priv->release_mouse_event) {
+	if (pv->release_mouse_event) {
 		releaseMouse();
-		priv->release_mouse_event = false;
+		pv->release_mouse_event = false;
 	}
 }
 
 QIcon MainWindow::folderIcon()
 {
-	return priv->folder_icon;
+	return pv->folder_icon;
 }
 
 bool MainWindow::execCommand(Command const &c)
 {
-	auto it = priv->command_action_map.find(c.command());
-	if (it != priv->command_action_map.end()) {
+	auto it = pv->command_action_map.find(c.command());
+	if (it != pv->command_action_map.end()) {
 		QAction *a = it->second;
 		Q_ASSERT(a);
 		a->trigger();
@@ -248,9 +247,9 @@ void MainWindow::closeEvent(QCloseEvent *event)
 		settings.endGroup();
 
 		settings.beginGroup("Connection");
-		settings.setValue("Address", priv->host.address());
-		settings.setValue("Port", priv->host.port());
-		settings.setValue("Password", priv->host.password());
+		settings.setValue("Address", pv->host.address());
+		settings.setValue("Port", pv->host.port());
+		settings.setValue("Password", pv->host.password());
 		settings.endGroup();
 	}
 	QMainWindow::closeEvent(event);
@@ -309,7 +308,7 @@ void MainWindow::preExec()
 
 	if (qApp->keyboardModifiers() & Qt::ShiftModifier) {
 		conndlg = true;
-	} else if (priv->host.isValid()) {
+	} else if (pv->host.isValid()) {
 		if (isAutoReconnectAtStartup()) {
 			conndlg = false;
 		} else {
@@ -320,15 +319,15 @@ void MainWindow::preExec()
 	}
 
 	if (conndlg) {
-		ConnectionDialog dlg(this, priv->host);
+		ConnectionDialog dlg(this, pv->host);
 		if (dlg.exec() == QDialog::Accepted) {
-			priv->host = dlg.host();
+			pv->host = dlg.host();
 		}
 	}
 
 	updateServersComboBox();
 
-	connectToMPD(priv->host);
+	connectToMPD(pv->host);
 	startTimer(10);
 }
 
@@ -353,12 +352,12 @@ void MainWindow::updateServersComboBox()
 	for (int i = 0; i < (int)servers.size(); i++) {
 		QString text = servers[i].name;
 		ui->comboBox->addItem(text);
-		if (priv->host == servers[i].host) {
+		if (pv->host == servers[i].host) {
 			sel = i;
 		}
 	}
 	if (sel < 0) {
-		QString text = makeServerText(priv->host);
+		QString text = makeServerText(pv->host);
 		sel = ui->comboBox->count();
 		ui->comboBox->addItem(text);
 	}
@@ -397,7 +396,7 @@ bool MainWindow::event(QEvent *event)
 		ResultItem item;
 		item.req = e->request_item;
 		if (!item.req.path.isEmpty()) {
-			if (priv->mpc.do_lsinfo(item.req.path, &item.vec)) {
+			if (pv->mpc.do_lsinfo(item.req.path, &item.vec)) {
 				updateTree(&item);
 			}
 		}
@@ -424,7 +423,7 @@ bool isFile(QTreeWidgetItem *item)
 
 bool MainWindow::isPlaying() const
 {
-	return priv->status.playing == PlayingStatus::Play;
+	return pv->status.playing == PlayingStatus::Play;
 }
 
 void MainWindow::execPrimaryCommand(QTreeWidgetItem *item)
@@ -440,7 +439,7 @@ void MainWindow::execPrimaryCommand(QTreeWidgetItem *item)
 			}
 			addToPlaylist(path, -1, true);
 			if (!isPlaying()) {
-				priv->mpc.do_play(i);
+				pv->mpc.do_play(i);
 				updatePlayingStatus();
 				invalidateCurrentSongIndicator();
 				updateCurrentSongIndicator();
@@ -499,7 +498,7 @@ void MainWindow::keyPressEvent(QKeyEvent *event)
 				execSongProperty(path, false);
 			} else {
 				int i = ui->listWidget_playlist->currentRow();
-				priv->mpc.do_play(i);
+				pv->mpc.do_play(i);
 			}
 		}
 		event->accept();
@@ -513,11 +512,11 @@ void MainWindow::keyPressEvent(QKeyEvent *event)
 					if (path.isEmpty()) continue;
 					using mpcitem_t = MusicPlayerClient::Item;
 					QList<mpcitem_t> mpcitems;
-					if (priv->mpc.do_listall(path, &mpcitems)) {
+					if (pv->mpc.do_listall(path, &mpcitems)) {
 						for (mpcitem_t const &mpcitem : mpcitems) {
 							if (mpcitem.kind == "file") {
 								QString path = mpcitem.text;
-								priv->mpc.do_add(path);
+								pv->mpc.do_add(path);
 							}
 						}
 					}
@@ -540,8 +539,8 @@ void MainWindow::keyPressEvent(QKeyEvent *event)
 #endif
 	}
 	{
-		auto it = priv->key_command_map.find(key);
-		if (it != priv->key_command_map.end()) {
+		auto it = pv->key_command_map.find(key);
+		if (it != pv->key_command_map.end()) {
 			Command c(it->second);
 			if (execCommand(c)) {
 				event->accept();
@@ -554,29 +553,29 @@ void MainWindow::keyPressEvent(QKeyEvent *event)
 void MainWindow::timerEvent(QTimerEvent *)
 {
 	if (ui->horizontalSlider->isSliderDown()) {
-		priv->slider_down_count = 50;
-	} else if (priv->slider_down_count > 0)  {
-		priv->slider_down_count--;
+		pv->slider_down_count = 50;
+	} else if (pv->slider_down_count > 0)  {
+		pv->slider_down_count--;
 	} else {
-		priv->slider_down_count = 0;
+		pv->slider_down_count = 0;
 	}
 
-	if (priv->update_information_count > 1) {
-		priv->update_information_count--;
+	if (pv->update_information_count > 1) {
+		pv->update_information_count--;
 	} else {
-		if (priv->slider_down_count == 0) {
+		if (pv->slider_down_count == 0) {
 			updatePlayingStatus();
-			if (priv->status.current_song != priv->status.current_song_indicator) {
+			if (pv->status.current_song != pv->status.current_song_indicator) {
 				updateCurrentSongIndicator();
 			}
 		}
-		priv->update_information_count = 25;
+		pv->update_information_count = 25;
 	}
 
-	if (priv->notify_visible_count > 0) {
-		priv->notify_visible_count--;
+	if (pv->notify_visible_count > 0) {
+		pv->notify_visible_count--;
 	} else {
-		priv->notify_visible_count--;
+		pv->notify_visible_count--;
 		setDefaultStatusBarText();
 	}
 
@@ -587,11 +586,11 @@ void MainWindow::connectToMPD(Host const &host)
 	ui->label_connecting_text->setText(tr("Connecting to MPD server: ") + host.address() + " (" + QString::number(host.port(DEFAULT_MPD_PORT)) + ")");
 	ui->stackedWidget->setCurrentWidget(ui->page_connecting);
 
-	priv->mpc.close();
+	pv->mpc.close();
 
-	priv->host = host;
-	if (priv->mpc.open(priv->host)) {
-		priv->connected = true;
+	pv->host = host;
+	if (pv->mpc.open(pv->host)) {
+		pv->connected = true;
 		ui->stackedWidget->setCurrentWidget(ui->page_connected);
 
 		updatePlayingStatus();
@@ -601,10 +600,10 @@ void MainWindow::connectToMPD(Host const &host)
 		updatePlaylist();
 
 		// check volume support
-		priv->volume = -1;
+		pv->volume = -1;
 		int vol = -1;
 		for (int i = 0; i < 3; i++) {
-			int v = priv->mpc.get_volume();
+			int v = pv->mpc.get_volume();
 			if (i == 0) {
 				vol = v;
 			} else {
@@ -616,15 +615,15 @@ void MainWindow::connectToMPD(Host const &host)
 		}
 		if (vol >= 0) {
 			int v = vol < 2 ? 2 : vol - 1;
-			priv->mpc.do_setvol(v);
-			if (v == priv->mpc.get_volume()) {
-				priv->volume = vol;
+			pv->mpc.do_setvol(v);
+			if (v == pv->mpc.get_volume()) {
+				pv->volume = vol;
 			}
-			priv->mpc.do_setvol(vol);
-			priv->mpc.do_setvol(vol);
-			priv->mpc.do_setvol(vol);
+			pv->mpc.do_setvol(vol);
+			pv->mpc.do_setvol(vol);
+			pv->mpc.do_setvol(vol);
 		}
-		if (priv->volume < 0) {
+		if (pv->volume < 0) {
 			ui->toolButton_volume->setEnabled(false);
 			ui->toolButton_volume->setToolTip(tr("Volume change is not supported"));
 		} else {
@@ -645,8 +644,8 @@ void MainWindow::clear()
 
 void MainWindow::setRepeatEnabled(bool f)
 {
-	if (priv->repeat_enabled != f) {
-		priv->repeat_enabled = f;
+	if (pv->repeat_enabled != f) {
+		pv->repeat_enabled = f;
 		ui->action_repeat->setChecked(f);
 		ui->toolButton_repeat->setChecked(f);
 	}
@@ -654,8 +653,8 @@ void MainWindow::setRepeatEnabled(bool f)
 
 void MainWindow::setSingleEnabled(bool f)
 {
-	if (priv->single_enabled != f) {
-		priv->single_enabled = f;
+	if (pv->single_enabled != f) {
+		pv->single_enabled = f;
 		ui->action_single->setChecked(f);
 		ui->toolButton_single->setChecked(f);
 	}
@@ -663,8 +662,8 @@ void MainWindow::setSingleEnabled(bool f)
 
 void MainWindow::setConsumeEnabled(bool f)
 {
-	if (priv->consume_enabled != f) {
-		priv->consume_enabled = f;
+	if (pv->consume_enabled != f) {
+		pv->consume_enabled = f;
 		ui->action_consume->setChecked(f);
 		ui->toolButton_consume->setChecked(f);
 	}
@@ -672,8 +671,8 @@ void MainWindow::setConsumeEnabled(bool f)
 
 void MainWindow::setRandomEnabled(bool f)
 {
-	if (priv->random_enabled != f) {
-		priv->random_enabled = f;
+	if (pv->random_enabled != f) {
+		pv->random_enabled = f;
 		ui->action_random->setChecked(f);
 		ui->toolButton_random->setChecked(f);
 	}
@@ -695,7 +694,7 @@ void MainWindow::displayProgress(double elapsed)
 {
 	char tmp[100];
 	int e = (int)elapsed;
-	int t = (int)priv->total_seconds;
+	int t = (int)pv->total_seconds;
 	sprintf(tmp, "%u:%02u / %u:%02u", e / 60, e % 60, t / 60, t % 60);
 	ui->label_progress->setText(tmp);
 }
@@ -706,16 +705,16 @@ void MainWindow::updatePlayingStatus()
 
 	QString windowtitle = "SkyMPC";
 
-	if (priv->mpc.isOpen()) {
+	if (pv->mpc.isOpen()) {
 		MusicPlayerClient::StringMap status;
 		MusicPlayerClient::StringMap current;
 		bool f_status, f_currentsong;
-		f_status = priv->mpc.do_status(&status);
-		f_currentsong = priv->mpc.do_currentsong(&current);
+		f_status = pv->mpc.do_status(&status);
+		f_currentsong = pv->mpc.do_currentsong(&current);
 		if (f_status && f_currentsong) {
 			QString state = status.get("state");
 			if (state.isEmpty()) { // something wrong
-				connectToMPD(priv->host); // reconnect
+				connectToMPD(pv->host); // reconnect
 				return;
 			} else if (state == "play") {
 				playing = PlayingStatus::Play;
@@ -723,9 +722,9 @@ void MainWindow::updatePlayingStatus()
 				playing = PlayingStatus::Pause;
 			}
 
-			priv->status.current_song = status.get("song").toInt();
+			pv->status.current_song = status.get("song").toInt();
 
-			priv->volume = status.get("volume").toInt();
+			pv->volume = status.get("volume").toInt();
 
 			setRepeatEnabled(status.get("repeat").toInt() != 0);
 			setSingleEnabled(status.get("single").toInt() != 0);
@@ -753,8 +752,8 @@ void MainWindow::updatePlayingStatus()
 				}
 				{
 					QString text = title + '\t' + artist + '\t' + disc;
-					if (text != priv->status.song_information) {
-						priv->status.song_information = text;
+					if (text != pv->status.song_information) {
+						pv->status.song_information = text;
 						ui->label_title->setText(title);
 						ui->label_artist->setText(artist);
 						ui->label_disc->setText(disc);
@@ -771,7 +770,7 @@ void MainWindow::updatePlayingStatus()
 					int t, e;
 					if (sscanf(s.c_str(), "%d:%d", &e, &t) == 2) {
 						elapsed = e;
-						priv->total_seconds = t;
+						pv->total_seconds = t;
 					}
 				}
 				{
@@ -782,38 +781,38 @@ void MainWindow::updatePlayingStatus()
 					}
 				}
 				ui->horizontalSlider->setUpdatesEnabled(false);
-				ui->horizontalSlider->setMaximum((int)(priv->total_seconds * 100));
+				ui->horizontalSlider->setMaximum((int)(pv->total_seconds * 100));
 				ui->horizontalSlider->setValue((int)(elapsed * 100));
 				ui->horizontalSlider->setUpdatesEnabled(true);
 
-				if (priv->status.elapsed > elapsed) {
+				if (pv->status.elapsed > elapsed) {
 					updatePlaylist();
 				}
-				priv->status.elapsed = elapsed;
+				pv->status.elapsed = elapsed;
 
 				displayProgress(elapsed);
 			}
 		} else {
-			if (!priv->mpc.ping()) {
-				QString s = priv->mpc.message();
-				priv->mpc.close();
+			if (!pv->mpc.ping()) {
+//				QString s = priv->mpc.message();
+				pv->mpc.close();
 			}
 		}
 	} else {
-		if (priv->connected) {
-			priv->connected = false;
+		if (pv->connected) {
+			pv->connected = false;
 			ui->stackedWidget->setCurrentWidget(ui->page_disconnecccted);
 			clear();
 		}
 	}
 
-	if (windowtitle != priv->status.windowtitle) {
-		priv->status.windowtitle = windowtitle;
+	if (windowtitle != pv->status.windowtitle) {
+		pv->status.windowtitle = windowtitle;
 		setWindowTitle(windowtitle);
 	}
 
-	if (playing != priv->status.playing) {
-		priv->status.playing = playing;
+	if (playing != pv->status.playing) {
+		pv->status.playing = playing;
 		if (playing == PlayingStatus::Play) {
 			QString text = tr("Pause");
 			ui->toolButton_play->setText(text);
@@ -840,16 +839,16 @@ void MainWindow::updateCurrentSongIndicator()
 			QListWidgetItem *item = ui->listWidget_playlist->item(i);
 			Q_ASSERT(item);
 			QString s = ":image/notplaying.png";
-			if (i == priv->status.current_song) {
-				if (priv->status.playing == PlayingStatus::Play) {
+			if (i == pv->status.current_song) {
+				if (pv->status.playing == PlayingStatus::Play) {
 					s = ":image/playing.svgz";
-				} else if (priv->status.playing == PlayingStatus::Pause) {
+				} else if (pv->status.playing == PlayingStatus::Pause) {
 					s = ":image/pause.png";
 				}
 			}
 			item->setIcon(QIcon(s));
 		}
-		priv->status.current_song_indicator = priv->status.current_song;
+		pv->status.current_song_indicator = pv->status.current_song;
 	} else {
 		invalidateCurrentSongIndicator();
 	}
@@ -857,7 +856,7 @@ void MainWindow::updateCurrentSongIndicator()
 
 void MainWindow::invalidateCurrentSongIndicator()
 {
-	priv->status.current_song_indicator = -1;
+	pv->status.current_song_indicator = -1;
 }
 
 static void sort(QList<MusicPlayerClient::Item> *vec)
@@ -881,7 +880,7 @@ void MainWindow::updateTreeTopLevel()
 {
 	ui->treeWidget->clear();
 	QList<MusicPlayerClient::Item> vec;
-	priv->mpc.do_lsinfo(QString(), &vec);
+	pv->mpc.do_lsinfo(QString(), &vec);
 	sort(&vec);
 
 	ui->treeWidget->setRootIsDecorated(true);
@@ -922,7 +921,7 @@ void MainWindow::updatePlaylist()
 	ui->listWidget_playlist->clear();
 
 	QList<MusicPlayerClient::Item> vec;
-	priv->mpc.do_playlistinfo(QString(), &vec);
+	pv->mpc.do_playlistinfo(QString(), &vec);
 
 	for (MusicPlayerClient::Item const &mpcitem : vec) {
 		if (mpcitem.kind == "file") {
@@ -933,7 +932,7 @@ void MainWindow::updatePlaylist()
 			QString time;
 			{
 				QList<MusicPlayerClient::Item> v;
-				priv->mpc.do_listallinfo(path, &v);
+				pv->mpc.do_listallinfo(path, &v);
 				if (v.size() == 1) {
 					text = v.front().map.get("Title");
 					artist = v.front().map.get("Artist");
@@ -1021,7 +1020,7 @@ void MainWindow::updateTree(ResultItem *info)
 					QString path = mpcitem.text;
 					QString text;
 					QList<MusicPlayerClient::Item> v;
-					if (priv->mpc.do_listallinfo(path, &v)) {
+					if (pv->mpc.do_listallinfo(path, &v)) {
 						if (v.size() == 1) {
 							MusicPlayerClient::StringMap const &map = v.front().map;
 							int trk = map.get("Track").toInt();
@@ -1103,7 +1102,7 @@ void MainWindow::deleteSelectedSongs()
 	for (int i = 0; i < list.size(); i++) {
 		QListWidgetItem *item = list.at(i);
 		int id = item->data(ITEM_SongIdRole).toInt();
-		priv->mpc.do_deleteid(id);
+		pv->mpc.do_deleteid(id);
 	}
 	updatePlaylist();
 
@@ -1123,14 +1122,14 @@ void MainWindow::execSongProperty(QString const &path, bool addplaylist)
 		return;
 	}
 	std::vector<MusicPlayerClient::KeyValue> vec;
-	priv->mpc.do_listallinfo(path, &vec);
+	pv->mpc.do_listallinfo(path, &vec);
 	if (vec.size() > 0) {
 		if (vec[0].key == "file") {
 			SongPropertyDialog dlg(this, &vec, addplaylist);
 			if (dlg.exec() == QDialog::Accepted) {
 				if (addplaylist && dlg.addToPlaylistClicked()) {
 					QString path = vec[0].value;
-					priv->mpc.do_add(path);
+					pv->mpc.do_add(path);
 					updatePlaylist();
 				}
 			}
@@ -1143,7 +1142,7 @@ void MainWindow::clearPlaylist()
 	int count = 0;
 	using mpcitem_t = MusicPlayerClient::Item;
 	QList<mpcitem_t> vec;
-	priv->mpc.do_playlistinfo(QString(), &vec);
+	pv->mpc.do_playlistinfo(QString(), &vec);
 	for (mpcitem_t const &item : vec) {
 		if (item.kind == "file") {
 			count++;
@@ -1152,7 +1151,7 @@ void MainWindow::clearPlaylist()
 	if (count > 0) {
 		savePlaylist("_backup_before_clear_");
 	}
-	priv->mpc.do_clear();
+	pv->mpc.do_clear();
 	updatePlaylist();
 }
 
@@ -1206,7 +1205,7 @@ void MainWindow::onListViewContextMenuEvent(QContextMenuEvent *)
 	if (act == &a_PlayFromHere) {
 		int i = ui->listWidget_playlist->currentIndex().row();
 		if (i >= 0) {
-			priv->mpc.do_play(i);
+			pv->mpc.do_play(i);
 		}
 	} else if (act == &a_Cut) {
 		ui->action_edit_cut->trigger();
@@ -1237,13 +1236,13 @@ void MainWindow::addToPlaylist(QString const &path, int to, bool update)
 
 	using mpcitem_t = MusicPlayerClient::Item;
 	QList<mpcitem_t> mpcitems;
-	if (priv->mpc.do_listall(path, &mpcitems)) {
+	if (pv->mpc.do_listall(path, &mpcitems)) {
 		for (mpcitem_t const &mpcitem : mpcitems) {
 			if (mpcitem.kind == "file") {
 				if (to < 0) {
-					priv->mpc.do_add(mpcitem.text);
+					pv->mpc.do_add(mpcitem.text);
 				} else {
-					priv->mpc.do_addid(mpcitem.text, to);
+					pv->mpc.do_addid(mpcitem.text, to);
 					to++;
 				}
 			}
@@ -1260,22 +1259,18 @@ void MainWindow::mousePressEvent(QMouseEvent *e)
 	QMainWindow::mousePressEvent(e);
 }
 
-void MainWindow::mouseReleaseEvent(QMouseEvent *e)
-{
-	releaseMouseIfGrabbed();
-	QMainWindow::mouseReleaseEvent(e);
-}
+
 
 void MainWindow::onDropEvent(bool done)
 {
 	if (!done) {
-		priv->drop_before.clear();
+		pv->drop_before.clear();
 		int n = ui->listWidget_playlist->count();
 		for (int i = 0; i < n; i++) {
 			QListWidgetItem *listitem = ui->listWidget_playlist->item(i);
 			listitem->setData(ITEM_RowRole, i);
 			QString path = songPath(listitem);
-			priv->drop_before.push_back(SongItem(i, path));
+			pv->drop_before.push_back(SongItem(i, path));
 		}
 	} else {
 		std::vector<SongItem> drop_after;
@@ -1289,17 +1284,17 @@ void MainWindow::onDropEvent(bool done)
 			if (path.isEmpty()) continue;
 			drop_after.push_back(SongItem(row, path));
 		}
-		std::vector<SongItem> drop_before = priv->drop_before;
+		std::vector<SongItem> drop_before = pv->drop_before;
 		for (size_t i = 0; i < drop_after.size(); i++) {
 			SongItem const &a = drop_after[i];
 			if (a.index == -1) {
 				QList<MusicPlayerClient::Item> mpcitems;
-				if (priv->mpc.do_listall(a.path, &mpcitems)) {
+				if (pv->mpc.do_listall(a.path, &mpcitems)) {
 					size_t j = i;
 					for (MusicPlayerClient::Item const &item : mpcitems) {
 						if (item.kind == "file") {
 							QString path = item.text;
-							priv->mpc.do_addid(path, (int)j);
+							pv->mpc.do_addid(path, (int)j);
 							SongItem item(-1, path);
 							drop_before.insert(drop_before.begin() + j, item);
 							j++;
@@ -1310,7 +1305,7 @@ void MainWindow::onDropEvent(bool done)
 				for (size_t j = i + 1; j < drop_before.size(); j++) {
 					if (a.index == drop_before[j].index) {
 						std::swap(drop_before[i], drop_before[j]);
-						priv->mpc.do_swap(i, j);
+						pv->mpc.do_swap(i, j);
 						break;
 					}
 				}
@@ -1345,7 +1340,7 @@ void MainWindow::on_listWidget_playlist_doubleClicked(const QModelIndex &index)
 	} else {
 		int i = index.row();
 		if (i >= 0) {
-			priv->mpc.do_play(i);
+			pv->mpc.do_play(i);
 		}
 		invalidateCurrentSongIndicator();
 	}
@@ -1353,27 +1348,27 @@ void MainWindow::on_listWidget_playlist_doubleClicked(const QModelIndex &index)
 
 void MainWindow::on_toolButton_volume_clicked()
 {
-	if (priv->volume < 0) {
+	if (pv->volume < 0) {
 		return; // setvol not supported
 	}
 	QRect rc = ui->toolButton_volume->frameGeometry();
 	QPoint pt = ((QWidget *)ui->toolButton_volume->parent())->mapToGlobal(rc.bottomRight());
-	pt.rx() -= priv->volume_popup.width();
-	priv->volume_popup.setValue(priv->volume);
-	priv->volume_popup.move(pt);
-	priv->volume_popup.show();
+	pt.rx() -= pv->volume_popup.width();
+	pv->volume_popup.setValue(pv->volume);
+	pv->volume_popup.move(pt);
+	pv->volume_popup.show();
 }
 
 void MainWindow::onVolumeChanged()
 {
-	int v = priv->volume_popup.value();
-	priv->mpc.do_setvol(v);
+	int v = pv->volume_popup.value();
+	pv->mpc.do_setvol(v);
 }
 
 void MainWindow::onSliderPressed()
 {
-	if (priv->status.playing == PlayingStatus::Play) {
-		priv->mpc.do_pause(true);
+	if (pv->status.playing == PlayingStatus::Play) {
+		pv->mpc.do_pause(true);
 	}
 }
 
@@ -1381,12 +1376,12 @@ void MainWindow::onSliderReleased()
 {
 	int pos = ui->horizontalSlider->value() / 100;
 	{
-		priv->mpc.do_seek(priv->status.current_song, pos);
-		if (priv->status.playing == PlayingStatus::Play) {
-			priv->mpc.do_pause(false);
+		pv->mpc.do_seek(pv->status.current_song, pos);
+		if (pv->status.playing == PlayingStatus::Play) {
+			pv->mpc.do_pause(false);
 		}
 	}
-	priv->slider_down_count = 0;
+	pv->slider_down_count = 0;
 }
 
 void MainWindow::on_horizontalSlider_valueChanged(int value)
@@ -1408,14 +1403,14 @@ void MainWindow::on_action_help_about_triggered()
 void MainWindow::play(bool toggle)
 {
 	if (toggle) {
-		if (priv->status.playing == PlayingStatus::Play) {
-			priv->mpc.do_pause(true);
+		if (pv->status.playing == PlayingStatus::Play) {
+			pv->mpc.do_pause(true);
 		} else {
-			priv->mpc.do_play();
+			pv->mpc.do_play();
 		}
 	} else {
-		if (priv->status.playing != PlayingStatus::Play) {
-			priv->mpc.do_play();
+		if (pv->status.playing != PlayingStatus::Play) {
+			pv->mpc.do_play();
 		}
 	}
 }
@@ -1423,7 +1418,7 @@ void MainWindow::play(bool toggle)
 void MainWindow::eatMouse()
 {
 	grabMouse();
-	priv->release_mouse_event = true;
+	pv->release_mouse_event = true;
 }
 
 void MainWindow::on_action_play_triggered()
@@ -1433,43 +1428,43 @@ void MainWindow::on_action_play_triggered()
 
 void MainWindow::on_action_stop_triggered()
 {
-	priv->mpc.do_stop();
+	pv->mpc.do_stop();
 	invalidateCurrentSongIndicator();
 }
 
 void MainWindow::on_action_previous_triggered()
 {
-	priv->mpc.do_previous();
+	pv->mpc.do_previous();
 }
 
 void MainWindow::on_action_next_triggered()
 {
-	priv->mpc.do_next();
+	pv->mpc.do_next();
 }
 
 void MainWindow::on_action_repeat_triggered()
 {
-	priv->mpc.do_repeat(!priv->repeat_enabled);
+	pv->mpc.do_repeat(!pv->repeat_enabled);
 }
 
 void MainWindow::on_action_random_triggered()
 {
-	priv->mpc.do_random(!priv->random_enabled);
+	pv->mpc.do_random(!pv->random_enabled);
 }
 
 void MainWindow::on_action_single_triggered()
 {
-	priv->mpc.do_single(!priv->single_enabled);
+	pv->mpc.do_single(!pv->single_enabled);
 }
 
 void MainWindow::on_action_consume_triggered()
 {
-	priv->mpc.do_consume(!priv->consume_enabled);
+	pv->mpc.do_consume(!pv->consume_enabled);
 }
 
 void MainWindow::on_action_network_connect_triggered()
 {
-	ConnectionDialog dlg(this, priv->host);
+	ConnectionDialog dlg(this, pv->host);
 	if (dlg.exec() == QDialog::Accepted) {
 		Host host = dlg.host();
 		connectToMPD(host);
@@ -1479,7 +1474,7 @@ void MainWindow::on_action_network_connect_triggered()
 
 void MainWindow::on_action_network_disconnect_triggered()
 {
-	priv->mpc.close();
+	pv->mpc.close();
 }
 
 void MainWindow::on_toolButton_play_clicked()
@@ -1540,27 +1535,27 @@ bool isValidPlaylistName(QString const &name)
 void MainWindow::loadPlaylist(QString const &name, bool replace)
 {
 	if (replace) {
-		priv->mpc.do_stop();
-		priv->mpc.do_clear();
+		pv->mpc.do_stop();
+		pv->mpc.do_clear();
 	}
-	priv->mpc.do_load(name);
+	pv->mpc.do_load(name);
 	updatePlaylist();
 }
 
 void MainWindow::savePlaylist(QString const &name)
 {
 	deletePlaylist(name);
-	priv->mpc.do_save(name);
+	pv->mpc.do_save(name);
 }
 
 void MainWindow::deletePlaylist(QString const &name)
 {
-	priv->mpc.do_rm(name);
+	pv->mpc.do_rm(name);
 }
 
 void MainWindow::on_action_playlist_edit_triggered()
 {
-	EditPlaylistDialog dlg(this, &priv->mpc);
+	EditPlaylistDialog dlg(this, &pv->mpc);
 	if (dlg.exec() != QDialog::Accepted) return;
 	QString name = dlg.name();
 	if (name.isEmpty()) return;
@@ -1682,7 +1677,7 @@ void MainWindow::on_action_playlist_add_location_triggered()
 		if (loc.isEmpty()) {
 			QMessageBox::warning(this, QApplication::applicationName(), tr("Location is empty."));
 		} else {
-			priv->mpc.do_add(loc);
+			pv->mpc.do_add(loc);
 			updatePlaylist();
 		}
 	}
@@ -1690,7 +1685,7 @@ void MainWindow::on_action_playlist_add_location_triggered()
 
 void MainWindow::on_action_playlist_update_triggered()
 {
-	priv->mpc.do_update();
+	pv->mpc.do_update();
 	updateTreeTopLevel();
 	updatePlaylist();
 	updatePlayingStatus();
@@ -1705,7 +1700,7 @@ void MainWindow::on_action_playlist_unify_triggered()
 	QList<mpcitem_t> vec;
 	std::set<mpcitem_t> set;
 	std::vector<int> dup;
-	priv->mpc.do_playlistinfo(QString(), &vec);
+	pv->mpc.do_playlistinfo(QString(), &vec);
 	for (int i = 0; i < (int)vec.size(); i++) {
 		MusicPlayerClient::Item &item = vec[i];
 		if (set.find(item) == set.end()) {
@@ -1728,7 +1723,7 @@ void MainWindow::on_action_playlist_unify_triggered()
 				QListWidgetItem *item = ui->listWidget_playlist->item(row);
 				Q_ASSERT(item);
 				int id = item->data(ITEM_SongIdRole).toInt();
-				priv->mpc.do_deleteid(id);
+				pv->mpc.do_deleteid(id);
 			}
 			updatePlaylist();
 			updateCurrentSongIndicator();
@@ -1738,13 +1733,13 @@ void MainWindow::on_action_playlist_unify_triggered()
 
 void MainWindow::showNotify(QString const &text)
 {
-	priv->status_label->setText(text);
-	priv->notify_visible_count = 200;
+	pv->status_label->setText(text);
+	pv->notify_visible_count = 200;
 }
 
 void MainWindow::setVolume_(int v)
 {
-	priv->mpc.do_setvol(v);
+	pv->mpc.do_setvol(v);
 
 	QString text = QString::number(v) + '%';
 	showNotify(text);
@@ -1752,7 +1747,7 @@ void MainWindow::setVolume_(int v)
 
 void MainWindow::on_action_volume_up_triggered()
 {
-	int v = priv->volume;
+	int v = pv->volume;
 	if (v >= 0) {
 		if (v < 100) {
 			v++;
@@ -1763,7 +1758,7 @@ void MainWindow::on_action_volume_up_triggered()
 
 void MainWindow::on_action_volume_down_triggered()
 {
-	int v = priv->volume;
+	int v = pv->volume;
 	if (v >= 0) {
 		if (v > 0) {
 			v--;

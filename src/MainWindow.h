@@ -79,7 +79,7 @@ class MainWindow : public QMainWindow
 	Q_OBJECT
 private:
 	struct Private;
-	Private *priv;
+	Private *pv;
     QIcon folderIcon();
 	void displayProgress(double elapsed);
 	void updatePlayingStatus();
@@ -136,8 +136,6 @@ protected:
 	void deleteSelectedSongs();
 	void addToPlaylist(QString const &path, int to, bool update);
 	virtual void mousePressEvent(QMouseEvent *e);
-	virtual void mouseReleaseEvent(QMouseEvent *e);
-
 	virtual void timerEvent(QTimerEvent *);
 private slots:
 	void on_toolButton_play_clicked();

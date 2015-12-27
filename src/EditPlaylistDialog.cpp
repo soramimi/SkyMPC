@@ -61,7 +61,7 @@ void EditPlaylistDialog::updatePlaylistList()
 	for (MusicPlayerClient::Item const &item : items) {
 		if (item.kind == "playlist") {
 			QString name = item.text;
-			if (!showtemp && name.startsWith('_') && name.endsWith('_')) {
+			if (!showtemp && name.size() > 1 && name.startsWith('_') && name.endsWith('_')) {
 				// nop
 			} else {
 				ui->listWidget_list->addItem(name);

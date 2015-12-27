@@ -71,7 +71,7 @@ MusicPlayerClient::OpenResult MusicPlayerClient::open(QTcpSocket *sock, Host con
 		if (!host.isValid()) {
 			throw QString("Specified host is not valid.");
 		}
-		if (logger) logger->append(tr("Attempting to connect to '") + host.address() + "'\n");
+		if (logger) logger->append(tr("Attempting to connect to: ") + host.address() + "\n");
 		sock->connectToHost(host.address(), host.port(DEFAULT_MPD_PORT));
 		if (!sock->waitForConnected(10000)) throw sock->errorString();
 		QString s = sock->peerAddress().toString();
