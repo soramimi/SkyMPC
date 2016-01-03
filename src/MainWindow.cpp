@@ -928,44 +928,37 @@ void MainWindow::updatePlaylist()
 			QString path = mpcitem.text;
 			QString text;
 			QString artist;
-			QString album;
-			QString time;
-			{
-				QList<MusicPlayerClient::Item> v;
-				pv->mpc.do_listallinfo(path, &v);
-				if (v.size() == 1) {
-					text = v.front().map.get("Title");
-					artist = v.front().map.get("Artist");
-					album = v.front().map.get("Album");
-					time = timeText(v.front());
+			if (path.indexOf("://") > 0) {
+				text = path;
+			} else {
+				QString album;
+				QString time;
+				{
+					QList<MusicPlayerClient::Item> v;
+					pv->mpc.do_listallinfo(path, &v);
+					if (v.size() == 1) {
+						text = v.front().map.get("Title");
+						artist = v.front().map.get("Artist");
+						album = v.front().map.get("Album");
+						time = timeText(v.front());
+					}
 				}
-			}
-			QString dir;
-			if (text.isEmpty()) {
-				ushort const *str = path.utf16();
-				ushort const *ptr = ucsrchr(str, '/');
-				if (ptr) {
-					dir = QString::fromUtf16(str, ptr - str);
-					text = QString::fromUtf16(ptr + 1);
+				QString suffix;
+				if (!artist.isEmpty() && !album.isEmpty()) {
+					suffix = artist + '/' + album;
+				} else if (!artist.isEmpty()) {
+					suffix = artist;
+				} else if (!album.isEmpty()) {
+					suffix = album;
 				}
-			}
-			QString suffix;
-			if (!artist.isEmpty() && !album.isEmpty()) {
-				suffix = artist + '/' + album;
-			} else if (!artist.isEmpty()) {
-				suffix = artist;
-			} else if (!album.isEmpty()) {
-				suffix = album;
-			} else if (!dir.isEmpty()){
-				suffix = dir;
-			}
 #if DISPLAY_TIME
-			if (!time.isEmpty()) {
-				text += " (" + time + ")";
-			}
+				if (!time.isEmpty()) {
+					text += " (" + time + ")";
+				}
 #endif
-			if (!suffix.isEmpty()) {
-				text += " -- " + suffix;
+				if (!suffix.isEmpty()) {
+					text += " -- " + suffix;
+				}
 			}
 			QString id = mpcitem.map.get("Id");
 			QString pos = mpcitem.map.get("Pos");
@@ -1236,7 +1229,14 @@ void MainWindow::addToPlaylist(QString const &path, int to, bool update)
 
 	using mpcitem_t = MusicPlayerClient::Item;
 	QList<mpcitem_t> mpcitems;
-	if (pv->mpc.do_listall(path, &mpcitems)) {
+	if (path.indexOf("://") > 0) {
+		if (to < 0) {
+			pv->mpc.do_add(path);
+		} else {
+			pv->mpc.do_addid(path, to);
+			to++;
+		}
+	} else if (pv->mpc.do_listall(path, &mpcitems)) {
 		for (mpcitem_t const &mpcitem : mpcitems) {
 			if (mpcitem.kind == "file") {
 				if (to < 0) {
