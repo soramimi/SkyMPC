@@ -135,7 +135,7 @@ protected:
 	void refreshTreeItem(QTreeWidgetItem *item);
 	void deleteSelectedSongs();
 	void addToPlaylist(QString const &path, int to, bool update);
-	virtual void mousePressEvent(QMouseEvent *e);
+	virtual void mouseReleaseEvent(QMouseEvent *);
 	virtual void timerEvent(QTimerEvent *);
 private slots:
 	void on_toolButton_play_clicked();
@@ -202,6 +202,9 @@ public:
 	{
 		return tr("Module information could not be acquired.");
 	}
+
+	// QWidget interface
+protected:
 };
 
 extern MainWindow *the_mainwindow;

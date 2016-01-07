@@ -2,7 +2,7 @@
 #include "version.h"
 
 char const *SkyMPC_Version = "1.5.4";
-int const SkyMPC_Year = 2015;
+int const SkyMPC_Year = 2016;
 
 /*
 

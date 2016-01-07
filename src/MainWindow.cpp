@@ -1253,13 +1253,11 @@ void MainWindow::addToPlaylist(QString const &path, int to, bool update)
 	}
 }
 
-void MainWindow::mousePressEvent(QMouseEvent *e)
+void MainWindow::mouseReleaseEvent(QMouseEvent *e)
 {
 	releaseMouseIfGrabbed();
-	QMainWindow::mousePressEvent(e);
+	QMainWindow::mouseReleaseEvent(e);
 }
-
-
 
 void MainWindow::onDropEvent(bool done)
 {
