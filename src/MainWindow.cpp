@@ -3,7 +3,7 @@
 #include "ui_MainWindow.h"
 #include "MainWindowPrivate.h"
 #include "AboutDialog.h"
-#include "AddLocationDialog.h"
+#include "EditLocationDialog.h"
 #include "AskRemoveDuplicatedFileDialog.h"
 #include "ConnectionDialog.h"
 #include "EditPlaylistDialog.h"
@@ -20,6 +20,10 @@
 #include <QTimer>
 #include <set>
 #include <string>
+#include <QNetworkAccessManager>
+#include <QNetworkRequest>
+#include <QNetworkReply>
+#include "Toast.h"
 
 #define DISPLAY_TIME 0
 
@@ -1087,6 +1091,14 @@ void MainWindow::on_treeWidget_itemExpanded(QTreeWidgetItem *item)
 	}
 }
 
+void MainWindow::deletePlaylistItem(QListWidgetItem *item, bool updateplaylist)
+{
+	int id = item->data(ITEM_SongIdRole).toInt();
+	pv->mpc.do_deleteid(id);
+
+	if (updateplaylist) updatePlaylist();
+}
+
 void MainWindow::deleteSelectedSongs()
 {
 	int row = ui->listWidget_playlist->currentRow();
@@ -1094,8 +1106,7 @@ void MainWindow::deleteSelectedSongs()
 	auto list = ui->listWidget_playlist->selectedItems();
 	for (int i = 0; i < list.size(); i++) {
 		QListWidgetItem *item = list.at(i);
-		int id = item->data(ITEM_SongIdRole).toInt();
-		pv->mpc.do_deleteid(id);
+		deletePlaylistItem(item, false);
 	}
 	updatePlaylist();
 
@@ -1177,6 +1188,7 @@ void MainWindow::onListViewContextMenuEvent(QContextMenuEvent *)
 	}
 	QMenu menu;
 	QAction a_PlayFromHere(tr("Play from here"), 0);
+	QAction a_Edit(tr("Edit"), 0);
 	QAction a_Cut(tr("Cut"), 0);
 	QAction a_Copy(tr("Copy"), 0);
 	QAction a_PasteInsert(tr("Paste (Insert)"), 0);
@@ -1186,6 +1198,7 @@ void MainWindow::onListViewContextMenuEvent(QContextMenuEvent *)
 	QAction a_Property(tr("Property"), 0);
 	menu.addAction(&a_PlayFromHere);
 	menu.addSeparator();
+	menu.addAction(&a_Edit);
 	menu.addAction(&a_Cut);
 	menu.addAction(&a_Copy);
 	menu.addAction(&a_PasteInsert);
@@ -1200,6 +1213,8 @@ void MainWindow::onListViewContextMenuEvent(QContextMenuEvent *)
 		if (i >= 0) {
 			pv->mpc.do_play(i);
 		}
+	} else if (act == &a_Edit) {
+		on_edit_location();
 	} else if (act == &a_Cut) {
 		ui->action_edit_cut->trigger();
 	} else if (act == &a_Copy) {
@@ -1573,6 +1588,23 @@ void MainWindow::on_action_edit_cut_triggered()
 	}
 }
 
+void MainWindow::on_edit_location()
+{
+	int row = ui->listWidget_playlist->currentRow();
+	QListWidgetItem *item = ui->listWidget_playlist->item(row);
+	if (item) {
+		QString path = songPath(item);
+		EditLocationDialog dlg(this);
+		dlg.setLocation(path);
+		if (dlg.exec() == QDialog::Accepted) {
+			deletePlaylistItem(item, false);
+			QString path = dlg.location();
+			addToPlaylist(path, row, true);
+		}
+	} else {
+		QMessageBox::warning(this, qApp->applicationName(), tr("Please select only one item before run this item."));
+	}
+}
 
 void MainWindow::on_action_edit_copy_triggered()
 {
@@ -1667,15 +1699,70 @@ void MainWindow::on_comboBox_currentIndexChanged(int index)
 	}
 }
 
+static void parse_pls(QByteArray const &ba, QStringList *out)
+{
+	out->clear();
+}
+
+static void parse_m3u(QByteArray const &ba, QStringList *out)
+{
+	out->clear();
+}
+
+static void parse_xspf(QByteArray const &ba, QStringList *out)
+{
+	out->clear();
+}
+
+
 void MainWindow::on_action_playlist_add_location_triggered()
 {
-	AddLocationDialog dlg(this);
+	EditLocationDialog dlg(this);
+	dlg.setLocation("http://www.example.com/streaming");
 	if (dlg.exec() == QDialog::Accepted) {
 		QString loc = dlg.location().trimmed();
-		if (loc.isEmpty()) {
-			QMessageBox::warning(this, QApplication::applicationName(), tr("Location is empty."));
-		} else {
-			pv->mpc.do_add(loc);
+		if (!loc.isEmpty()) {
+			QStringList locations;
+			QNetworkAccessManager manager;
+			QEventLoop eventLoop;
+			connect(&manager, SIGNAL(finished(QNetworkReply*)), &eventLoop, SLOT(quit()));
+			QUrl url("http://yp.shoutcast.com/sbin/tunein-station.xspf?id=175821");
+			QNetworkRequest req(url);
+			QNetworkReply *reply = manager.get(req);
+			eventLoop.exec();
+			QByteArray ba = reply->readAll();
+			if (!ba.isEmpty()) {
+				QString firstline;
+				char const *begin = ba.data();
+				char const *end = begin + ba.size();
+				char const *ptr;
+				ptr = begin;
+				while (1) {
+					int c = 0;
+					if (ptr < end) {
+						c = *ptr;
+					}
+					if (c == '\r' || c == '\n' || c == 0) {
+						firstline = QString::fromUtf8(begin, ptr - begin);
+						break;
+					}
+					ptr++;
+				}
+				if (firstline.startsWith("[playlist]")) {
+					parse_pls(ba, &locations);
+				} else if (firstline.startsWith("#EXTM3U")) {
+					parse_m3u(ba, &locations);
+				} else if (firstline.startsWith("<?xml") && firstline.indexOf("http://xspf.org/ns/") > 0) {
+					parse_xspf(ba, &locations);
+				} else {
+					locations.push_back(loc);
+				}
+			} else {
+				locations.push_back(loc);
+			}
+			for (QString const &loc : locations) {
+				pv->mpc.do_add(loc);
+			}
 			updatePlaylist();
 		}
 	}
@@ -1731,8 +1818,12 @@ void MainWindow::on_action_playlist_unify_triggered()
 
 void MainWindow::showNotify(QString const &text)
 {
+#if 0
 	pv->status_label->setText(text);
 	pv->notify_visible_count = 200;
+#else
+	Toast::show(this, text, Toast::LENGTH_SHORT);
+#endif
 }
 
 void MainWindow::setVolume_(int v)

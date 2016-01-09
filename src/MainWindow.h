@@ -78,6 +78,8 @@ class MainWindow : public QMainWindow
 {
 	Q_OBJECT
 private:
+	Ui::MainWindow *ui;
+private:
 	struct Private;
 	Private *pv;
     QIcon folderIcon();
@@ -104,6 +106,7 @@ private:
 	QString songPath(QListWidgetItem const *item) const;
 	void releaseMouseIfGrabbed();
 	bool isPlaceHolder(QTreeWidgetItem *item) const;
+	void on_edit_location();
 public:
 	explicit MainWindow(QWidget *parent = 0);
 	~MainWindow();
@@ -137,6 +140,7 @@ protected:
 	void addToPlaylist(QString const &path, int to, bool update);
 	virtual void mouseReleaseEvent(QMouseEvent *);
 	virtual void timerEvent(QTimerEvent *);
+	void deletePlaylistItem(QListWidgetItem *item, bool updateplaylist);
 private slots:
 	void on_toolButton_play_clicked();
 	void on_treeWidget_itemExpanded(QTreeWidgetItem *item);
@@ -193,10 +197,6 @@ private slots:
 	void on_action_playlist_unify_triggered();
 	void on_toolButton_consume_clicked();
 	void on_action_test_triggered();
-
-
-private:
-	Ui::MainWindow *ui;
 public:
 	static QString tr_Module_information_could_not_be_acquired()
 	{

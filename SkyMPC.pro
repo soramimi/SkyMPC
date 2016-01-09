@@ -28,7 +28,6 @@ SOURCES += src/main.cpp\
 	src/pathcat.cpp \
 	src/SongPropertyDialog.cpp \
 	src/RenameDialog.cpp \
-	src/AddLocationDialog.cpp \
 	src/VolumeIndicatorPopup.cpp \
 	src/VolumeIndicator.cpp \
 	src/EditPlaylistDialog.cpp \
@@ -42,7 +41,9 @@ SOURCES += src/main.cpp\
     src/LegacyWindowsStyleTreeControl.cpp \
     src/win32.cpp \
 	src/platform.cpp \
-    src/TestConnectionThread.cpp
+    src/TestConnectionThread.cpp \
+    src/EditLocationDialog.cpp \
+    src/Toast.cpp
 
 HEADERS  += src/MainWindow.h \
 	src/MusicPlayerClient.h \
@@ -60,7 +61,6 @@ HEADERS  += src/MainWindow.h \
 	src/pathcat.h \
 	src/SongPropertyDialog.h \
 	src/RenameDialog.h \
-	src/AddLocationDialog.h \
 	src/VolumeIndicatorPopup.h \
 	src/VolumeIndicator.h \
 	src/EditPlaylistDialog.h \
@@ -74,7 +74,9 @@ HEADERS  += src/MainWindow.h \
     src/LegacyWindowsStyleTreeControl.h \
     src/win32.h \
 	src/platform.h \
-    src/TestConnectionThread.h
+    src/TestConnectionThread.h \
+    src/EditLocationDialog.h \
+    src/Toast.h
 
 FORMS    += src/MainWindow.ui \
 	src/VerticalVolumePopup.ui \
@@ -84,13 +86,13 @@ FORMS    += src/MainWindow.ui \
 	src/TestConnectResultDialog.ui \
 	src/SongPropertyDialog.ui \
 	src/RenameDialog.ui \
-	src/AddLocationDialog.ui \
 	src/VolumeIndicatorPopup.ui \
 	src/EditPlaylistDialog.ui \
 	src/NotifyOverlayWindow.ui \
 	src/KeyboardCustomizeDialog.ui \
     src/ConnectionDialog.ui \
-	src/AskRemoveDuplicatedFileDialog.ui
+	src/AskRemoveDuplicatedFileDialog.ui \
+    src/EditLocationDialog.ui
 
 RESOURCES += \
 	resources.qrc

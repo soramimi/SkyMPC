@@ -810,6 +810,7 @@
      <string>Play&amp;list</string>
     </property>
     <addaction name="action_playlist_edit"/>
+    <addaction name="action_playlist_add_location"/>
     <addaction name="action_playlist_unify"/>
     <addaction name="separator"/>
     <addaction name="action_playlist_quick_load_1"/>
@@ -819,7 +820,6 @@
     <addaction name="separator"/>
     <addaction name="action_playlist_update"/>
     <addaction name="action_playlist_clear"/>
-    <addaction name="action_playlist_add_location"/>
    </widget>
    <addaction name="menu_File"/>
    <addaction name="menu_Edit"/>

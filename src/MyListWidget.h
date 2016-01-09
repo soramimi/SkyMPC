@@ -8,6 +8,8 @@ class MyListWidget : public QListWidget
 	Q_OBJECT
 public:
 	explicit MyListWidget(QWidget *parent = 0);
+	using QListWidget::itemFromIndex;
+	using QListWidget::selectedIndexes;
 	virtual void dropEvent(QDropEvent *event);
 	virtual void contextMenuEvent(QContextMenuEvent *);
 signals:
