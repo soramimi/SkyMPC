@@ -9,6 +9,7 @@ class Toast : public QLabel
 	Q_OBJECT
 public:
 	enum Length {
+		LENGTH_SECOND = 1000,
 		LENGTH_SHORT = 2000,
 		LENGTH_LONG = 3500,
 	};

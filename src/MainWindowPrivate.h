@@ -5,11 +5,13 @@
 #include "VerticalVolumePopup.h"
 #include "VolumeIndicatorPopup.h"
 #include "NotifyOverlayWindow.h"
+#include "StatusThread.h"
 #include <QTimer>
 #include <QWaitCondition>
 #include <QMenu>
 #include <QEvent>
 #include <vector>
+#include <QThread>
 
 class QLabel;
 
@@ -32,22 +34,21 @@ struct SongItem {
 	}
 };
 
-namespace PlayingStatus {
-enum e {
+enum class PlayingStatus {
 	Stop,
 	Play,
 	Pause,
 };
-}
 
 struct MainWindow::Private {
 	QLabel *status_label;
 	bool connected;
 	MusicPlayerClient mpc;
+	StatusThread status_thread;
 	Host host;
 	std::vector<SongItem> drop_before;
 	struct Playing {
-		PlayingStatus::e playing;
+		PlayingStatus playing;
 		int current_song;
 		int current_song_indicator;
 		QString windowtitle;
@@ -69,9 +70,9 @@ struct MainWindow::Private {
 	int volume;
 	VerticalVolumePopup volume_popup;
 
-	int update_information_count;
-	int slider_down_count;
-	int notify_visible_count;
+//	int update_information_count;
+//	int slider_down_count;
+//	int notify_visible_count;
 
 	QMenu menu;
 

@@ -43,7 +43,8 @@ SOURCES += src/main.cpp\
 	src/platform.cpp \
     src/TestConnectionThread.cpp \
     src/EditLocationDialog.cpp \
-    src/Toast.cpp
+    src/Toast.cpp \
+    src/StatusThread.cpp
 
 HEADERS  += src/MainWindow.h \
 	src/MusicPlayerClient.h \
@@ -76,7 +77,8 @@ HEADERS  += src/MainWindow.h \
 	src/platform.h \
     src/TestConnectionThread.h \
     src/EditLocationDialog.h \
-    src/Toast.h
+    src/Toast.h \
+    src/StatusThread.h
 
 FORMS    += src/MainWindow.ui \
 	src/VerticalVolumePopup.ui \

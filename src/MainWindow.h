@@ -107,6 +107,8 @@ private:
 	void releaseMouseIfGrabbed();
 	bool isPlaceHolder(QTreeWidgetItem *item) const;
 	void on_edit_location();
+	void startStatusThread(const Host &host);
+	void stopStatusThread();
 public:
 	explicit MainWindow(QWidget *parent = 0);
 	~MainWindow();
@@ -139,7 +141,7 @@ protected:
 	void deleteSelectedSongs();
 	void addToPlaylist(QString const &path, int to, bool update);
 	virtual void mouseReleaseEvent(QMouseEvent *);
-	virtual void timerEvent(QTimerEvent *);
+//	virtual void timerEvent(QTimerEvent *);
 	void deletePlaylistItem(QListWidgetItem *item, bool updateplaylist);
 private slots:
 	void on_toolButton_play_clicked();
@@ -170,6 +172,7 @@ private slots:
 	void on_action_edit_delete_triggered();
 	void on_action_network_connect_triggered();
 	void on_action_network_disconnect_triggered();
+	void on_action_network_reconnect_triggered();
 	void on_horizontalSlider_valueChanged(int value);
 	void on_action_single_triggered();
 	void on_action_consume_triggered();
@@ -197,6 +200,8 @@ private slots:
 	void on_action_playlist_unify_triggered();
 	void on_toolButton_consume_clicked();
 	void on_action_test_triggered();
+	void onUpdateStatus();
+
 public:
 	static QString tr_Module_information_could_not_be_acquired()
 	{

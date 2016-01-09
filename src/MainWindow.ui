@@ -804,11 +804,15 @@
     </property>
     <addaction name="action_network_connect"/>
     <addaction name="action_network_disconnect"/>
+    <addaction name="separator"/>
+    <addaction name="action_network_reconnect"/>
    </widget>
    <widget class="QMenu" name="menuPlay_list">
     <property name="title">
      <string>Play&amp;list</string>
     </property>
+    <addaction name="action_playlist_update"/>
+    <addaction name="separator"/>
     <addaction name="action_playlist_edit"/>
     <addaction name="action_playlist_add_location"/>
     <addaction name="action_playlist_unify"/>
@@ -818,7 +822,6 @@
     <addaction name="action_playlist_quick_load_2"/>
     <addaction name="action_playlist_quick_save_2"/>
     <addaction name="separator"/>
-    <addaction name="action_playlist_update"/>
     <addaction name="action_playlist_clear"/>
    </widget>
    <addaction name="menu_File"/>
@@ -1100,7 +1103,7 @@
     <string>&amp;Clear</string>
    </property>
    <property name="shortcut">
-    <string>Shift+F5</string>
+    <string>Shift+F6</string>
    </property>
   </action>
   <action name="action_edit_keyboard_customize">
@@ -1135,6 +1138,14 @@
    </property>
    <property name="text">
     <string>Consume</string>
+   </property>
+  </action>
+  <action name="action_network_reconnect">
+   <property name="text">
+    <string>Reconnect</string>
+   </property>
+   <property name="shortcut">
+    <string>Shift+F5</string>
    </property>
   </action>
  </widget>
