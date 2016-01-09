@@ -23,7 +23,14 @@
 #include <QNetworkAccessManager>
 #include <QNetworkRequest>
 #include <QNetworkReply>
+#include <QBuffer>
+#include <QXmlStreamReader>
 #include "Toast.h"
+#include "SelectLocationDialog.h"
+#include "platform.h"
+#include "PlaylistFile.h"
+
+
 
 #define DISPLAY_TIME 0
 
@@ -1734,22 +1741,6 @@ void MainWindow::on_comboBox_currentIndexChanged(int index)
 	}
 }
 
-static void parse_pls(QByteArray const &ba, QStringList *out)
-{
-	out->clear();
-}
-
-static void parse_m3u(QByteArray const &ba, QStringList *out)
-{
-	out->clear();
-}
-
-static void parse_xspf(QByteArray const &ba, QStringList *out)
-{
-	out->clear();
-}
-
-
 void MainWindow::on_action_playlist_add_location_triggered()
 {
 	EditLocationDialog dlg(this);
@@ -1757,45 +1748,37 @@ void MainWindow::on_action_playlist_add_location_triggered()
 	if (dlg.exec() == QDialog::Accepted) {
 		QString loc = dlg.location().trimmed();
 		if (!loc.isEmpty()) {
-			QStringList locations;
+			bool parsed = false;
+			std::vector<PlaylistFile::Item> locations;
 			QNetworkAccessManager manager;
 			QEventLoop eventLoop;
 			connect(&manager, SIGNAL(finished(QNetworkReply*)), &eventLoop, SLOT(quit()));
-			QUrl url("http://yp.shoutcast.com/sbin/tunein-station.xspf?id=175821");
+			QUrl url(loc);
 			QNetworkRequest req(url);
 			QNetworkReply *reply = manager.get(req);
 			eventLoop.exec();
 			QByteArray ba = reply->readAll();
 			if (!ba.isEmpty()) {
-				QString firstline;
-				char const *begin = ba.data();
-				char const *end = begin + ba.size();
-				char const *ptr;
-				ptr = begin;
-				while (1) {
-					int c = 0;
-					if (ptr < end) {
-						c = *ptr;
+				parsed = parsed || PlaylistFile::parse_pls(ba, &locations);
+				parsed = parsed || PlaylistFile::parse_m3u(ba, &locations);
+				parsed = parsed || PlaylistFile::parse_xspf(ba, &locations);
+			}
+			if (parsed) {
+				if (!locations.empty()) {
+				SelectLocationDialog dlg(this);
+				dlg.setItems(&locations);
+				if (dlg.exec() == QDialog::Accepted) {
+					std::vector<PlaylistFile::Item> items;
+					dlg.selectedItems(&items);
+					for (PlaylistFile::Item const &item : items) {
+						QString loc = item.file;
+						pv->mpc.do_add(loc);
 					}
-					if (c == '\r' || c == '\n' || c == 0) {
-						firstline = QString::fromUtf8(begin, ptr - begin);
-						break;
-					}
-					ptr++;
 				}
-				if (firstline.startsWith("[playlist]")) {
-					parse_pls(ba, &locations);
-				} else if (firstline.startsWith("#EXTM3U")) {
-					parse_m3u(ba, &locations);
-				} else if (firstline.startsWith("<?xml") && firstline.indexOf("http://xspf.org/ns/") > 0) {
-					parse_xspf(ba, &locations);
 				} else {
-					locations.push_back(loc);
+					QMessageBox::warning(this, qApp->applicationName(), tr("The playlist does not contain a valid item."));
 				}
 			} else {
-				locations.push_back(loc);
-			}
-			for (QString const &loc : locations) {
 				pv->mpc.do_add(loc);
 			}
 			updatePlaylist();
@@ -1940,8 +1923,6 @@ void MainWindow::on_action_edit_keyboard_customize_triggered()
 	execCommand(c);
 #endif
 }
-
-#include "platform.h"
 
 void MainWindow::on_action_test_triggered()
 {

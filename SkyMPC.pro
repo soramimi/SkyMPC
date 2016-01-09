@@ -44,7 +44,9 @@ SOURCES += src/main.cpp\
     src/TestConnectionThread.cpp \
     src/EditLocationDialog.cpp \
     src/Toast.cpp \
-    src/StatusThread.cpp
+    src/StatusThread.cpp \
+    src/PlaylistFile.cpp \
+    src/SelectLocationDialog.cpp
 
 HEADERS  += src/MainWindow.h \
 	src/MusicPlayerClient.h \
@@ -78,7 +80,9 @@ HEADERS  += src/MainWindow.h \
     src/TestConnectionThread.h \
     src/EditLocationDialog.h \
     src/Toast.h \
-    src/StatusThread.h
+    src/StatusThread.h \
+    src/PlaylistFile.h \
+    src/SelectLocationDialog.h
 
 FORMS    += src/MainWindow.ui \
 	src/VerticalVolumePopup.ui \
@@ -94,7 +98,8 @@ FORMS    += src/MainWindow.ui \
 	src/KeyboardCustomizeDialog.ui \
     src/ConnectionDialog.ui \
 	src/AskRemoveDuplicatedFileDialog.ui \
-    src/EditLocationDialog.ui
+    src/EditLocationDialog.ui \
+    src/SelectLocationDialog.ui
 
 RESOURCES += \
 	resources.qrc
