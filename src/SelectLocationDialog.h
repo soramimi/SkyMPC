@@ -13,7 +13,7 @@ class SelectLocationDialog : public QDialog
 {
 	Q_OBJECT
 private:
-	std::vector<PlaylistFile::Item> const *items;
+	std::vector<PlaylistFile::Item> const *items = 0;
 public:
 	explicit SelectLocationDialog(QWidget *parent = 0);
 	~SelectLocationDialog();

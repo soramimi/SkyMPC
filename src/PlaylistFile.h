@@ -12,11 +12,7 @@ public:
 	struct Item {
 		QString file;
 		QString title;
-		int length;
-		Item()
-		{
-			length = -1;
-		}
+		int length = -1;
 	};
 
 	static bool parse_pls(char const *begin, char const *end, std::vector<Item> *out);

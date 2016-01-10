@@ -20,10 +20,9 @@ enum {
 };
 
 struct SongItem {
-	int index;
+	int index = -1;
 	QString path;
 	SongItem()
-		: index(-1)
 	{
 	}
 	SongItem(int index, QString const &path)
@@ -42,37 +41,26 @@ enum class PlayingStatus {
 struct MainWindow::Private {
 	QLabel *status_label1;
 	QLabel *status_label2;
-	bool connected;
+	bool connected = false;
 	MusicPlayerClient mpc;
 	StatusThread status_thread;
 	Host host;
 	std::vector<SongItem> drop_before;
 	struct Playing {
 		PlayingStatus playing;
-		int current_song;
-		int current_song_indicator;
+		int current_song = 0;
+		int current_song_indicator = -1;
 		QString windowtitle;
 		QString song_information;
-		double total;
-//		double elapsed;
-		Playing()
-			: current_song(0)
-			, total(0)
-//			, elapsed(0)
-		{
-		}
+		double total = 0;
 	} status;
-	double total_seconds;
-	bool repeat_enabled;
-	bool single_enabled;
-	bool consume_enabled;
-	bool random_enabled;
-	int volume;
+	double total_seconds = 0;
+	bool repeat_enabled = false;
+	bool single_enabled = false;
+	bool consume_enabled = false;
+	bool random_enabled = false;
+	int volume = -1;
 	VerticalVolumePopup volume_popup;
-
-//	int update_information_count;
-//	int slider_down_count;
-//	int notify_visible_count;
 
 	QMenu menu;
 
@@ -81,9 +69,9 @@ struct MainWindow::Private {
 	std::map<QString, QAction *> command_action_map;
 	std::map<int, QString> key_command_map;
 
-	bool release_mouse_event;
+	bool release_mouse_event = false;
 
-	int ping_failed_count;
+	int ping_failed_count = 0;
 };
 
 #endif // MAINWINDOWPRIVATE_H

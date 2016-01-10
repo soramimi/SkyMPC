@@ -8,4 +8,5 @@
 } 
 
 #label_progress {
+	font: 14pt "Lucida Grande";
 }

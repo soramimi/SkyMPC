@@ -8,7 +8,6 @@
 }
 
 #label_progress {
-	
 	font: 10pt "Arial";
 }
 

@@ -78,6 +78,54 @@ bool isValidPlaylistName(QString const &name)
 
 //
 
+class Font {
+private:
+	QString const name;
+	int pt = 10;
+public:
+	Font(QString const &name, int pt)
+		: name(name)
+		, pt(pt)
+	{
+	}
+	QString text() const
+	{
+		return "font: " + QString::number(pt) + "pt \"" + name + "\";";
+	}
+};
+
+
+QString makeStyleSheetText()
+{
+#ifdef Q_OS_WIN
+	Font default_font("Meiryo", 10);
+	Font progress_font("Arial", 10);
+#endif
+
+#ifdef Q_OS_MAC
+	Font default_font("Lucida Grande", 14);
+	Font progress_font("Lucida Grande", 14);
+#endif
+
+#ifdef Q_OS_LINUX
+	Font default_font("VL PGothic", 10);
+	Font progress_font("VL PGothic", 10);
+#endif
+
+	QString s;
+	s += "* {";
+	s += default_font.text();
+	s += "}";
+	s += "#label_title, #label_artist, #label_disc {";
+	s += "font-weight: bold;";
+	s += "}";
+	s += "#label_progress {";
+	s += progress_font.text();
+	s += "}";
+	return s;
+}
+
+
 MainWindow::MainWindow(QWidget *parent) :
 	QMainWindow(parent),
 	ui(new Ui::MainWindow)
@@ -98,6 +146,7 @@ MainWindow::MainWindow(QWidget *parent) :
 	pv->folder_icon = QIcon(":/image/macfolder.png");
 #endif
 
+#if 0
 	{
 #ifdef Q_OS_WIN
 		QFile file(":/MainWindow_win.ss");
@@ -114,6 +163,12 @@ MainWindow::MainWindow(QWidget *parent) :
 		QString ss = QString::fromUtf8(ba.data(), ba.size());
 		setStyleSheet(ss);
 	}
+#else
+	{
+		QString ss = makeStyleSheetText();
+		setStyleSheet(ss);
+	}
+#endif
 
 #ifdef Q_OS_MAC
 #else
@@ -124,9 +179,6 @@ MainWindow::MainWindow(QWidget *parent) :
 	ui->toolButton_menu->hide();
 #else
 #endif
-	pv->connected = false;
-	pv->total_seconds = 0;
-
 	pv->menu.addAction(ui->action_help_about);
 	pv->menu.addAction(ui->action_debug);
 	ui->toolButton_menu->setMenu(&pv->menu);
@@ -143,13 +195,6 @@ MainWindow::MainWindow(QWidget *parent) :
 	connect(ui->horizontalSlider, SIGNAL(sliderReleased()), this, SLOT(onSliderReleased()));
 	connect(&pv->status_thread, SIGNAL(onUpdate()), this, SLOT(onUpdateStatus()));
 
-	pv->status.current_song = -1;
-	pv->status.current_song_indicator = -1;
-
-	pv->repeat_enabled = false;
-	pv->single_enabled = false;
-	pv->consume_enabled = false;
-	pv->random_enabled = false;
 	setRepeatEnabled(false);
 	setRandomEnabled(false);
 
@@ -196,8 +241,6 @@ MainWindow::MainWindow(QWidget *parent) :
 
 	//	priv->key_command_map[Qt::Key_P] = "play";
 	//	priv->key_command_map[Qt::Key_S] = "stop";
-
-	pv->ping_failed_count = 0;
 }
 
 MainWindow::~MainWindow()

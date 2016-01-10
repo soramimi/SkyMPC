@@ -18,7 +18,6 @@ private:
 	std::vector<ServerItem> servers;
 	int row_height;
 	Host current_host;
-	QTimer timer;
 	void updateList();
 	bool isAutoReconnect() const;
 	void loadServers();

@@ -11,7 +11,7 @@ void drawBox(QPainter *painter, int x, int y, int w, int h, QColor const &color)
 {
 	if (w > 0 && h > 0) {
 		QBrush brush(color);
-		if (w == 1 || h == 1) {
+		if (w < 3 || h < 3) {
 			painter->fillRect(x, y, w, h, brush);
 		} else {
 			painter->fillRect(x, y, w - 1, 1, brush);

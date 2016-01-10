@@ -3,6 +3,7 @@
 #include "RenameDialog.h"
 #include <QMessageBox>
 #include "MySettings.h"
+#include "SavePlaylistDialog.h"
 
 void removeKeyAcceleratorText(QObject *obj);
 
@@ -158,7 +159,7 @@ void EditPlaylistDialog::on_listWidget_list_doubleClicked(const QModelIndex &)
 
 void EditPlaylistDialog::on_pushButton_rename_clicked()
 {
-	QListWidgetItem *listitem = ui->listWidget_list->currentItem();
+	QListWidgetItem const *listitem = ui->listWidget_list->currentItem();
 	if (!listitem) return;
 	QString curname = listitem->text();
 	RenameDialog dlg(this, curname, curname);
@@ -180,10 +181,7 @@ void EditPlaylistDialog::on_pushButton_delete_clicked()
 	}
 }
 
-
-#include "SavePlaylistDialog.h"
 bool isValidPlaylistName(QString const &name);
-
 
 void EditPlaylistDialog::on_pushButton_save_clicked()
 {

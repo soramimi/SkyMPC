@@ -22,13 +22,12 @@ void SelectLocationDialog::setItems(const std::vector<PlaylistFile::Item> *items
 	ui->tableWidget->setHorizontalHeaderItem(1, new QTableWidgetItem(tr("Location")));
 	int i = 0;
 	for (PlaylistFile::Item const &item : *items) {
-		QTableWidgetItem *ti;
-		ti = new QTableWidgetItem();
-		ti->setText(item.title);
-		ui->tableWidget->setItem(i, 0, ti);
-		ti = new QTableWidgetItem();
-		ti->setText(item.file);
-		ui->tableWidget->setItem(i, 1, ti);
+		auto ti0 = new QTableWidgetItem();
+		ti0->setText(item.title);
+		ui->tableWidget->setItem(i, 0, ti0);
+		auto ti1 = new QTableWidgetItem();
+		ti1->setText(item.file);
+		ui->tableWidget->setItem(i, 1, ti1);
 		i++;
 	}
 
@@ -40,9 +39,10 @@ void SelectLocationDialog::setItems(const std::vector<PlaylistFile::Item> *items
 
 void SelectLocationDialog::selectedItems(std::vector<PlaylistFile::Item> *out) const
 {
+	Q_ASSERT(items);
 	out->clear();
 	int row = ui->tableWidget->currentRow();
-	if (row >= 0 && row < items->size()) {
+	if (row >= 0 && row < (int)items->size()) {
 		out->push_back(items->at(row));
 	}
 }

@@ -11,7 +11,7 @@ class TestConnectResultDialog : public QDialog
 {
 	Q_OBJECT
 private:
-	QThread *thread;
+	QThread *thread = 0;
 public:
 	explicit TestConnectResultDialog(QWidget *parent);
 	~TestConnectResultDialog();
