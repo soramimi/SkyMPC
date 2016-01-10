@@ -41,7 +41,8 @@ enum class PlayingStatus {
 };
 
 struct MainWindow::Private {
-	QLabel *status_label;
+	QLabel *status_label1;
+	QLabel *status_label2;
 	bool connected;
 	MusicPlayerClient mpc;
 	StatusThread status_thread;
@@ -54,11 +55,11 @@ struct MainWindow::Private {
 		QString windowtitle;
 		QString song_information;
 		double total;
-		double elapsed;
+//		double elapsed;
 		Playing()
 			: current_song(0)
 			, total(0)
-			, elapsed(0)
+//			, elapsed(0)
 		{
 		}
 	} status;
@@ -82,6 +83,8 @@ struct MainWindow::Private {
 	std::map<int, QString> key_command_map;
 
 	bool release_mouse_event;
+
+	int ping_failed_count;
 };
 
 #endif // MAINWINDOWPRIVATE_H

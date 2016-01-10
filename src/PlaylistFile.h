@@ -19,9 +19,9 @@ public:
 		}
 	};
 
-	static bool parse_pls(const QByteArray &ba, std::vector<Item> *out);
-	static bool parse_m3u(const QByteArray &ba, std::vector<Item> *out);
-	static bool parse_xspf(const QByteArray &ba, std::vector<Item> *out);
+	static bool parse_pls(char const *begin, char const *end, std::vector<Item> *out);
+	static bool parse_m3u(char const *begin, char const *end, std::vector<Item> *out);
+	static bool parse_xspf(char const *begin, char const *end, std::vector<Item> *out);
 };
 
 #endif // PLAYLISTFILE_H

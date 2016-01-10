@@ -272,7 +272,7 @@
      <item row="1" column="3">
       <widget class="QPushButton" name="pushButton_connect">
        <property name="text">
-        <string>&amp;Save and Connect</string>
+        <string>Connect</string>
        </property>
        <property name="default">
         <bool>true</bool>
@@ -282,7 +282,7 @@
      <item row="1" column="4">
       <widget class="QPushButton" name="pushButton_save_and_close">
        <property name="text">
-        <string>Save and &amp;Close</string>
+        <string>Close</string>
        </property>
       </widget>
      </item>

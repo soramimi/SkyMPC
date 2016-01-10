@@ -25,6 +25,7 @@ QString EditLocationDialog::location() const
 void EditLocationDialog::setLocation(const QString &url)
 {
 	ui->lineEdit->setText(url);
+	ui->lineEdit->selectAll();
 }
 
 void EditLocationDialog::changeEvent(QEvent *e)

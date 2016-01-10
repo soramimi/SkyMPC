@@ -54,14 +54,14 @@ bool MusicPlayerClient::exec(QString const &command, QStringList *lines)
 	lines->clear();
 	exception = QString();
 
-	if (sock.waitForReadyRead(0)) {
-		sock.readAll();
+	if (sock().waitForReadyRead(0)) {
+		sock().readAll();
 	}
 
 	QByteArray ba = (command + '\n').toUtf8();
-	sock.write(ba.data(), ba.size());
+	sock().write(ba.data(), ba.size());
 
-	return recv(&sock, lines);
+	return recv(&sock(), lines);
 }
 
 MusicPlayerClient::OpenResult MusicPlayerClient::open(QTcpSocket *sock, Host const &host, Logger *logger)
@@ -119,7 +119,7 @@ MusicPlayerClient::OpenResult MusicPlayerClient::open(QTcpSocket *sock, Host con
 bool MusicPlayerClient::open(Host const &host)
 {
 	try {
-		OpenResult r = open(&sock, host);
+		OpenResult r = open(&sock(), host);
 		if (r.success) {
 			if (r.incorrect_password) {
 				throw QString("Authentication failure.");
@@ -137,20 +137,21 @@ bool MusicPlayerClient::open(Host const &host)
 void MusicPlayerClient::close()
 {
 	if (isOpen()) {
-		sock.write("close");
-		sock.waitForBytesWritten(100);
-		sock.close();
+		sock().write("close");
+		sock().waitForBytesWritten(100);
+		sock().close();
 	}
 }
 
 bool MusicPlayerClient::isOpen() const
 {
-	return sock.isOpen();
+	QTcpSocket const *s = sock_p();
+	return s && s->isOpen();
 }
 
-bool MusicPlayerClient::ping()
+bool MusicPlayerClient::ping(int retry)
 {
-	for (int i = 0; i < 3; i++) {
+	for (int i = 0; i < retry; i++) {
 		QStringList lines;
 		if (exec("ping", &lines)) {
 			return true;

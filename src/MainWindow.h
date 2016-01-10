@@ -92,7 +92,7 @@ private:
 	void updateServersComboBox();
 	QString serverName() const;
 	void showNotify(QString const &text);
-	void setVolume_(int v);
+	void set_volume_(int v);
 	void loadPlaylist(QString const &name, bool replace);
 	void savePlaylist(QString const &name);
 	void deletePlaylist(QString const &name);
@@ -101,14 +101,16 @@ private:
 	void execSongProperty(QString const &path, bool addplaylist);
 	bool isPlaying() const;
 	void execPrimaryCommand(QTreeWidgetItem *item);
-	void setDefaultStatusBarText();
+	void updateStatusBar();
 	QString songPath(QTreeWidgetItem const *item) const;
 	QString songPath(QListWidgetItem const *item) const;
 	void releaseMouseIfGrabbed();
 	bool isPlaceHolder(QTreeWidgetItem *item) const;
 	void on_edit_location();
-	void startStatusThread(const Host &host);
+	void startStatusThread();
 	void stopStatusThread();
+	void update(bool mpdupdate);
+	void checkDisconnected();
 public:
 	explicit MainWindow(QWidget *parent = 0);
 	~MainWindow();
@@ -120,7 +122,7 @@ public:
 	static QString fixMenuText(QString const &s);
     static void fixActionText(QList<QAction*> &acts);
 
-	void preExec();
+	void preexec();
 	void connectToMPD(Host const &host);
 	void setRepeatEnabled(bool f);
 	void setSingleEnabled(bool f);
@@ -136,7 +138,7 @@ protected:
 	virtual void keyPressEvent(QKeyEvent *);
 	void changeEvent(QEvent *e);
 	virtual void closeEvent(QCloseEvent *);
-	void updatePlaylist();
+	bool updatePlaylist();
 	void refreshTreeItem(QTreeWidgetItem *item);
 	void deleteSelectedSongs();
 	void addToPlaylist(QString const &path, int to, bool update);
@@ -146,6 +148,7 @@ protected:
 private slots:
 	void on_toolButton_play_clicked();
 	void on_treeWidget_itemExpanded(QTreeWidgetItem *item);
+	void on_treeWidget_itemDoubleClicked(QTreeWidgetItem *item, int column);
 
 	void onVolumeChanged();
 	void onSliderPressed();
@@ -177,7 +180,6 @@ private slots:
 	void on_action_single_triggered();
 	void on_action_consume_triggered();
 	void on_toolButton_single_clicked();
-	void on_treeWidgetItem_doubleClicked(QTreeWidgetItem *item, int column);
 	void on_action_edit_cut_triggered();
 	void on_action_edit_copy_triggered();
 	void on_action_edit_paste_bottom_triggered();
@@ -199,7 +201,6 @@ private slots:
 	void on_action_play_always_triggered();
 	void on_action_playlist_unify_triggered();
 	void on_toolButton_consume_clicked();
-	void on_action_test_triggered();
 	void onUpdateStatus();
 
 public:
@@ -210,6 +211,10 @@ public:
 
 	// QWidget interface
 protected:
+
+	// QObject interface
+protected:
+	void timerEvent(QTimerEvent *);
 };
 
 extern MainWindow *the_mainwindow;

@@ -1,13 +1,14 @@
+#include "MemoryReader.h"
 #include "PlaylistFile.h"
 
 #include <QBuffer>
 #include <QXmlStreamReader>
 
-bool PlaylistFile::parse_pls(const QByteArray &ba, std::vector<PlaylistFile::Item> *out)
+bool PlaylistFile::parse_pls(char const *begin, char const *end, std::vector<PlaylistFile::Item> *out)
 {
 	out->clear();
-	QBuffer in;
-	in.setData(ba);
+	MemoryReader in;
+	in.setData(begin, end - begin);
 	if (in.open(QBuffer::ReadOnly)) {
 		std::map<int, Item> songs;
 		bool valid = false;
@@ -54,11 +55,11 @@ bool PlaylistFile::parse_pls(const QByteArray &ba, std::vector<PlaylistFile::Ite
 	return false;
 }
 
-bool PlaylistFile::parse_m3u(const QByteArray &ba, std::vector<PlaylistFile::Item> *out)
+bool PlaylistFile::parse_m3u(char const *begin, char const *end, std::vector<PlaylistFile::Item> *out)
 {
 	out->clear();
-	QBuffer in;
-	in.setData(ba);
+	MemoryReader in;
+	in.setData(begin, end - begin);
 	if (in.open(QBuffer::ReadOnly)) {
 		bool valid = false;
 		QString EXTINF = "#EXTINF";
@@ -100,11 +101,11 @@ bool PlaylistFile::parse_m3u(const QByteArray &ba, std::vector<PlaylistFile::Ite
 	return false;
 }
 
-bool PlaylistFile::parse_xspf(const QByteArray &ba, std::vector<PlaylistFile::Item> *out)
+bool PlaylistFile::parse_xspf(char const *begin, char const *end, std::vector<PlaylistFile::Item> *out)
 {
 	out->clear();
-	QBuffer in;
-	in.setData(ba);
+	MemoryReader in;
+	in.setData(begin, end - begin);
 	if (in.open(QBuffer::ReadOnly)) {
 		enum State {
 			STATE_UNKNOWN,

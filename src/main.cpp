@@ -89,7 +89,7 @@ int main(int argc, char *argv[])
 	splash.finish(&w);
 #endif
 
-	w.preExec();
+	w.preexec();
 
 	return a.exec();
 }

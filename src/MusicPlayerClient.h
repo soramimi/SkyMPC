@@ -5,6 +5,7 @@
 #include <QTcpSocket>
 #include <vector>
 #include <map>
+#include <QSharedPointer>
 #include "misc.h"
 
 #define DEFAULT_MPD_PORT 6600
@@ -140,7 +141,18 @@ public:
 		virtual void append(QString const &text) = 0;
 	};
 private:
-	QTcpSocket sock;
+	QSharedPointer<QTcpSocket> sock_;
+	QTcpSocket &sock()
+	{
+		if (sock_.isNull()) {
+			sock_.reset(new QTcpSocket());
+		}
+		return *sock_;
+	}
+	QTcpSocket const *sock_p() const
+	{
+		return sock_.isNull() ? nullptr : &*sock_;
+	}
 	QString exception;
 private:
 	static bool recv(QTcpSocket *sock, QStringList *lines);
@@ -168,7 +180,7 @@ public:
 	bool open(Host const &host);
 	void close();
 	bool isOpen() const;
-	bool ping();
+	bool ping(int retry = 3);
 	bool do_status(StringMap *out);
 	bool do_lsinfo(QString const &path, QList<Item> *out);
 	bool do_listall(QString const &path, QList<Item> *out);
