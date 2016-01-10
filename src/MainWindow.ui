@@ -6,15 +6,18 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>782</width>
-    <height>467</height>
+    <width>763</width>
+    <height>453</height>
    </rect>
   </property>
   <property name="windowTitle">
    <string>SkyMPC</string>
   </property>
   <widget class="QWidget" name="centralWidget">
-   <layout class="QVBoxLayout" name="verticalLayout_3">
+   <layout class="QVBoxLayout" name="verticalLayout_2">
+    <property name="spacing">
+     <number>4</number>
+    </property>
     <property name="leftMargin">
      <number>6</number>
     </property>
@@ -25,7 +28,7 @@
      <number>6</number>
     </property>
     <property name="bottomMargin">
-     <number>1</number>
+     <number>0</number>
     </property>
     <item>
      <widget class="QStackedWidget" name="stackedWidget">
@@ -646,7 +649,7 @@
     <item>
      <widget class="QSplitter" name="splitter">
       <property name="sizePolicy">
-       <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+       <sizepolicy hsizetype="Expanding" vsizetype="Ignored">
         <horstretch>0</horstretch>
         <verstretch>0</verstretch>
        </sizepolicy>
@@ -654,44 +657,50 @@
       <property name="orientation">
        <enum>Qt::Horizontal</enum>
       </property>
-      <widget class="QWidget" name="layoutWidget">
-       <layout class="QVBoxLayout" name="verticalLayout_2">
-        <item>
-         <widget class="MyTreeWidget" name="treeWidget">
-          <property name="editTriggers">
-           <set>QAbstractItemView::NoEditTriggers</set>
-          </property>
-          <property name="dragEnabled">
-           <bool>true</bool>
-          </property>
-          <property name="dragDropMode">
-           <enum>QAbstractItemView::DragOnly</enum>
-          </property>
-          <property name="defaultDropAction">
-           <enum>Qt::CopyAction</enum>
-          </property>
-          <property name="selectionMode">
-           <enum>QAbstractItemView::SingleSelection</enum>
-          </property>
-          <property name="verticalScrollMode">
-           <enum>QAbstractItemView::ScrollPerItem</enum>
-          </property>
-          <property name="expandsOnDoubleClick">
-           <bool>false</bool>
-          </property>
-          <attribute name="headerVisible">
-           <bool>false</bool>
-          </attribute>
-          <column>
-           <property name="text">
-            <string notr="true">1</string>
-           </property>
-          </column>
-         </widget>
-        </item>
-       </layout>
+      <widget class="MyTreeWidget" name="treeWidget">
+       <property name="sizePolicy">
+        <sizepolicy hsizetype="Expanding" vsizetype="Ignored">
+         <horstretch>0</horstretch>
+         <verstretch>0</verstretch>
+        </sizepolicy>
+       </property>
+       <property name="editTriggers">
+        <set>QAbstractItemView::NoEditTriggers</set>
+       </property>
+       <property name="dragEnabled">
+        <bool>true</bool>
+       </property>
+       <property name="dragDropMode">
+        <enum>QAbstractItemView::DragOnly</enum>
+       </property>
+       <property name="defaultDropAction">
+        <enum>Qt::CopyAction</enum>
+       </property>
+       <property name="selectionMode">
+        <enum>QAbstractItemView::SingleSelection</enum>
+       </property>
+       <property name="verticalScrollMode">
+        <enum>QAbstractItemView::ScrollPerItem</enum>
+       </property>
+       <property name="expandsOnDoubleClick">
+        <bool>false</bool>
+       </property>
+       <attribute name="headerVisible">
+        <bool>false</bool>
+       </attribute>
+       <column>
+        <property name="text">
+         <string notr="true">1</string>
+        </property>
+       </column>
       </widget>
       <widget class="MyListWidget" name="listWidget_playlist">
+       <property name="sizePolicy">
+        <sizepolicy hsizetype="Expanding" vsizetype="Ignored">
+         <horstretch>0</horstretch>
+         <verstretch>0</verstretch>
+        </sizepolicy>
+       </property>
        <property name="acceptDrops">
         <bool>true</bool>
        </property>
@@ -732,7 +741,7 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>782</width>
+     <width>763</width>
      <height>24</height>
     </rect>
    </property>
@@ -1142,7 +1151,6 @@
   <tabstop>toolButton_prev</tabstop>
   <tabstop>toolButton_next</tabstop>
   <tabstop>horizontalSlider</tabstop>
-  <tabstop>treeWidget</tabstop>
   <tabstop>listWidget_playlist</tabstop>
  </tabstops>
  <resources>

@@ -83,7 +83,6 @@ private:
 	struct Private;
 	Private *pv;
     QIcon folderIcon();
-	void displayProgress(double elapsed);
 	void updatePlayingStatus();
 	void updateCurrentSongIndicator();
 	void updateTreeTopLevel();
@@ -110,6 +109,8 @@ private:
 	void startStatusThread();
 	void stopStatusThread();
 	void update(bool mpdupdate);
+	void displayProgress(double elapsed);
+	void seekProgressSlider(double elapsed, double total);
 	void checkDisconnected();
 public:
 	explicit MainWindow(QWidget *parent = 0);

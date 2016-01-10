@@ -807,15 +807,6 @@ void MainWindow::changeEvent(QEvent *e)
 	}
 }
 
-void MainWindow::displayProgress(double elapsed)
-{
-	char tmp[100];
-	int e = (int)elapsed;
-	int t = (int)pv->total_seconds;
-	sprintf(tmp, "%u:%02u / %u:%02u", e / 60, e % 60, t / 60, t % 60);
-	ui->label_progress->setText(tmp);
-}
-
 void MainWindow::checkDisconnected()
 {
 	if (!pv->mpc.isOpen()) {
@@ -826,6 +817,23 @@ void MainWindow::checkDisconnected()
 			clear();
 		}
 	}
+}
+
+void MainWindow::displayProgress(double elapsed)
+{
+	char tmp[100];
+	int e = (int)elapsed;
+	int t = (int)pv->total_seconds;
+	sprintf(tmp, "%u:%02u / %u:%02u", e / 60, e % 60, t / 60, t % 60);
+	ui->label_progress->setText(tmp);
+}
+
+void MainWindow::seekProgressSlider(double elapsed, double total)
+{
+	ui->horizontalSlider->setUpdatesEnabled(false);
+	ui->horizontalSlider->setMaximum((int)(total * 100));
+	ui->horizontalSlider->setValue((int)(elapsed * 100));
+	ui->horizontalSlider->setUpdatesEnabled(true);
 }
 
 void MainWindow::updatePlayingStatus()
@@ -846,9 +854,11 @@ void MainWindow::updatePlayingStatus()
 		}
 
 		if (status == PlayingStatus::Stop) {
+			pv->total_seconds = 0;
 			ui->label_title->clear();
 			ui->label_artist->clear();
 			ui->label_disc->clear();
+			seekProgressSlider(0, 0);
 			displayProgress(0);
 		} else {
 			pv->status.current_song = info.status.get("song").toInt();
@@ -907,11 +917,7 @@ void MainWindow::updatePlayingStatus()
 						elapsed = e;
 					}
 				}
-				ui->horizontalSlider->setUpdatesEnabled(false);
-				ui->horizontalSlider->setMaximum((int)(pv->total_seconds * 100));
-				ui->horizontalSlider->setValue((int)(elapsed * 100));
-				ui->horizontalSlider->setUpdatesEnabled(true);
-
+				seekProgressSlider(elapsed, pv->total_seconds);
 				displayProgress(elapsed);
 			}
 		}
