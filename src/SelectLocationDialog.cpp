@@ -37,14 +37,14 @@ void SelectLocationDialog::setItems(const std::vector<PlaylistFile::Item> *items
 	ui->tableWidget->selectRow(0);
 }
 
-void SelectLocationDialog::selectedItems(std::vector<PlaylistFile::Item> *out) const
+QString SelectLocationDialog::selectedItem() const
 {
 	Q_ASSERT(items);
-	out->clear();
 	int row = ui->tableWidget->currentRow();
 	if (row >= 0 && row < (int)items->size()) {
-		out->push_back(items->at(row));
+		return items->at(row).file;
 	}
+	return QString();
 }
 
 

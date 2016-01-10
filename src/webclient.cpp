@@ -48,9 +48,8 @@ struct WebContext::Private {
 #endif
 };
 
-URI::URI(char const *str)
+WebClient::URL::URL(char const *str)
 {
-	port_ = 0;
 	char const *left;
 	char const *right;
 	left = str;
@@ -85,7 +84,7 @@ URI::URI(char const *str)
 	}
 }
 
-bool URI::isssl() const
+bool WebClient::URL::isssl() const
 {
 	if (scheme() == "https") return true;
 	if (scheme() == "http") return false;
@@ -99,6 +98,14 @@ void WebClientHandler::abort(const std::string &message)
 	throw WebClient::Error(message);
 }
 
+static void cleanup()
+{
+#if USE_OPENSSL
+	ERR_free_strings();
+#endif
+	WSACleanup();
+}
+
 void WebClient::initialize()
 {
 #ifdef WIN32
@@ -106,7 +113,7 @@ void WebClient::initialize()
 	WORD wVersionRequested;
 	wVersionRequested = MAKEWORD(1, 1);
 	WSAStartup(wVersionRequested, &wsaData);
-	atexit((void(*)(void))(WSACleanup));
+	atexit(cleanup);
 #endif
 #if USE_OPENSSL
 	OpenSSL_add_all_algorithms();
@@ -133,7 +140,7 @@ static std::string get_ssl_error()
 }
 #endif
 
-int WebClient::get_port(URI const *uri, char const *scheme, char const *protocol)
+int WebClient::get_port(URL const *uri, char const *scheme, char const *protocol)
 {
 	int port = uri->port();
 	if (port < 1 || port > 65535) {
@@ -161,7 +168,7 @@ static inline std::string to_s(size_t n)
 	return tmp;
 }
 
-void WebClient::set_default_headers(URI const &uri, Post const *post)
+void WebClient::set_default_headers(URL const &uri, Post const *post)
 {
 	add_header("Host: " + uri.host());
 	add_header("User-Agent: " USER_AGENT);
@@ -173,7 +180,7 @@ void WebClient::set_default_headers(URI const &uri, Post const *post)
 	}
 }
 
-std::string WebClient::make_http_request(URI const &uri, Post const *post)
+std::string WebClient::make_http_request(URL const &uri, Post const *post)
 {
 	std::string str;
 
@@ -290,7 +297,34 @@ void WebClient::append(char const *ptr, size_t len, std::vector<char> *out, WebC
 	}
 }
 
-bool WebClient::http_get(URI const &uri, Post const *post, std::vector<char> *out, WebClientHandler *handler)
+#if USE_OPENSSL
+#else
+typedef void SSL;
+#endif
+
+class AutoClose {
+private:
+	socket_t sock;
+	SSL *ssl;
+public:
+	AutoClose(socket_t sock, SSL *ssl = 0)
+		: sock(sock)
+		, ssl(ssl)
+	{
+	}
+	~AutoClose()
+	{
+#if USE_OPENSSL
+		SSL_shutdown(ssl);
+		closesocket(sock);
+		SSL_free(ssl);
+#else
+		closesocket(sock);
+#endif
+	}
+};
+
+bool WebClient::http_get(URL const &uri, Post const *post, std::vector<char> *out, WebClientHandler *handler)
 {
 	clear_error();
 	out->clear();
@@ -320,6 +354,8 @@ bool WebClient::http_get(URI const &uri, Post const *post, std::vector<char> *ou
 		throw Error("connect failed.");
 	}
 
+	AutoClose autoclose(s);
+
 	set_default_headers(uri, post);
 
 	std::string request = make_http_request(uri, post);
@@ -331,14 +367,13 @@ bool WebClient::http_get(URI const &uri, Post const *post, std::vector<char> *ou
 
 	data.crlf_state = 0;
 	data.content_offset = 0;
+
 	while (1) {
 		char buf[4096];
 		int n = recv(s, buf, sizeof(buf), 0);
 		if (n < 1) break;
 		append(buf, n, out, handler);
 	}
-
-	closesocket(s);
 
 	return true;
 }
@@ -373,6 +408,7 @@ void get_strings(X509_NAME *x509name, std::vector<std::string> *out)
 }
 #endif
 
+#if USE_OPENSSL
 void output_debug_strings(std::vector<std::string> const *vec)
 {
 	for (std::vector<std::string>::const_iterator it = vec->begin(); it != vec->end(); it++) {
@@ -382,12 +418,11 @@ void output_debug_strings(std::vector<std::string> const *vec)
 	}
 }
 
-#if USE_OPENSSL
 bool WebClient::https_get(URI const &uri, Post const *post, std::vector<char> *out, WebClientHandler *handler)
 {
-#define sslctx() (data.webcx->priv->ctx)
+#define sslctx() (data.webcx->pv->ctx)
 
-	if (!data.webcx || !data.webcx->priv->ctx) {
+	if (!data.webcx || !data.webcx->pv->ctx) {
 		OutputDebugString("SSL context is null.\n");
 		return false;
 	}
@@ -446,6 +481,8 @@ bool WebClient::https_get(URI const &uri, Post const *post, std::vector<char> *o
 	if (ret != 1) {
 		throw Error(get_ssl_error());
 	}
+
+	AutoClose autoclose(s, ssl);
 
 	std::string cipher = SSL_get_cipher(ssl);
 	cipher += '\n';
@@ -511,6 +548,7 @@ bool WebClient::https_get(URI const &uri, Post const *post, std::vector<char> *o
 
 	data.crlf_state = 0;
 	data.content_offset = 0;
+
 	while (1) {
 		char buf[4096];
 		int n = SSL_read(ssl, buf, sizeof(buf));
@@ -518,18 +556,12 @@ bool WebClient::https_get(URI const &uri, Post const *post, std::vector<char> *o
 		append(buf, n, out, handler);
 	}
 
-	SSL_shutdown(ssl);
-	closesocket(s);
-
-	SSL_free(ssl);
-	ERR_free_strings();
-
 	return true;
 #undef sslctx
 }
 #endif
 
-void WebClient::get(URI const &uri, Post const *post, Response *out, WebClientHandler *handler)
+void WebClient::get(URL const &uri, Post const *post, Response *out, WebClientHandler *handler)
 {
 	*out = Response();
 	try {
@@ -665,13 +697,13 @@ char const *WebClient::content_data() const
 	return &data.response.content[0];
 }
 
-int WebClient::get(URI const &uri, WebClientHandler *handler)
+int WebClient::get(URL const &uri, WebClientHandler *handler)
 {
 	get(uri, 0, &data.response, handler);
 	return data.response.code;
 }
 
-int WebClient::post(URI const &uri, Post const *post, WebClientHandler *handler)
+int WebClient::post(URL const &uri, Post const *post, WebClientHandler *handler)
 {
 	get(uri, post, &data.response, handler);
 	return data.response.code;
@@ -691,27 +723,27 @@ WebClient::Response const &WebClient::response() const
 
 WebContext::WebContext()
 {
-	priv = new Private();
+	pv = new Private();
 #if USE_OPENSSL
 	SSL_load_error_strings();
 	SSL_library_init();
-	priv->ctx = SSL_CTX_new(SSLv23_client_method());
+	pv->ctx = SSL_CTX_new(SSLv23_client_method());
 #endif
 }
 
 WebContext::~WebContext()
 {
 #if USE_OPENSSL
-	SSL_CTX_free(priv->ctx);
+	SSL_CTX_free(pv->ctx);
 #endif
-	delete priv;
+	delete pv;
 }
 
 #if USE_OPENSSL
 bool WebContext::load_crt(char const *path)
 {
 	// path = "C:\\develop\\httpsget\\ca-bundle.crt";
-	int r = SSL_CTX_load_verify_locations(priv->ctx, path, 0);
+	int r = SSL_CTX_load_verify_locations(pv->ctx, path, 0);
 	return r == 1;
 }
 #endif

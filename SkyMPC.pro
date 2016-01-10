@@ -47,7 +47,8 @@ SOURCES += src/main.cpp\
     src/PlaylistFile.cpp \
     src/SelectLocationDialog.cpp \
     src/webclient.cpp \
-    src/MemoryReader.cpp
+    src/MemoryReader.cpp \
+    src/LocationLineEdit.cpp
 
 HEADERS  += src/MainWindow.h \
 	src/MusicPlayerClient.h \
@@ -84,7 +85,8 @@ HEADERS  += src/MainWindow.h \
     src/PlaylistFile.h \
     src/SelectLocationDialog.h \
     src/webclient.h \
-    src/MemoryReader.h
+    src/MemoryReader.h \
+    src/LocationLineEdit.h
 
 FORMS    += src/MainWindow.ui \
 	src/VerticalVolumePopup.ui \

@@ -22,7 +22,7 @@
     </widget>
    </item>
    <item>
-    <widget class="QLineEdit" name="lineEdit">
+    <widget class="LocationLineEdit" name="lineEdit">
      <property name="minimumSize">
       <size>
        <width>400</width>
@@ -33,6 +33,9 @@
    </item>
    <item>
     <layout class="QHBoxLayout" name="horizontalLayout">
+     <item>
+      <widget class="QComboBox" name="comboBox"/>
+     </item>
      <item>
       <spacer name="horizontalSpacer">
        <property name="orientation">
@@ -67,6 +70,13 @@
    </item>
   </layout>
  </widget>
+ <customwidgets>
+  <customwidget>
+   <class>LocationLineEdit</class>
+   <extends>QLineEdit</extends>
+   <header>LocationLineEdit.h</header>
+  </customwidget>
+ </customwidgets>
  <resources/>
  <connections>
   <connection>
@@ -76,8 +86,8 @@
    <slot>accept()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>314</x>
-     <y>49</y>
+     <x>434</x>
+     <y>76</y>
     </hint>
     <hint type="destinationlabel">
      <x>313</x>
@@ -92,8 +102,8 @@
    <slot>reject()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>393</x>
-     <y>50</y>
+     <x>515</x>
+     <y>76</y>
     </hint>
     <hint type="destinationlabel">
      <x>391</x>

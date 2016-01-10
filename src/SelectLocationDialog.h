@@ -19,7 +19,7 @@ public:
 	~SelectLocationDialog();
 
 	void setItems(std::vector<PlaylistFile::Item> const *items);
-	void selectedItems(std::vector<PlaylistFile::Item> *out) const;
+	QString selectedItem() const;
 
 private:
 	Ui::SelectLocationDialog *ui;

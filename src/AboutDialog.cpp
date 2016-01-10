@@ -18,7 +18,7 @@ AboutDialog::AboutDialog(QWidget *parent) :
 	ui->label_title->setText(QString("SkyMPC, v") + SkyMPC_Version);
 	ui->label_copyright->setText(QString("Copyright (C) ") + QString::number(SkyMPC_Year) + " S.Fuchita");
 	ui->label_twitter->setText("(@soramimi_jp)");
-	ui->label_qt->setText(QString("Powered by Qt, v") + qVersion());
+//	ui->label_qt->setText(QString("Powered by Qt, v") + qVersion());
 
 	pixmap.load(":/image/about.png");
 }

@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>763</width>
-    <height>453</height>
+    <height>479</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -1025,22 +1025,6 @@
     <string>F5</string>
    </property>
   </action>
-  <action name="action_volume_up">
-   <property name="text">
-    <string>Volume &amp;up</string>
-   </property>
-   <property name="shortcut">
-    <string>Ctrl+.</string>
-   </property>
-  </action>
-  <action name="action_volume_down">
-   <property name="text">
-    <string>Volume &amp;down</string>
-   </property>
-   <property name="shortcut">
-    <string>Ctrl+,</string>
-   </property>
-  </action>
   <action name="action_file_close">
    <property name="text">
     <string>Close</string>
@@ -1087,26 +1071,6 @@
    </property>
    <property name="shortcut">
     <string>Shift+F6</string>
-   </property>
-  </action>
-  <action name="action_edit_keyboard_customize">
-   <property name="text">
-    <string>&amp;Keyboard customize...</string>
-   </property>
-   <property name="toolTip">
-    <string>Keyboard Customize</string>
-   </property>
-  </action>
-  <action name="action_play_always">
-   <property name="icon">
-    <iconset resource="../resources.qrc">
-     <normaloff>:/image/play.svgz</normaloff>:/image/play.svgz</iconset>
-   </property>
-   <property name="text">
-    <string>&amp;Play</string>
-   </property>
-   <property name="toolTip">
-    <string>Play</string>
    </property>
   </action>
   <action name="action_playlist_unify">

@@ -1,5 +1,6 @@
 #include "MemoryReader.h"
 #include "PlaylistFile.h"
+#include "webclient.h"
 
 #include <QBuffer>
 #include <QXmlStreamReader>
@@ -61,38 +62,44 @@ bool PlaylistFile::parse_m3u(char const *begin, char const *end, std::vector<Pla
 	MemoryReader in;
 	in.setData(begin, end - begin);
 	if (in.open(QBuffer::ReadOnly)) {
-		bool valid = false;
+		bool ext = false;
 		QString EXTINF = "#EXTINF";
 		while (!in.atEnd()) {
 			QString line = in.readLine().trimmed();
-			if (line.compare("#EXTM3U") == 0) {
-				valid = true;
-			} else if (valid) {
-				if (line.startsWith(EXTINF)) {
-					Item song;
-					int i = EXTINF.size();
-					if (i < line.size()) {
-						int colon = line.indexOf(':', i);
-						if (colon > 0) {
-							int comma = line.indexOf(',', i);
-							QString length;
-							if (comma > colon) {
-								length = line.mid(colon + 1, (comma > colon) ? (comma - colon - 1) : -1);
-								song.title = line.mid(comma + 1);
-							} else {
-								length = line.mid(colon + 1);
-							}
-							song.length = length.trimmed().toInt();
-							if (song.length < 1) {
-								song.length = -1;
-							}
+			if (line.startsWith('#')) {
+				if (line.compare("#EXTM3U") == 0) {
+					ext = true;
+				} else {
+					// nop (comment)
+				}
+			} else if (ext && line.startsWith(EXTINF)) {
+				Item song;
+				int i = EXTINF.size();
+				if (i < line.size()) {
+					int colon = line.indexOf(':', i);
+					if (colon > 0) {
+						int comma = line.indexOf(',', i);
+						QString length;
+						if (comma > colon) {
+							length = line.mid(colon + 1, (comma > colon) ? (comma - colon - 1) : -1);
+							song.title = line.mid(comma + 1);
+						} else {
+							length = line.mid(colon + 1);
+						}
+						song.length = length.trimmed().toInt();
+						if (song.length < 1) {
+							song.length = -1;
 						}
 					}
-					line = in.readLine();
-					song.file = line.trimmed();
-					out->push_back(song);
 				}
-			} else if (!line.isEmpty()) {
+				line = in.readLine();
+				song.file = line.trimmed();
+				out->push_back(song);
+			} else if (line.startsWith("http://")) {
+				Item song;
+				song.file = line;
+				out->push_back(song);
+			} else {
 				return false;
 			}
 		}
@@ -183,4 +190,39 @@ bool PlaylistFile::parse_xspf(char const *begin, char const *end, std::vector<Pl
 		return true;
 	}
 	return false;
+}
+
+class MyWebClientHandler : public WebClientHandler {
+public:
+	void checkHeader(WebClient *wc)
+	{
+		std::string ct = wc->content_type();
+		if (ct == "audio/mpeg") {
+			abort();
+		}
+	}
+	void checkContent(const char *, size_t len)
+	{
+		if (len > 100000) {
+			abort();
+		}
+	}
+};
+
+bool PlaylistFile::parse(const QString &loc, std::vector<Item> *out)
+{
+	out->clear();
+	bool parsed = false;
+	WebContext wc;
+	WebClient web(&wc);
+	MyWebClientHandler handler;
+	int s = web.get(WebClient::URL(loc.toStdString().c_str()), &handler);
+	if (s == 200 && !web.response().content.empty()) {
+		char const *begin = &web.response().content[0];
+		char const *end = begin + web.response().content.size();
+		parsed = parsed || PlaylistFile::parse_pls(begin, end, out);
+		parsed = parsed || PlaylistFile::parse_m3u(begin, end, out);
+		parsed = parsed || PlaylistFile::parse_xspf(begin, end, out);
+	}
+	return parsed;
 }

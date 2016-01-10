@@ -11,7 +11,6 @@
 #include "misc.h"
 #include "MySettings.h"
 #include "platform.h"
-#include "PlaylistFile.h"
 #include "SelectLocationDialog.h"
 #include "SongPropertyDialog.h"
 #include "Toast.h"
@@ -223,6 +222,7 @@ MainWindow::MainWindow(QWidget *parent) :
 
 	qApp->installEventFilter(this);
 
+#if 0
 	pv->command_action_map["random"] = ui->action_random;
 	pv->command_action_map["repeat"] = ui->action_repeat;
 	pv->command_action_map["play"] = ui->action_play_always;
@@ -241,6 +241,7 @@ MainWindow::MainWindow(QWidget *parent) :
 
 	//	priv->key_command_map[Qt::Key_P] = "play";
 	//	priv->key_command_map[Qt::Key_S] = "stop";
+#endif
 }
 
 MainWindow::~MainWindow()
@@ -1667,19 +1668,30 @@ void MainWindow::loadPlaylist(QString const &name, bool replace)
 		pv->mpc.do_stop();
 		pv->mpc.do_clear();
 	}
-	pv->mpc.do_load(name);
-	updatePlaylist();
+	if (pv->mpc.do_load(name)) {
+		updatePlaylist();
+	} else {
+		showNotify(tr("Failed to load playlist."));
+	}
 }
 
 void MainWindow::savePlaylist(QString const &name)
 {
 	deletePlaylist(name);
-	pv->mpc.do_save(name);
+	if (pv->mpc.do_save(name)) {
+		// ok
+	} else {
+		showNotify(tr("Failed to save playlist."));
+	}
 }
 
 void MainWindow::deletePlaylist(QString const &name)
 {
-	pv->mpc.do_rm(name);
+	if (pv->mpc.do_rm(name)) {
+		// ok
+	} else {
+		showNotify(tr("Failed to delete playlist."));
+	}
 }
 
 void MainWindow::on_action_playlist_edit_triggered()
@@ -1815,70 +1827,51 @@ void MainWindow::on_comboBox_currentIndexChanged(int index)
 	}
 }
 
-class MyWebClientHandler : public WebClientHandler {
-public:
-	void checkHeader(WebClient *wc)
-	{
-		std::string ct = wc->content_type();
-		if (ct == "audio/mpeg") {
-			abort();
-		}
-	}
-	void checkContent(const char *, size_t len)
-	{
-		if (len > 100000) {
-			abort();
-		}
-	}
-};
-
-static bool parse_playlist_file(QString const &loc, std::vector<PlaylistFile::Item> *out)
+void EditLocationDialog::getLocations(QWidget *parent, std::vector<PlaylistFile::Item> const *locations, QStringList *out)
 {
 	out->clear();
-	bool parsed = false;
-	WebContext wc;
-	WebClient web(&wc);
-	MyWebClientHandler handler;
-	int s = web.get(URI(loc.toStdString().c_str()), &handler);
-	if (s == 200 && !web.response().content.empty()) {
-		char const *begin = &web.response().content[0];
-		char const *end = begin + web.response().content.size();
-		parsed = parsed || PlaylistFile::parse_pls(begin, end, out);
-		parsed = parsed || PlaylistFile::parse_m3u(begin, end, out);
-		parsed = parsed || PlaylistFile::parse_xspf(begin, end, out);
+	SelectLocationDialog dlg(parent);
+	dlg.setItems(locations);
+	if (dlg.exec() == QDialog::Accepted) {
+		QString loc = dlg.selectedItem();
+		out->push_back(loc);
 	}
-	return parsed;
+}
+
+void EditLocationDialog::getLocations(QWidget *parent, QString const &loc, QStringList *out)
+{
+	out->clear();
+	PlaylistFile playlist;
+	if (playlist.parse(loc)) {
+		auto const *locations = playlist.locations();
+		if (!locations->empty()) {
+			getLocations(parent, locations, out);
+		} else {
+			QMessageBox::warning(parent, qApp->applicationName(), tr("The playlist does not contain a valid item."));
+		}
+	} else {
+		out->push_back(loc);
+	}
+}
+
+void MainWindow::execAddLocationDialog()
+{
+	EditLocationDialog dlg(this);
+	dlg.setLocation("http://");
+	if (dlg.exec() == QDialog::Accepted) {
+		QStringList locs = dlg.location().split(' ', QString::SkipEmptyParts);
+		for (QString const &loc : locs) {
+			if (!loc.isEmpty()) {
+				pv->mpc.do_add(loc);
+			}
+		}
+		updatePlaylist();
+	}
 }
 
 void MainWindow::on_action_playlist_add_location_triggered()
 {
-	EditLocationDialog dlg(this);
-	dlg.setLocation("http://www.example.com/streaming");
-	if (dlg.exec() == QDialog::Accepted) {
-		QString loc = dlg.location().trimmed();
-		if (!loc.isEmpty()) {
-			std::vector<PlaylistFile::Item> locations;
-			if (parse_playlist_file(loc, &locations)) {
-				if (!locations.empty()) {
-					SelectLocationDialog dlg(this);
-					dlg.setItems(&locations);
-					if (dlg.exec() == QDialog::Accepted) {
-						std::vector<PlaylistFile::Item> items;
-						dlg.selectedItems(&items);
-						for (PlaylistFile::Item const &item : items) {
-							QString loc = item.file;
-							pv->mpc.do_add(loc);
-						}
-					}
-				} else {
-					QMessageBox::warning(this, qApp->applicationName(), tr("The playlist does not contain a valid item."));
-				}
-			} else {
-				pv->mpc.do_add(loc);
-			}
-			updatePlaylist();
-		}
-	}
+	execAddLocationDialog();
 }
 
 void MainWindow::on_action_playlist_update_triggered()
@@ -1886,7 +1879,7 @@ void MainWindow::on_action_playlist_update_triggered()
 	update(true);
 }
 
-void MainWindow::on_action_playlist_unify_triggered()
+void MainWindow::unify()
 {
 	using mpcitem_t = MusicPlayerClient::Item;
 	QString text;
@@ -1924,34 +1917,17 @@ void MainWindow::on_action_playlist_unify_triggered()
 	}
 }
 
+void MainWindow::on_action_playlist_unify_triggered()
+{
+	unify();
+}
+
 void MainWindow::set_volume_(int v)
 {
 	pv->mpc.do_setvol(v);
 
 	QString text = QString::number(v) + '%';
 	showNotify(text);
-}
-
-void MainWindow::on_action_volume_up_triggered()
-{
-	int v = pv->volume;
-	if (v >= 0) {
-		if (v < 100) {
-			v++;
-		}
-		set_volume_(v);
-	}
-}
-
-void MainWindow::on_action_volume_down_triggered()
-{
-	int v = pv->volume;
-	if (v >= 0) {
-		if (v > 0) {
-			v--;
-		}
-		set_volume_(v);
-	}
 }
 
 void MainWindow::on_action_playlist_quick_save_1_triggered()
@@ -1983,11 +1959,6 @@ void MainWindow::on_action_playlist_clear_triggered()
 
 void MainWindow::on_action_debug_triggered()
 {
-}
-
-void MainWindow::on_action_play_always_triggered()
-{
-	play(false);
 }
 
 #include "KeyboardCustomizeDialog.h"

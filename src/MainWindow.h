@@ -2,6 +2,7 @@
 #define MAINWINDOW_H
 
 #include "MusicPlayerClient.h"
+#include "PlaylistFile.h"
 #include <QMainWindow>
 #include <QModelIndex>
 #include <vector>
@@ -112,6 +113,7 @@ private:
 	void displayProgress(double elapsed);
 	void seekProgressSlider(double elapsed, double total);
 	void checkDisconnected();
+	void execAddLocationDialog();
 public:
 	explicit MainWindow(QWidget *parent = 0);
 	~MainWindow();
@@ -189,8 +191,6 @@ private slots:
 	void on_comboBox_currentIndexChanged(int index);
 	void on_action_playlist_add_location_triggered();
 	void on_action_playlist_update_triggered();
-	void on_action_volume_up_triggered();
-	void on_action_volume_down_triggered();
 	void on_action_file_close_triggered();
 	void on_action_playlist_quick_save_1_triggered();
 	void on_action_playlist_quick_save_2_triggered();
@@ -199,7 +199,6 @@ private slots:
 	void on_action_playlist_clear_triggered();
 	void on_action_playlist_edit_triggered();
 	void on_action_edit_keyboard_customize_triggered();
-	void on_action_play_always_triggered();
 	void on_action_playlist_unify_triggered();
 	void on_toolButton_consume_clicked();
 	void onUpdateStatus();
@@ -211,6 +210,7 @@ public:
 	}
 
 	// QWidget interface
+	void unify();
 protected:
 
 	// QObject interface
