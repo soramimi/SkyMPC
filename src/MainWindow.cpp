@@ -98,8 +98,6 @@ MainWindow::MainWindow(QWidget *parent) :
 	pv->folder_icon = QIcon(":/image/macfolder.png");
 #endif
 
-	//	priv->notify_overlay_window = 0;
-
 	{
 #ifdef Q_OS_WIN
 		QFile file(":/MainWindow_win.ss");
@@ -407,12 +405,7 @@ QString MainWindow::serverName() const
 
 void MainWindow::showNotify(const QString &text)
 {
-#if 0
-	pv->status_label->setText(text);
-	pv->notify_visible_count = 200;
-#else
 	Toast::show(this, text, Toast::LENGTH_SECOND);
-#endif
 }
 
 bool MainWindow::eventFilter(QObject *obj, QEvent *event)
@@ -1176,7 +1169,7 @@ void MainWindow::on_treeWidget_itemExpanded(QTreeWidgetItem *item)
 	}
 }
 
-void MainWindow::on_treeWidget_itemDoubleClicked(QTreeWidgetItem *item, int column)
+void MainWindow::on_treeWidget_itemDoubleClicked(QTreeWidgetItem *item, int /*column*/)
 {
 	if (isFile(item)) {
 		execPrimaryCommand(item);
@@ -1839,13 +1832,10 @@ void MainWindow::on_action_playlist_add_location_triggered()
 	}
 }
 
-
-
 void MainWindow::on_action_playlist_update_triggered()
 {
 	update(true);
 }
-
 
 void MainWindow::on_action_playlist_unify_triggered()
 {

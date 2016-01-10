@@ -2,6 +2,26 @@
 #include <QHostAddress>
 
 
+void Host::set(const QString &hostname, int port)
+{
+	QString address;
+	ushort const *str = hostname.utf16();
+	ushort const *ptr = ucschr(str, ':');
+	if (ptr) {
+		address = QString::fromUtf16(str, ptr - str);
+		port = QString ::fromUtf16(ptr + 1).toInt();
+	} else {
+		address = hostname;
+	}
+	if (port < 1 || port > 65535) {
+		port = 0;
+	}
+	data.address = address;
+	data.port = port;
+}
+
+//
+
 MusicPlayerClient::MusicPlayerClient()
 {
 }
@@ -463,5 +483,6 @@ bool MusicPlayerClient::do_update()
 	QStringList lines;
 	return exec("update", &lines);
 }
+
 
 

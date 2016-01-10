@@ -10,7 +10,6 @@ class EditLocationDialog;
 class EditLocationDialog : public QDialog
 {
 	Q_OBJECT
-	
 public:
 	explicit EditLocationDialog(QWidget *parent = 0);
 	~EditLocationDialog();

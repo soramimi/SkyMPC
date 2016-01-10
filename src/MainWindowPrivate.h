@@ -4,7 +4,6 @@
 #include "MainWindow.h"
 #include "VerticalVolumePopup.h"
 #include "VolumeIndicatorPopup.h"
-#include "NotifyOverlayWindow.h"
 #include "StatusThread.h"
 #include <QTimer>
 #include <QWaitCondition>

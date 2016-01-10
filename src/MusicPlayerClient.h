@@ -14,7 +14,7 @@ class Host {
 private:
 	struct Data {
 		QString address;
-		int port;
+		int port = 0;
 		QString password;
 	} data;
 public:
@@ -25,23 +25,7 @@ public:
 	{
 		set(hostname, port);
 	}
-	void set(QString const &hostname, int port = 0)
-	{
-		QString address;
-		ushort const *str = hostname.utf16();
-		ushort const *ptr = ucschr(str, ':');
-		if (ptr) {
-			address = QString::fromUtf16(str, ptr - str);
-			port = QString ::fromUtf16(ptr + 1).toInt();
-		} else {
-			address = hostname;
-		}
-		if (port < 1 || port > 65535) {
-			port = 0;
-		}
-		data.address = address;
-		data.port = port;
-	}
+	void set(QString const &hostname, int port = 0);
 	QString address() const
 	{
 		return data.address;
@@ -174,7 +158,6 @@ public:
 	struct OpenResult {
 		bool success = false;
 		bool incorrect_password = false;
-//		QString log;
 	};
 	static OpenResult open(QTcpSocket *sock, Host const &host, Logger *logger = 0);
 	bool open(Host const &host);

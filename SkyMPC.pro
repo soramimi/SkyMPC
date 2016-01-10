@@ -31,7 +31,6 @@ SOURCES += src/main.cpp\
 	src/VolumeIndicatorPopup.cpp \
 	src/VolumeIndicator.cpp \
 	src/EditPlaylistDialog.cpp \
-	src/NotifyOverlayWindow.cpp \
 	src/KeyboardCustomizeDialog.cpp \
 	src/KeyScanWidget.cpp \
 	src/Server.cpp \
@@ -69,7 +68,6 @@ HEADERS  += src/MainWindow.h \
 	src/VolumeIndicatorPopup.h \
 	src/VolumeIndicator.h \
 	src/EditPlaylistDialog.h \
-	src/NotifyOverlayWindow.h \
 	src/KeyboardCustomizeDialog.h \
 	src/KeyScanWidget.h \
 	src/Server.h \
@@ -98,7 +96,6 @@ FORMS    += src/MainWindow.ui \
 	src/RenameDialog.ui \
 	src/VolumeIndicatorPopup.ui \
 	src/EditPlaylistDialog.ui \
-	src/NotifyOverlayWindow.ui \
 	src/KeyboardCustomizeDialog.ui \
     src/ConnectionDialog.ui \
 	src/AskRemoveDuplicatedFileDialog.ui \
