@@ -103,7 +103,9 @@ static void cleanup()
 #if USE_OPENSSL
 	ERR_free_strings();
 #endif
+#ifdef WIN32
 	WSACleanup();
+#endif
 }
 
 void WebClient::initialize()
@@ -656,6 +658,9 @@ std::string WebClient::header_value(std::vector<std::string> const *header, std:
 		char const *end = begin + line.size();
 		char const *colon = strchr(begin, ':');
 		if (colon) {
+#ifndef WIN32
+#define strnicmp(A, B, C) strncasecmp(A, B, C)
+#endif
 			if (strnicmp(begin, name.c_str(), name.size()) == 0) {
 				char const *ptr = colon + 1;
 				while (ptr < end && isspace(*ptr & 0xff)) ptr++;
