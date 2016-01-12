@@ -1,4 +1,3 @@
-#include <windows.h>
 #include "MainWindow.h"
 #include "ui_MainWindow.h"
 #include "AboutDialog.h"
@@ -34,6 +33,7 @@
 #define DISPLAY_TIME 0
 
 #ifdef WIN32
+#include <windows.h>
 #pragma warning(disable:4996)
 #endif
 
