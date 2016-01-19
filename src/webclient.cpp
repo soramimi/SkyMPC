@@ -719,9 +719,9 @@ void WebClient::add_header(std::string const &text)
 	data.request_headers.push_back(text);
 }
 
-WebClient::Response const &WebClient::response() const
+WebClient::Response const *WebClient::response() const
 {
-	return data.response;
+	return &data.response;
 }
 
 //

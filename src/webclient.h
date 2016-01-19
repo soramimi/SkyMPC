@@ -111,7 +111,7 @@ public:
 	int get(URL const &uri, WebClientHandler *handler = 0);
 	int post(URL const &uri, Post const *post, WebClientHandler *handler = 0);
 	void add_header(std::string const &text);
-	Response const &response() const;
+	Response const *response() const;
 	std::string header_value(std::string const &name) const;
 	std::string content_type() const;
 	size_t content_length() const;

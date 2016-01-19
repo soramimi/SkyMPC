@@ -217,9 +217,9 @@ bool PlaylistFile::parse(const QString &loc, std::vector<Item> *out)
 	WebClient web(&wc);
 	MyWebClientHandler handler;
 	int s = web.get(WebClient::URL(loc.toStdString().c_str()), &handler);
-	if (s == 200 && !web.response().content.empty()) {
-		char const *begin = &web.response().content[0];
-		char const *end = begin + web.response().content.size();
+	if (s == 200 && !web.response()->content.empty()) {
+		char const *begin = &web.response()->content[0];
+		char const *end = begin + web.response()->content.size();
 		parsed = parsed || PlaylistFile::parse_pls(begin, end, out);
 		parsed = parsed || PlaylistFile::parse_m3u(begin, end, out);
 		parsed = parsed || PlaylistFile::parse_xspf(begin, end, out);
