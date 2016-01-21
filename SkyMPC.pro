@@ -68,7 +68,6 @@ HEADERS  += src/MainWindow.h \
 	src/RenameDialog.h \
 	src/VolumeIndicatorPopup.h \
 	src/VolumeIndicator.h \
-	src/EditPlaylistDialog.h \
 	src/KeyboardCustomizeDialog.h \
 	src/KeyScanWidget.h \
 	src/Server.h \
@@ -97,7 +96,6 @@ FORMS    += src/MainWindow.ui \
 	src/SongPropertyDialog.ui \
 	src/RenameDialog.ui \
 	src/VolumeIndicatorPopup.ui \
-	src/EditPlaylistDialog.ui \
 	src/KeyboardCustomizeDialog.ui \
     src/ConnectionDialog.ui \
 	src/AskRemoveDuplicatedFileDialog.ui \

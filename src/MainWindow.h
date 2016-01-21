@@ -122,9 +122,6 @@ public:
 
 	bool execCommand(Command const &c);
 
-	static QString fixMenuText(QString const &s);
-    static void fixActionText(QList<QAction*> &acts);
-
 	void preexec();
 	void connectToMPD(Host const &host);
 	void setRepeatEnabled(bool f);

@@ -183,9 +183,6 @@ MainWindow::MainWindow(QWidget *parent) :
 	ui->toolButton_menu->setMenu(&pv->menu);
 	ui->toolButton_menu->setPopupMode(QToolButton::InstantPopup);
 
-	QList<QAction*> list = ui->menuBar->actions();
-	fixActionText(list);
-
 	connect(ui->treeWidget, SIGNAL(onContextMenuEvent(QContextMenuEvent*)), this, SLOT(onTreeViewContextMenuEvent(QContextMenuEvent*)));
 	connect(ui->listWidget_playlist, SIGNAL(onContextMenu(QContextMenuEvent*)), this, SLOT(onListViewContextMenuEvent(QContextMenuEvent*)));
 	connect(ui->listWidget_playlist, SIGNAL(onDropEvent(bool)), this, SLOT(onDropEvent(bool)));
@@ -331,41 +328,6 @@ void MainWindow::closeEvent(QCloseEvent *event)
 	}
 	QMainWindow::closeEvent(event);
 }
-
-#ifdef Q_OS_MAC
-
-QString MainWindow::fixMenuText(QString const &s)
-{
-	return removeKeyAcceleratorText(s);
-}
-
-void MainWindow::fixActionText(QList<QAction*> &acts)
-{
-	for (int i = 0; i < acts.size(); i++) {
-		QAction *a = acts.at(i);
-		QString s = a->text();
-		s = fixMenuText(s);
-		a->setText(s);
-		QMenu *m = a->menu();
-		if (m) {
-			QList<QAction*> list = m->actions();
-			fixActionText(list);
-		}
-	}
-}
-
-#else
-
-QString MainWindow::fixMenuText(QString const &s)
-{
-	return s;
-}
-
-void MainWindow::fixActionText(QList<QAction*> &)
-{
-}
-
-#endif
 
 bool MainWindow::isAutoReconnectAtStartup()
 {
@@ -937,14 +899,14 @@ void MainWindow::updatePlayingStatus()
 			ui->toolButton_play->setText(text);
 			ui->toolButton_play->setToolTip(text);
 			ui->toolButton_play->setIcon(QIcon(":/image/pause.svgz"));
-			ui->action_play->setText(fixMenuText(tr("&Pause")));
+            ui->action_play->setText(tr("&Pause"));
 			ui->action_play->setIcon(QIcon(":/image/pause.svgz"));
 		} else {
 			QString text = tr("Play");
 			ui->toolButton_play->setText(text);
 			ui->toolButton_play->setToolTip(text);
 			ui->toolButton_play->setIcon(QIcon(":/image/play.svgz"));
-			ui->action_play->setText(fixMenuText(tr("&Play")));
+            ui->action_play->setText(tr("&Play"));
 			ui->action_play->setIcon(QIcon(":/image/play.svgz"));
 		}
 		invalidateCurrentSongIndicator();

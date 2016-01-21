@@ -12,6 +12,7 @@ AboutDialog::AboutDialog(QWidget *parent) :
 	auto flags = windowFlags();
 	flags &= ~Qt::WindowContextHelpButtonHint;
 	setWindowFlags(flags);
+    setFixedSize(width(), height());
 
 	setWindowTitle(tr("About SkyMPC"));
 

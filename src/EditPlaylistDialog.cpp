@@ -5,8 +5,6 @@
 #include "MySettings.h"
 #include "SavePlaylistDialog.h"
 
-void removeKeyAcceleratorText(QObject *obj);
-
 EditPlaylistDialog::EditPlaylistDialog(QWidget *parent, MusicPlayerClient *mpc) :
 	QDialog(parent),
 	ui(new Ui::EditPlaylistDialog),
@@ -16,10 +14,6 @@ EditPlaylistDialog::EditPlaylistDialog(QWidget *parent, MusicPlayerClient *mpc) 
 	auto flags = windowFlags();
 	flags &= ~Qt::WindowContextHelpButtonHint;
 	setWindowFlags(flags);
-
-#if defined(Q_OS_MAC)
-	removeKeyAcceleratorText(this);
-#endif
 
 	{
 		MySettings s;
