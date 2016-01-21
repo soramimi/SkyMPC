@@ -411,7 +411,7 @@ QString MainWindow::serverName() const
 
 void MainWindow::showNotify(const QString &text)
 {
-	Toast::show(this, text, Toast::LENGTH_SECOND);
+	Toast::show(this, text, Toast::LENGTH_MOMENT);
 }
 
 bool MainWindow::eventFilter(QObject *obj, QEvent *event)
@@ -1859,7 +1859,8 @@ void MainWindow::unify()
 		}
 	}
 	if (dup.empty()) {
-		QMessageBox::information(this, qApp->applicationName(), tr("Overlapped item was not found."));
+		//QMessageBox::information(this, qApp->applicationName(), tr("Overlapped item was not found."));
+		showNotify(tr("Overlapped item was not found."));
 	} else {
 		AskRemoveDuplicatedFileDialog dlg(this, text);
 		if (dlg.exec() == QDialog::Accepted) {

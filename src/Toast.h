@@ -9,7 +9,7 @@ class Toast : public QLabel
 	Q_OBJECT
 public:
 	enum Length {
-		LENGTH_SECOND = 1000,
+		LENGTH_MOMENT = 1500,
 		LENGTH_SHORT = 2000,
 		LENGTH_LONG = 3500,
 	};
@@ -21,6 +21,10 @@ public:
 	static void show(QWidget *parent, QString const &text, Length length);
 public slots:
 	void onTimeout();
+
+	// QWidget interface
+protected:
+	void showEvent(QShowEvent *);
 };
 
 #endif // TOAST_H

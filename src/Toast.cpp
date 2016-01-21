@@ -9,7 +9,7 @@ Toast::Toast(QWidget *parent, QString const &text, Length length)
 	setText(text);
 	delay = (int)length;
 
-	QString style = " *{";
+	QString style = "*{";
 	style += "padding: 10px;";
 	style += "background-color: #606060;";
 	style += "border: 1px solid #a0a0a0;";
@@ -25,6 +25,20 @@ Toast::Toast(QWidget *parent, QString const &text, Length length)
 void Toast::onTimeout()
 {
 	delete this;
+}
+
+void Toast::showEvent(QShowEvent *e)
+{
+	QLabel::showEvent(e);
+
+	QWidget *widget = dynamic_cast<QWidget *>(parent());
+	Q_ASSERT(widget);
+	QRect r = widget->geometry();
+	int x = r.x() + r.width() / 2;
+	int y = r.y() + r.height() / 2;
+	int w = width();
+	int h = height();
+	setGeometry(QRect(x - w / 2, y - h / 2, w, h));
 }
 
 void Toast::show(QWidget *parent, QString const &text, Length length)
