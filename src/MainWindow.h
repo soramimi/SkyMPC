@@ -92,10 +92,11 @@ private:
 	void updateServersComboBox();
 	QString serverName() const;
 	void showNotify(QString const &text);
+	void showError(QString const &text);
 	void set_volume_(int v);
 	void loadPlaylist(QString const &name, bool replace);
-	void savePlaylist(QString const &name);
-	void deletePlaylist(QString const &name);
+	bool savePlaylist(QString const &name);
+	bool deletePlaylist(QString const &name);
 	void clearPlaylist();
 	void invalidateCurrentSongIndicator();
 	void execSongProperty(QString const &path, bool addplaylist);

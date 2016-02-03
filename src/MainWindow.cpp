@@ -414,6 +414,11 @@ void MainWindow::showNotify(const QString &text)
 	Toast::show(this, text, Toast::LENGTH_MOMENT);
 }
 
+void MainWindow::showError(const QString &text)
+{
+	Toast::show(this, text, Toast::LENGTH_LONG);
+}
+
 bool MainWindow::eventFilter(QObject *obj, QEvent *event)
 {
 	if (event->type() == QEvent::FocusIn) {
@@ -1633,26 +1638,28 @@ void MainWindow::loadPlaylist(QString const &name, bool replace)
 	if (pv->mpc.do_load(name)) {
 		updatePlaylist();
 	} else {
-		showNotify(tr("Failed to load playlist."));
+		showError(tr("Failed to load playlist.") + '(' + pv->mpc.message() + ')');
 	}
 }
 
-void MainWindow::savePlaylist(QString const &name)
+bool MainWindow::savePlaylist(QString const &name)
 {
 	deletePlaylist(name);
 	if (pv->mpc.do_save(name)) {
-		// ok
+		return true;
 	} else {
-		showNotify(tr("Failed to save playlist."));
+		showError(tr("Failed to save playlist.") + '(' + pv->mpc.message() + ')');
+		return false;
 	}
 }
 
-void MainWindow::deletePlaylist(QString const &name)
+bool MainWindow::deletePlaylist(QString const &name)
 {
 	if (pv->mpc.do_rm(name)) {
-		// ok
+		return true;
 	} else {
-		showNotify(tr("Failed to delete playlist."));
+		showError(tr("Failed to delete playlist.") + '(' + pv->mpc.message() + ')');
+		return false;
 	}
 }
 
@@ -1895,14 +1902,16 @@ void MainWindow::set_volume_(int v)
 
 void MainWindow::on_action_playlist_quick_save_1_triggered()
 {
-	savePlaylist("_quick_save_1_");
-	showNotify(tr("Quick Save 1 was completed"));
+	if (savePlaylist("_quick_save_1_")) {
+		showNotify(tr("Quick Save 1 was completed"));
+	}
 }
 
 void MainWindow::on_action_playlist_quick_save_2_triggered()
 {
-	savePlaylist("_quick_save_2_");
-	showNotify(tr("Quick Save 2 was completed"));
+	if (savePlaylist("_quick_save_2_")) {
+		showNotify(tr("Quick Save 2 was completed"));
+	}
 }
 
 void MainWindow::on_action_playlist_quick_load_1_triggered()

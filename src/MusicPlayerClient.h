@@ -139,7 +139,7 @@ private:
 	}
 	QString exception;
 private:
-	static bool recv(QTcpSocket *sock, QStringList *lines);
+	bool recv(QTcpSocket *sock, QStringList *lines);
 	bool exec(QString const &command, QStringList *lines);
 	void parse_result(QStringList const &lines, QList<Item> *out);
 	void parse_result(QStringList const &lines, std::vector<KeyValue> *out);
@@ -159,7 +159,7 @@ public:
 		bool success = false;
 		bool incorrect_password = false;
 	};
-	static OpenResult open(QTcpSocket *sock, Host const &host, Logger *logger = 0);
+	OpenResult open(QTcpSocket *sock, Host const &host, Logger *logger = 0);
 	bool open(Host const &host);
 	void close();
 	bool isOpen() const;

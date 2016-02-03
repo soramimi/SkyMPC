@@ -17,7 +17,8 @@ void TestConnectionThread::run()
 {
 	QTcpSocket sock;
 	try {
-		MusicPlayerClient::OpenResult r = MusicPlayerClient::open(&sock, data.server->host, this);
+		MusicPlayerClient mpc;
+		MusicPlayerClient::OpenResult r = mpc.open(&sock, data.server->host, this);
 		if (r.success) {
 			append(tr("Connection was successfully established.") + '\n');
 		}
