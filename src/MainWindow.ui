@@ -517,6 +517,34 @@
                  </widget>
                 </item>
                 <item>
+                 <widget class="QToolButton" name="toolButton_sleep_timer">
+                  <property name="minimumSize">
+                   <size>
+                    <width>32</width>
+                    <height>32</height>
+                   </size>
+                  </property>
+                  <property name="maximumSize">
+                   <size>
+                    <width>32</width>
+                    <height>32</height>
+                   </size>
+                  </property>
+                  <property name="toolTip">
+                   <string>Volume</string>
+                  </property>
+                  <property name="text">
+                   <string/>
+                  </property>
+                  <property name="iconSize">
+                   <size>
+                    <width>20</width>
+                    <height>20</height>
+                   </size>
+                  </property>
+                 </widget>
+                </item>
+                <item>
                  <widget class="QToolButton" name="toolButton_menu">
                   <property name="minimumSize">
                    <size>
@@ -764,6 +792,8 @@
     <addaction name="action_random"/>
     <addaction name="action_single"/>
     <addaction name="action_consume"/>
+    <addaction name="separator"/>
+    <addaction name="action_sleep_timer"/>
    </widget>
    <widget class="QMenu" name="menu_Help">
     <property name="title">
@@ -1093,6 +1123,11 @@
    </property>
    <property name="shortcut">
     <string>Shift+F5</string>
+   </property>
+  </action>
+  <action name="action_sleep_timer">
+   <property name="text">
+    <string>Sleep &amp;timer...</string>
    </property>
   </action>
  </widget>
