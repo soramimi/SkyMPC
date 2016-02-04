@@ -1153,8 +1153,18 @@
   <tabstop>toolButton_stop</tabstop>
   <tabstop>toolButton_prev</tabstop>
   <tabstop>toolButton_next</tabstop>
+  <tabstop>comboBox</tabstop>
+  <tabstop>toolButton_repeat</tabstop>
+  <tabstop>toolButton_random</tabstop>
+  <tabstop>toolButton_single</tabstop>
+  <tabstop>toolButton_consume</tabstop>
+  <tabstop>toolButton_volume</tabstop>
+  <tabstop>toolButton_sleep_timer</tabstop>
+  <tabstop>toolButton_menu</tabstop>
   <tabstop>horizontalSlider</tabstop>
+  <tabstop>treeWidget</tabstop>
   <tabstop>listWidget_playlist</tabstop>
+  <tabstop>pushButton_manage_connections</tabstop>
  </tabstops>
  <resources>
   <include location="../resources.qrc"/>
