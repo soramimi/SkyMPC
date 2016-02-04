@@ -45,66 +45,6 @@ ushort *ucsrchr(ushort const *ptr, ushort c)
 	return r;
 }
 
-
-QString removeKeyAcceleratorText(QString text)
-{
-	int dots = 0;
-	int n = text.size();
-	while (n > 0 && text[n - 1] == '.') {
-		dots++;
-		n--;
-	}
-	if (n > 4) {
-		if (text[n - 1] == ')') {
-			if (text[n - 2].isLetter()) {
-				if (text[n - 3] == '&') {
-					if (text[n - 4] == '(') {
-						text = QString::fromUtf16(text.utf16(), n - 4);
-						for (int i = 0; i < dots; i++) {
-							text += '.';
-						}
-					}
-				}
-			}
-		}
-	}
-	return text;
-}
-
-
-template <typename T> void remove_key_accelerator_test_(QObject *o)
-{
-	T *w = qobject_cast<T *>(o);
-	if (w) {
-		QString text = w->text();
-		text = removeKeyAcceleratorText(text);
-		w->setText(text);
-	}
-}
-
-template <> void remove_key_accelerator_test_<QGroupBox>(QObject *o)
-{
-	QGroupBox *w = qobject_cast<QGroupBox *>(o);
-	if (w) {
-		QString text = w->title();
-		text = removeKeyAcceleratorText(text);
-		w->setTitle(text);
-	}
-}
-
-void removeKeyAcceleratorText(QObject *obj)
-{
-	QObjectList list = obj->children();
-    for (QObject *o : list) {
-		removeKeyAcceleratorText(o);
-		remove_key_accelerator_test_<QLabel>(o);
-		remove_key_accelerator_test_<QGroupBox>(o);
-		remove_key_accelerator_test_<QPushButton>(o);
-		remove_key_accelerator_test_<QCheckBox>(o);
-		remove_key_accelerator_test_<QRadioButton>(o);
-	}
-}
-
 void pseudo_crypto_encode(char *ptr, int len)
 {
 	if (len > 1) {

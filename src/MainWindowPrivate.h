@@ -11,6 +11,7 @@
 #include <QEvent>
 #include <vector>
 #include <QThread>
+#include <QTime>
 
 class QLabel;
 
@@ -41,6 +42,7 @@ enum class PlayingStatus {
 struct MainWindow::Private {
 	QLabel *status_label1;
 	QLabel *status_label2;
+	QLabel *status_label3;
 	bool connected = false;
 	MusicPlayerClient mpc;
 	StatusThread status_thread;
@@ -70,6 +72,8 @@ struct MainWindow::Private {
 	std::map<int, QString> key_command_map;
 
 	bool release_mouse_event = false;
+
+	QDateTime sleep_time;
 
 	int ping_failed_count = 0;
 };

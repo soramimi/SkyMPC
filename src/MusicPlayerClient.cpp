@@ -59,7 +59,7 @@ bool MusicPlayerClient::recv(QTcpSocket *sock, QStringList *lines)
 					do {
 						p++;
 					} while (*p && iswspace(*p));
-					s = QString::fromUtf16((ushort const *)p);
+					exception = QString::fromUtf16((ushort const *)p);
 				}
 				return false;
 			}
@@ -72,7 +72,7 @@ bool MusicPlayerClient::recv(QTcpSocket *sock, QStringList *lines)
 bool MusicPlayerClient::exec(QString const &command, QStringList *lines)
 {
 	lines->clear();
-	exception = QString();
+	exception.clear();
 
 	if (sock().waitForReadyRead(0)) {
 		sock().readAll();

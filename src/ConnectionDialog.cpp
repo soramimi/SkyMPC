@@ -6,8 +6,6 @@
 #include "MainWindow.h"
 #include <QMessageBox>
 
-void removeKeyAcceleratorText(QObject *obj);
-
 enum {
 	C_NAME,
 	C_ADDR,
@@ -25,10 +23,6 @@ ConnectionDialog::ConnectionDialog(QWidget *parent, Host const &host) :
 	setWindowFlags(flags);
 
     ui->tableWidget->horizontalHeader()->setVisible(true);
-
-#if defined(Q_OS_MAC)
-	removeKeyAcceleratorText(this);
-#endif
 
 	int size = ui->tableWidget->font().pointSize();
 #if defined(Q_OS_WIN)

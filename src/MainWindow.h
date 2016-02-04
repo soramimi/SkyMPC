@@ -92,10 +92,11 @@ private:
 	void updateServersComboBox();
 	QString serverName() const;
 	void showNotify(QString const &text);
+	void showError(QString const &text);
 	void set_volume_(int v);
 	void loadPlaylist(QString const &name, bool replace);
-	void savePlaylist(QString const &name);
-	void deletePlaylist(QString const &name);
+	bool savePlaylist(QString const &name);
+	bool deletePlaylist(QString const &name);
 	void clearPlaylist();
 	void invalidateCurrentSongIndicator();
 	void execSongProperty(QString const &path, bool addplaylist);
@@ -114,6 +115,10 @@ private:
 	void seekProgressSlider(double elapsed, double total);
 	void checkDisconnected();
 	void execAddLocationDialog();
+	void startSleepTimer(int mins);
+	void stopSleepTimer();
+	void execSleepTimerDialog();
+	void disconnectNetwork();
 public:
 	explicit MainWindow(QWidget *parent = 0);
 	~MainWindow();
@@ -122,9 +127,6 @@ public:
 
 	bool execCommand(Command const &c);
 
-	static QString fixMenuText(QString const &s);
-    static void fixActionText(QList<QAction*> &acts);
-
 	void preexec();
 	void connectToMPD(Host const &host);
 	void setRepeatEnabled(bool f);
@@ -132,6 +134,9 @@ public:
 	void setConsumeEnabled(bool f);
 	void setRandomEnabled(bool f);
 
+	void play();
+	void pause();
+	void stop();
 	void play(bool toggle);
 
 	void eatMouse();
@@ -167,6 +172,8 @@ private slots:
 	void on_toolButton_repeat_clicked();
 	void on_toolButton_random_clicked();
 	void on_toolButton_volume_clicked();
+	void on_toolButton_sleep_timer_clicked();
+
 	void on_action_debug_triggered();
 	void on_action_play_triggered();
 	void on_action_stop_triggered();
@@ -202,6 +209,9 @@ private slots:
 	void on_action_playlist_unify_triggered();
 	void on_toolButton_consume_clicked();
 	void onUpdateStatus();
+
+
+	void on_action_sleep_timer_triggered();
 
 public:
 	static QString tr_Module_information_could_not_be_acquired()

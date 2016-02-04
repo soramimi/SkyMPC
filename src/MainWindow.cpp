@@ -29,6 +29,8 @@
 #include <QXmlStreamReader>
 #include <set>
 #include <string>
+#include "KeyboardCustomizeDialog.h"
+#include "SleepTimerDialog.h"
 
 #define DISPLAY_TIME 0
 
@@ -138,6 +140,8 @@ MainWindow::MainWindow(QWidget *parent) :
 	ui->statusBar->addWidget(pv->status_label1, 1);
 	pv->status_label2 = new QLabel();
 	ui->statusBar->addWidget(pv->status_label2, 0);
+	pv->status_label3 = new QLabel();
+	ui->statusBar->addWidget(pv->status_label3, 0);
 
 #if 0 //def Q_OS_WIN
 	priv->folder_icon = QIcon(":/image/winfolder.png");
@@ -182,9 +186,6 @@ MainWindow::MainWindow(QWidget *parent) :
 	pv->menu.addAction(ui->action_debug);
 	ui->toolButton_menu->setMenu(&pv->menu);
 	ui->toolButton_menu->setPopupMode(QToolButton::InstantPopup);
-
-	QList<QAction*> list = ui->menuBar->actions();
-	fixActionText(list);
 
 	connect(ui->treeWidget, SIGNAL(onContextMenuEvent(QContextMenuEvent*)), this, SLOT(onTreeViewContextMenuEvent(QContextMenuEvent*)));
 	connect(ui->listWidget_playlist, SIGNAL(onContextMenu(QContextMenuEvent*)), this, SLOT(onListViewContextMenuEvent(QContextMenuEvent*)));
@@ -254,20 +255,9 @@ MainWindow::~MainWindow()
 
 void MainWindow::updateStatusBar()
 {
-	int count = ui->listWidget_playlist->count();
-	QString text1 = tr("{n} songs in playlist");
-	text1.replace("{n}", QString::number(count));
-	pv->status_label1->setText(text1);
-
-	if (pv->ping_failed_count > 0) {
-		QString text2;
-		text2 += " / ";
-		text2 += tr("Waiting for connection");
-		text2 += " (";
-		text2 += QString::number(pv->ping_failed_count);
-		text2 += ')';
-		pv->status_label2->setText(text2);
-	}
+//	int count = ui->listWidget_playlist->count();
+//	QString text1 = tr("%1 songs in playlist").arg(count);
+//	pv->status_label1->setText(text1);
 }
 
 QString MainWindow::songPath(QTreeWidgetItem const *item) const
@@ -307,6 +297,17 @@ bool MainWindow::execCommand(Command const &c)
 
 void MainWindow::closeEvent(QCloseEvent *event)
 {
+	if (pv->sleep_time.isValid()) {
+		QString text;
+		text += tr("Now sleep timer is working.") + '\n';
+		text += tr("If this program is closed, the sleep timer will be canceled.") + '\n';
+		text += tr("Are you sure you want to close ?");
+		if (QMessageBox::warning(this, qApp->applicationName(), text, QMessageBox::Yes, QMessageBox::No) != QMessageBox::Yes) {
+			event->ignore();
+			return;
+		}
+	}
+
 	setWindowOpacity(0);
 	Qt::WindowStates state = windowState();
 	bool maximized = (state & Qt::WindowMaximized) != 0;
@@ -331,41 +332,6 @@ void MainWindow::closeEvent(QCloseEvent *event)
 	}
 	QMainWindow::closeEvent(event);
 }
-
-#ifdef Q_OS_MAC
-
-QString MainWindow::fixMenuText(QString const &s)
-{
-	return removeKeyAcceleratorText(s);
-}
-
-void MainWindow::fixActionText(QList<QAction*> &acts)
-{
-	for (int i = 0; i < acts.size(); i++) {
-		QAction *a = acts.at(i);
-		QString s = a->text();
-		s = fixMenuText(s);
-		a->setText(s);
-		QMenu *m = a->menu();
-		if (m) {
-			QList<QAction*> list = m->actions();
-			fixActionText(list);
-		}
-	}
-}
-
-#else
-
-QString MainWindow::fixMenuText(QString const &s)
-{
-	return s;
-}
-
-void MainWindow::fixActionText(QList<QAction*> &)
-{
-}
-
-#endif
 
 bool MainWindow::isAutoReconnectAtStartup()
 {
@@ -449,7 +415,12 @@ QString MainWindow::serverName() const
 
 void MainWindow::showNotify(const QString &text)
 {
-	Toast::show(this, text, Toast::LENGTH_SECOND);
+	Toast::show(this, text, Toast::LENGTH_MOMENT);
+}
+
+void MainWindow::showError(const QString &text)
+{
+	Toast::show(this, text, Toast::LENGTH_LONG);
 }
 
 bool MainWindow::eventFilter(QObject *obj, QEvent *event)
@@ -644,31 +615,60 @@ void MainWindow::onUpdateStatus()
 	}
 }
 
+
+
 void MainWindow::timerEvent(QTimerEvent *)
 {
-	QString text;
+	QString text2;
+	QString text3;
 	if (pv->connected) {
 		QTime time;
 		time.start();
 		if (pv->mpc.ping(1)) {
 			int ms = time.elapsed();
 			pv->ping_failed_count = 0;
-			text = "ping:";
-			text += QString::number(ms);
-			text += "ms";
+			text3 = "ping:";
+			text3 += QString::number(ms);
+			text3 += "ms";
 		} else {
 			pv->ping_failed_count++;
 			if (pv->ping_failed_count >= 10) {
 				pv->mpc.close();
 				checkDisconnected();
 			}
-			text = tr("Waiting for connection");
-			text += " (";
-			text += QString::number(pv->ping_failed_count);
-			text += ')';
+			text3 = tr("Waiting for connection");
+			text3 += " (";
+			text3 += QString::number(pv->ping_failed_count);
+			text3 += ')';
+		}
+
+		if (isPlaying() && pv->sleep_time.isValid()) {
+			QDateTime now = QDateTime::currentDateTime();
+			qint64 secs = now.secsTo(pv->sleep_time);
+			if (secs > 0) {
+				int s = secs % 60;
+				int m = (secs / 60) % 60;
+				int h = (secs / 3600);
+				char tmp[100];
+				sprintf(tmp, "%u:%02u:%02u", h, m, s);
+				text2 = tr("Pause in %1 later").arg(tmp);
+			} else {
+				pv->sleep_time = QDateTime();
+				pause();
+			}
 		}
 	}
-	pv->status_label2->setText(text);
+
+	if (text2.isEmpty()) {
+		pv->status_label2->setVisible(false);
+	} else {
+		pv->status_label2->setText(text2);
+		pv->status_label2->setVisible(true);
+	}
+
+	pv->status_label3->setText(text3);
+
+	checkDisconnected();
 }
 
 void MainWindow::startStatusThread()
@@ -686,6 +686,8 @@ void MainWindow::stopStatusThread()
 // MPDサーバへ接続
 void MainWindow::connectToMPD(Host const &host)
 {
+	stopSleepTimer();
+
 	pv->ping_failed_count = 0;
 	pv->mpc.close();
 	stopStatusThread();
@@ -923,7 +925,6 @@ void MainWindow::updatePlayingStatus()
 			}
 		}
 	}
-	checkDisconnected();
 
 	if (windowtitle != pv->status.windowtitle) {
 		pv->status.windowtitle = windowtitle;
@@ -937,14 +938,14 @@ void MainWindow::updatePlayingStatus()
 			ui->toolButton_play->setText(text);
 			ui->toolButton_play->setToolTip(text);
 			ui->toolButton_play->setIcon(QIcon(":/image/pause.svgz"));
-			ui->action_play->setText(fixMenuText(tr("&Pause")));
+            ui->action_play->setText(tr("&Pause"));
 			ui->action_play->setIcon(QIcon(":/image/pause.svgz"));
 		} else {
 			QString text = tr("Play");
 			ui->toolButton_play->setText(text);
 			ui->toolButton_play->setToolTip(text);
 			ui->toolButton_play->setIcon(QIcon(":/image/play.svgz"));
-			ui->action_play->setText(fixMenuText(tr("&Play")));
+            ui->action_play->setText(tr("&Play"));
 			ui->action_play->setIcon(QIcon(":/image/play.svgz"));
 		}
 		invalidateCurrentSongIndicator();
@@ -1102,8 +1103,7 @@ bool MainWindow::updatePlaylist()
 
 	{ // update status bar label 1
 		int count = ui->listWidget_playlist->count();
-		QString text1 = tr("{n} songs in playlist");
-		text1.replace("{n}", QString::number(count));
+		QString text1 = tr("%1 songs in playlist").arg(count);
 		pv->status_label1->setText(text1);
 
 	}
@@ -1496,6 +1496,57 @@ void MainWindow::on_toolButton_volume_clicked()
 	pv->volume_popup.show();
 }
 
+void MainWindow::startSleepTimer(int mins)
+{
+	if (mins > 0) {
+		QDateTime t = QDateTime::currentDateTime();
+		pv->sleep_time = t.addSecs((qint64)mins * 60);
+	} else {
+		pv->sleep_time = QDateTime();
+	}
+}
+
+void MainWindow::stopSleepTimer()
+{
+	startSleepTimer(0);
+}
+
+void MainWindow::execSleepTimerDialog()
+{
+	MySettings settings;
+	settings.beginGroup("Playback");
+	int mins = settings.value("SleepTimer").toInt();
+	if (mins == 0) mins = 60;
+	settings.endGroup();
+
+	SleepTimerDialog dlg(this);
+	dlg.setMinutes(mins);
+	int r = dlg.exec();
+	if (r != QDialog::Rejected) {
+		mins = 0;
+		if (r == SleepTimerDialog::Start) {
+			mins = dlg.minutes();
+			if (mins > 0) {
+				settings.beginGroup("Playback");
+				settings.setValue("SleepTimer", mins);
+				settings.endGroup();
+			} else {
+				mins = 0;
+			}
+		}
+		if (mins > 0) {
+			startSleepTimer(mins);
+		} else {
+			stopSleepTimer();
+		}
+	}
+}
+
+void MainWindow::on_toolButton_sleep_timer_clicked()
+{
+	execSleepTimerDialog();
+}
+
 void MainWindow::onVolumeChanged()
 {
 	int v = pv->volume_popup.value();
@@ -1536,17 +1587,33 @@ void MainWindow::on_action_help_about_triggered()
 	dlg.exec();
 }
 
+void MainWindow::play()
+{
+	pv->mpc.do_play();
+}
+
+void MainWindow::pause()
+{
+	pv->mpc.do_pause(true);
+}
+
+void MainWindow::stop()
+{
+	pv->mpc.do_stop();
+	invalidateCurrentSongIndicator();
+}
+
 void MainWindow::play(bool toggle)
 {
 	if (toggle) {
 		if (pv->status.playing == PlayingStatus::Play) {
-			pv->mpc.do_pause(true);
+			pause();
 		} else {
-			pv->mpc.do_play();
+			play();
 		}
 	} else {
 		if (pv->status.playing != PlayingStatus::Play) {
-			pv->mpc.do_play();
+			play();
 		}
 	}
 }
@@ -1562,10 +1629,11 @@ void MainWindow::on_action_play_triggered()
 	play(true);
 }
 
+
+
 void MainWindow::on_action_stop_triggered()
 {
-	pv->mpc.do_stop();
-	invalidateCurrentSongIndicator();
+	stop();
 }
 
 void MainWindow::on_action_previous_triggered()
@@ -1608,9 +1676,15 @@ void MainWindow::on_action_network_connect_triggered()
 	updateServersComboBox();
 }
 
-void MainWindow::on_action_network_disconnect_triggered()
+void MainWindow::disconnectNetwork()
 {
 	pv->mpc.close();
+	stopSleepTimer();
+}
+
+void MainWindow::on_action_network_disconnect_triggered()
+{
+	disconnectNetwork();
 }
 
 void MainWindow::on_action_network_reconnect_triggered()
@@ -1671,26 +1745,28 @@ void MainWindow::loadPlaylist(QString const &name, bool replace)
 	if (pv->mpc.do_load(name)) {
 		updatePlaylist();
 	} else {
-		showNotify(tr("Failed to load playlist."));
+		showError(tr("Failed to load playlist.") + '(' + pv->mpc.message() + ')');
 	}
 }
 
-void MainWindow::savePlaylist(QString const &name)
+bool MainWindow::savePlaylist(QString const &name)
 {
 	deletePlaylist(name);
 	if (pv->mpc.do_save(name)) {
-		// ok
+		return true;
 	} else {
-		showNotify(tr("Failed to save playlist."));
+		showError(tr("Failed to save playlist.") + '(' + pv->mpc.message() + ')');
+		return false;
 	}
 }
 
-void MainWindow::deletePlaylist(QString const &name)
+bool MainWindow::deletePlaylist(QString const &name)
 {
 	if (pv->mpc.do_rm(name)) {
-		// ok
+		return true;
 	} else {
-		showNotify(tr("Failed to delete playlist."));
+		showError(tr("Failed to delete playlist.") + '(' + pv->mpc.message() + ')');
+		return false;
 	}
 }
 
@@ -1897,7 +1973,8 @@ void MainWindow::unify()
 		}
 	}
 	if (dup.empty()) {
-		QMessageBox::information(this, qApp->applicationName(), tr("Overlapped item was not found."));
+		//QMessageBox::information(this, qApp->applicationName(), tr("Overlapped item was not found."));
+		showNotify(tr("Overlapped item was not found."));
 	} else {
 		AskRemoveDuplicatedFileDialog dlg(this, text);
 		if (dlg.exec() == QDialog::Accepted) {
@@ -1932,14 +2009,16 @@ void MainWindow::set_volume_(int v)
 
 void MainWindow::on_action_playlist_quick_save_1_triggered()
 {
-	savePlaylist("_quick_save_1_");
-	showNotify(tr("Quick Save 1 was completed"));
+	if (savePlaylist("_quick_save_1_")) {
+		showNotify(tr("Quick Save 1 was completed"));
+	}
 }
 
 void MainWindow::on_action_playlist_quick_save_2_triggered()
 {
-	savePlaylist("_quick_save_2_");
-	showNotify(tr("Quick Save 2 was completed"));
+	if (savePlaylist("_quick_save_2_")) {
+		showNotify(tr("Quick Save 2 was completed"));
+	}
 }
 
 void MainWindow::on_action_playlist_quick_load_1_triggered()
@@ -1957,12 +2036,14 @@ void MainWindow::on_action_playlist_clear_triggered()
 	clearPlaylist();
 }
 
+void MainWindow::on_action_sleep_timer_triggered()
+{
+	execSleepTimerDialog();
+}
+
 void MainWindow::on_action_debug_triggered()
 {
 }
-
-#include "KeyboardCustomizeDialog.h"
-
 
 void MainWindow::on_action_edit_keyboard_customize_triggered()
 {
@@ -1974,6 +2055,8 @@ void MainWindow::on_action_edit_keyboard_customize_triggered()
 	execCommand(c);
 #endif
 }
+
+
 
 
 
