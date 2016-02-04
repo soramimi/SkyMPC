@@ -255,10 +255,9 @@ MainWindow::~MainWindow()
 
 void MainWindow::updateStatusBar()
 {
-	int count = ui->listWidget_playlist->count();
-	QString text1 = tr("@ songs in playlist");
-	text1.replace("@", QString::number(count));
-	pv->status_label1->setText(text1);
+//	int count = ui->listWidget_playlist->count();
+//	QString text1 = tr("%1 songs in playlist").arg(count);
+//	pv->status_label1->setText(text1);
 }
 
 QString MainWindow::songPath(QTreeWidgetItem const *item) const
@@ -652,8 +651,7 @@ void MainWindow::timerEvent(QTimerEvent *)
 				int h = (secs / 3600);
 				char tmp[100];
 				sprintf(tmp, "%u:%02u:%02u", h, m, s);
-				text2 = tr("Pause in @ later");
-				text2.replace("@", tmp);
+				text2 = tr("Pause in %1 later").arg(tmp);
 			} else {
 				pv->sleep_time = QDateTime();
 				pause();
@@ -1105,8 +1103,7 @@ bool MainWindow::updatePlaylist()
 
 	{ // update status bar label 1
 		int count = ui->listWidget_playlist->count();
-		QString text1 = tr("@ songs in playlist");
-		text1.replace("@", QString::number(count));
+		QString text1 = tr("%1 songs in playlist").arg(count);
 		pv->status_label1->setText(text1);
 
 	}
