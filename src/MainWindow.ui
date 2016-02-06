@@ -1133,6 +1133,9 @@
    <property name="text">
     <string>Sleep &amp;timer...</string>
    </property>
+   <property name="shortcut">
+    <string>Shift+F1</string>
+   </property>
   </action>
  </widget>
  <layoutdefault spacing="6" margin="11"/>
