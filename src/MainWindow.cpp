@@ -65,17 +65,7 @@ static QTreeWidgetItem *new_QTreeWidgetItem(QTreeWidgetItem *parent)
 	return item;
 }
 
-bool isValidPlaylistName(QString const &name)
-{
-	if (name.isEmpty()) return false;
-	ushort const *p = (ushort const *)name.data();
-	while (*p) {
-		if (*p < 0x20) return false;
-		if (*p < 0x80 && strchr("\"\\/?|<>", *p)) return false;
-		p++;
-	}
-	return true;
-}
+
 
 //
 
@@ -96,7 +86,7 @@ public:
 };
 
 
-QString makeStyleSheetText()
+QString MainWindow::makeStyleSheetText()
 {
 #ifdef Q_OS_WIN
 	Font default_font("Meiryo", 10);
@@ -128,7 +118,7 @@ QString makeStyleSheetText()
 
 
 MainWindow::MainWindow(QWidget *parent) :
-	QMainWindow(parent),
+	BasicMainWindow(parent),
 	ui(new Ui::MainWindow)
 {
 	pv = new Private();
@@ -374,7 +364,7 @@ void MainWindow::preexec()
 	connectToMPD(pv->host);
 }
 
-QString makeServerText(Host const &host)
+static QString makeServerText(Host const &host)
 {
 	QString name;
 	name = host.address();
@@ -459,17 +449,17 @@ bool MainWindow::event(QEvent *event)
 	return QMainWindow::event(event);
 }
 
-bool isRoot(QTreeWidgetItem *item)
+static bool isRoot(QTreeWidgetItem *item)
 {
 	return item && item->data(0, ITEM_IsRoot).toBool();
 }
 
-bool isFolder(QTreeWidgetItem *item)
+static bool isFolder(QTreeWidgetItem *item)
 {
 	return item && item->data(0, ITEM_IsFolder).toBool();
 }
 
-bool isFile(QTreeWidgetItem *item)
+static bool isFile(QTreeWidgetItem *item)
 {
 	return item && item->data(0, ITEM_IsFile).toBool();
 }
@@ -854,6 +844,8 @@ void MainWindow::updatePlayingStatus()
 			status = PlayingStatus::Play;
 		} else if (state == "pause") {
 			status = PlayingStatus::Pause;
+		} else {
+			pv->status.song_information.clear();
 		}
 
 		if (status == PlayingStatus::Stop) {
@@ -1020,7 +1012,7 @@ void MainWindow::updateTreeTopLevel()
 	}
 }
 
-QString timeText(MusicPlayerClient::Item const &item)
+QString MainWindow::timeText(MusicPlayerClient::Item const &item)
 {
 	unsigned int sec = item.map.get("Time").toUInt();
 	if (sec > 0) {
@@ -1776,7 +1768,7 @@ void MainWindow::on_action_playlist_edit_triggered()
 	if (dlg.exec() != QDialog::Accepted) return;
 	QString name = dlg.name();
 	if (name.isEmpty()) return;
-	if (!isValidPlaylistName(name)) {
+	if (!MusicPlayerClient::isValidPlaylistName(name)) {
 		QMessageBox::warning(this, qApp->applicationName(), tr("The name is invalid."));
 		return;
 	}
@@ -1900,33 +1892,6 @@ void MainWindow::on_comboBox_currentIndexChanged(int index)
 			host = Host(name);
 		}
 		connectToMPD(host);
-	}
-}
-
-void EditLocationDialog::getLocations(QWidget *parent, std::vector<PlaylistFile::Item> const *locations, QStringList *out)
-{
-	out->clear();
-	SelectLocationDialog dlg(parent);
-	dlg.setItems(locations);
-	if (dlg.exec() == QDialog::Accepted) {
-		QString loc = dlg.selectedItem();
-		out->push_back(loc);
-	}
-}
-
-void EditLocationDialog::getLocations(QWidget *parent, QString const &loc, QStringList *out)
-{
-	out->clear();
-	PlaylistFile playlist;
-	if (playlist.parse(loc)) {
-		auto const *locations = playlist.locations();
-		if (!locations->empty()) {
-			getLocations(parent, locations, out);
-		} else {
-			QMessageBox::warning(parent, qApp->applicationName(), tr("The playlist does not contain a valid item."));
-		}
-	} else {
-		out->push_back(loc);
 	}
 }
 

@@ -1,6 +1,10 @@
 #include "EditLocationDialog.h"
 #include "ui_EditLocationDialog.h"
+#include "LocationLineEdit.h"
+#include "MainWindow.h"
+#include "SelectLocationDialog.h"
 #include <QDesktopServices>
+#include <QMessageBox>
 #include <QObjectUserData>
 #include <QUrl>
 
@@ -62,8 +66,32 @@ void EditLocationDialog::on_comboBox_currentIndexChanged(int index)
 	}
 }
 
-#include "MainWindow.h"
-#include "LocationLineEdit.h"
+void EditLocationDialog::getLocations(QWidget *parent, const std::vector<PlaylistFile::Item> *locations, QStringList *out)
+{
+	out->clear();
+	SelectLocationDialog dlg(parent);
+	dlg.setItems(locations);
+	if (dlg.exec() == QDialog::Accepted) {
+		QString loc = dlg.selectedItem();
+		out->push_back(loc);
+	}
+}
+
+void EditLocationDialog::getLocations(QWidget *parent, const QString &loc, QStringList *out)
+{
+	out->clear();
+	PlaylistFile playlist;
+	if (playlist.parse(loc)) {
+		auto const *locations = playlist.locations();
+		if (!locations->empty()) {
+			getLocations(parent, locations, out);
+		} else {
+			QMessageBox::warning(parent, qApp->applicationName(), tr("The playlist does not contain a valid item."));
+		}
+	} else {
+		out->push_back(loc);
+	}
+}
 
 void EditLocationDialog::accept()
 {

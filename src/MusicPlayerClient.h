@@ -151,6 +151,7 @@ public:
 	MusicPlayerClient(MusicPlayerClient const &) = delete;
 	void operator = (MusicPlayerClient const &) = delete;
 	virtual ~MusicPlayerClient();
+	static bool isValidPlaylistName(const QString &name);
 	QString message() const
 	{
 		return exception;

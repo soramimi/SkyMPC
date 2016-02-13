@@ -1,5 +1,6 @@
 
 #include "MainWindow.h"
+#include "TinyMainWindow.h"
 #include "MySettings.h"
 #include "main.h"
 #include "LegacyWindowsStyleTreeControl.h"
@@ -13,7 +14,7 @@
 
 #define USE_SPLASH 0
 
-MainWindow *the_mainwindow = 0;
+BasicMainWindow *the_mainwindow = 0;
 
 bool start_with_shift_key = false;
 QString application_data_dir;
@@ -40,6 +41,14 @@ public:
 int main(int argc, char *argv[])
 {
 	QApplication a(argc, argv);
+
+	bool tiny = false;
+
+	for (int i = 1; i < argc; i++) {
+		if (strcmp(argv[i], "--tiny") == 0) {
+			tiny = true;
+		}
+	}
 
     QStyle *style = new MyStyle();
     QApplication::setStyle(style);
@@ -80,17 +89,24 @@ int main(int argc, char *argv[])
         a.installTranslator(&translator);
     }
 
-	MainWindow w;
-	the_mainwindow = &w;
-	w.setWindowIcon(QIcon(":/image/appicon.png"));
-	w.show();
+	if (tiny) {
+		the_mainwindow = new TinyMainWindow();
+	} else {
+		the_mainwindow = new MainWindow();
+	}
+	the_mainwindow->setWindowIcon(QIcon(":/image/appicon.png"));
+	the_mainwindow->show();
 
 #if USE_SPLASH
 	splash.finish(&w);
 #endif
 
-	w.preexec();
+	the_mainwindow->preexec();
 
-	return a.exec();
+	int r = a.exec();
+
+	delete the_mainwindow;
+
+	return r;
 }
 

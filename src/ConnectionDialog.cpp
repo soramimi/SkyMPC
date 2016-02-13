@@ -4,6 +4,7 @@
 #include "TestConnectionThread.h"
 #include "MySettings.h"
 #include "MainWindow.h"
+#include "TinyMainWindow.h"
 #include <QMessageBox>
 
 enum {

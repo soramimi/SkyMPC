@@ -49,7 +49,9 @@ SOURCES += src/main.cpp\
     src/webclient.cpp \
     src/MemoryReader.cpp \
     src/LocationLineEdit.cpp \
-    src/SleepTimerDialog.cpp
+    src/SleepTimerDialog.cpp \
+    src/TinyMainWindow.cpp \
+    src/TinyMainWindowPrivate.cpp
 
 HEADERS  += src/MainWindow.h \
 	src/MusicPlayerClient.h \
@@ -87,7 +89,10 @@ HEADERS  += src/MainWindow.h \
     src/webclient.h \
     src/MemoryReader.h \
     src/LocationLineEdit.h \
-    src/SleepTimerDialog.h
+    src/SleepTimerDialog.h \
+    src/TinyMainWindow.h \
+    src/TinyMainWindowPrivate.h \
+    src/Common.h
 
 FORMS    += src/MainWindow.ui \
 	src/VerticalVolumePopup.ui \
@@ -103,7 +108,8 @@ FORMS    += src/MainWindow.ui \
 	src/AskRemoveDuplicatedFileDialog.ui \
     src/EditLocationDialog.ui \
     src/SelectLocationDialog.ui \
-    src/SleepTimerDialog.ui
+    src/SleepTimerDialog.ui \
+    src/TinyMainWindow.ui
 
 RESOURCES += \
 	resources.qrc

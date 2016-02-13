@@ -175,8 +175,6 @@ void EditPlaylistDialog::on_pushButton_delete_clicked()
 	}
 }
 
-bool isValidPlaylistName(QString const &name);
-
 void EditPlaylistDialog::on_pushButton_save_clicked()
 {
 	QString name;
@@ -189,7 +187,7 @@ void EditPlaylistDialog::on_pushButton_save_clicked()
 	SavePlaylistDialog dlg(this, name);
 	if (dlg.exec() != QDialog::Accepted) return;
 	name = dlg.name();
-	if (!isValidPlaylistName(name)) {
+	if (!MusicPlayerClient::isValidPlaylistName(name)) {
 		QMessageBox::warning(this, qApp->applicationName(), tr("The name is invalid."));
 		return;
 	}

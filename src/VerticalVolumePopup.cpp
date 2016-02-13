@@ -3,6 +3,7 @@
 #include "misc.h"
 #include <QPainter>
 #include "MainWindow.h"
+#include "TinyMainWindow.h"
 
 VerticalVolumePopup::VerticalVolumePopup(QWidget *parent) :
 	QDialog(parent),

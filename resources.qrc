@@ -25,5 +25,6 @@
         <file>image/playing.svgz</file>
         <file>image/server.png</file>
         <file>image/timer.svgz</file>
+        <file>image/close.svgz</file>
     </qresource>
 </RCC>

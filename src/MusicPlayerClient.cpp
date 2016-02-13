@@ -31,6 +31,18 @@ MusicPlayerClient::~MusicPlayerClient()
 	close();
 }
 
+bool MusicPlayerClient::isValidPlaylistName(const QString &name)
+{
+	if (name.isEmpty()) return false;
+	ushort const *p = (ushort const *)name.data();
+	while (*p) {
+		if (*p < 0x20) return false;
+		if (*p < 0x80 && strchr("\"\\/?|<>", *p)) return false;
+		p++;
+	}
+	return true;
+}
+
 bool MusicPlayerClient::recv(QTcpSocket *sock, QStringList *lines)
 {
 	int timeout = 5000;
@@ -483,6 +495,5 @@ bool MusicPlayerClient::do_update()
 	QStringList lines;
 	return exec("update", &lines);
 }
-
 
 
