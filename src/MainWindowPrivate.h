@@ -15,11 +15,6 @@
 
 class QLabel;
 
-enum {
-	EVENT_FocusChanged = QEvent::User,
-	EVENT_QueryInfo,
-};
-
 struct SongItem {
 	int index = -1;
 	QString path;
@@ -39,7 +34,7 @@ enum class PlayingStatus {
 	Pause,
 };
 
-struct MainWindow::Private {
+struct BasicMainWindow::Private {
 	QLabel *status_label1;
 	QLabel *status_label2;
 	QLabel *status_label3;

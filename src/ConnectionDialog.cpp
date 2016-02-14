@@ -60,8 +60,9 @@ ConnectionDialog::ConnectionDialog(QWidget *parent, Host const &host) :
 		}
 	}
 
-	{
-		bool f = the_mainwindow->isAutoReconnectAtStartup();
+	BasicMainWindow *mw = BasicMainWindow::findMainWindow(this);
+	if (mw) {
+		bool f = mw->isAutoReconnectAtStartup();
 		ui->checkBox_auto_reconnect->setChecked(f);
 	}
 }

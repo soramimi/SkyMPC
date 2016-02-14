@@ -287,6 +287,36 @@ int MusicPlayerClient::get_volume()
 	return -1;
 }
 
+void MusicPlayerClient::sort(QList<MusicPlayerClient::Item> *vec)
+{
+	std::sort(vec->begin(), vec->end(), [](MusicPlayerClient::Item const &left, MusicPlayerClient::Item const &right){
+		int i;
+		i = QString::compare(left.kind, right.kind, Qt::CaseInsensitive);
+		if (i == 0) {
+			i = QString::compare(left.text, right.text, Qt::CaseInsensitive);
+			if (i == 0) {
+				QString l_title = left.map.get("Title");
+				QString r_title = right.map.get("Title");
+				i = QString::compare(l_title, r_title, Qt::CaseInsensitive);
+			}
+		}
+		return i < 0;
+	});
+}
+
+QString MusicPlayerClient::timeText(const MusicPlayerClient::Item &item)
+{
+	unsigned int sec = item.map.get("Time").toUInt();
+	if (sec > 0) {
+		unsigned int m = sec / 60;
+		unsigned int s = sec % 60;
+		char tmp[100];
+		sprintf(tmp, "%u:%02u", m, s);
+		return tmp;
+	}
+	return QString();
+}
+
 template <typename T> bool MusicPlayerClient::info_(QString const &command, QString const &path, T *out)
 {
 	QStringList lines;

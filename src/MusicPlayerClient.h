@@ -196,6 +196,9 @@ public:
 	bool do_rm(QString const &name);
 	bool do_update();
 	int get_volume();
+
+	static void sort(QList<MusicPlayerClient::Item> *vec);
+	static QString timeText(const MusicPlayerClient::Item &item);
 };
 
 #endif // MUSICPLAYERCLIENT_H

@@ -1,12 +1,10 @@
 #ifndef COMMON_H
 #define COMMON_H
 
-#include "MusicPlayerClient.h"
-
+#include <QEvent>
 #include <QMainWindow>
 #include <QModelIndex>
 #include <QString>
-
 
 struct RequestItem {
 	QString path;
@@ -19,11 +17,6 @@ struct RequestItem {
 		, index(index)
 	{
 	}
-};
-
-struct ResultItem {
-	RequestItem req;
-	QList<MusicPlayerClient::Item> vec;
 };
 
 class Command {
@@ -69,17 +62,20 @@ public:
 	}
 };
 
-class BasicMainWindow : public QMainWindow {
+class Font {
+private:
+	QString const name;
+	int pt = 10;
 public:
-	BasicMainWindow(QWidget *parent)
-		: QMainWindow(parent)
+	Font(QString const &name, int pt)
+		: name(name)
+		, pt(pt)
 	{
 	}
-	virtual void eatMouse() = 0;
-	virtual bool isAutoReconnectAtStartup() = 0;
-	virtual void preexec() = 0;
+	QString text() const
+	{
+		return "font: " + QString::number(pt) + "pt \"" + name + "\";";
+	}
 };
-
-extern BasicMainWindow *the_mainwindow;
 
 #endif // COMMON_H

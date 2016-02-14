@@ -2,6 +2,7 @@
 #define TINYMAINWINDOW_H
 
 #include "Common.h"
+#include "BasicMainWindow.h"
 #include "MusicPlayerClient.h"
 #include "PlaylistFile.h"
 #include <QMainWindow>
@@ -20,76 +21,31 @@ class TinyMainWindow : public BasicMainWindow
 private:
 	Ui::TinyMainWindow *ui;
 private:
-	struct Private;
-	Private *pv;
 	QIcon folderIcon();
-	void updatePlayingStatus();
 	QString serverName() const;
-	void showNotify(QString const &text);
-	void showError(QString const &text);
-	void set_volume_(int v);
-	void loadPlaylist(QString const &name, bool replace);
-	bool savePlaylist(QString const &name);
-	bool deletePlaylist(QString const &name);
-	void clearPlaylist();
-	void invalidateCurrentSongIndicator();
-	void execSongProperty(QString const &path, bool addplaylist);
-	bool isPlaying() const;
-	void updateStatusBar();
-	void releaseMouseIfGrabbed();
-	void startStatusThread();
-	void stopStatusThread();
-	void update(bool mpdupdate);
-	void displayProgress(double elapsed);
-	void checkDisconnected();
-	void execAddLocationDialog();
-	void startSleepTimer(int mins);
-	void stopSleepTimer();
-	void execSleepTimerDialog();
-	void disconnectNetwork();
-	static QString makeStyleSheetText();
 	static QString timeText(const MusicPlayerClient::Item &item);
 public:
 	explicit TinyMainWindow(QWidget *parent = 0);
 	~TinyMainWindow();
-
-	bool isAutoReconnectAtStartup();
-
-	bool execCommand(Command const &c);
-
-	void preexec();
-	void connectToMPD(Host const &host);
 	void setRepeatEnabled(bool f);
 	void setSingleEnabled(bool f);
 	void setConsumeEnabled(bool f);
 	void setRandomEnabled(bool f);
-
-	void play();
-	void pause();
-	void stop();
-	void play(bool toggle);
-
-	void eatMouse();
 protected:
 	virtual bool event(QEvent *event);
 	virtual bool eventFilter(QObject *, QEvent *);
 	void changeEvent(QEvent *e);
 	virtual void closeEvent(QCloseEvent *);
-	bool updatePlaylist();
-	void addToPlaylist(QString const &path, int to, bool update);
+	void updatePlaylist();
 	virtual void mouseReleaseEvent(QMouseEvent *);
-//	virtual void timerEvent(QTimerEvent *);
 private slots:
 	void on_toolButton_play_clicked();
-
 	void onVolumeChanged();
 	void onSliderPressed();
-
 	void on_toolButton_stop_clicked();
 	void on_toolButton_prev_clicked();
 	void on_toolButton_next_clicked();
 	void on_toolButton_sleep_timer_clicked();
-
 	void on_action_debug_triggered();
 	void on_action_play_triggered();
 	void on_action_stop_triggered();
@@ -116,22 +72,8 @@ private slots:
 	void on_action_playlist_edit_triggered();
 	void on_action_edit_keyboard_customize_triggered();
 	void on_toolButton_consume_clicked();
-	void onUpdateStatus();
-
-
 	void on_action_sleep_timer_triggered();
-
 	void on_toolButton_close_clicked();
-
-public:
-	static QString tr_Module_information_could_not_be_acquired()
-	{
-		return tr("Module information could not be acquired.");
-	}
-
-protected:
-
-	// QObject interface
 protected:
 	void timerEvent(QTimerEvent *);
 };

@@ -14,8 +14,6 @@
 
 #define USE_SPLASH 0
 
-BasicMainWindow *the_mainwindow = 0;
-
 bool start_with_shift_key = false;
 QString application_data_dir;
 
@@ -89,23 +87,25 @@ int main(int argc, char *argv[])
         a.installTranslator(&translator);
     }
 
+	BasicMainWindow *mw;
 	if (tiny) {
-		the_mainwindow = new TinyMainWindow();
+		mw = new TinyMainWindow();
 	} else {
-		the_mainwindow = new MainWindow();
+		mw = new MainWindow();
 	}
-	the_mainwindow->setWindowIcon(QIcon(":/image/appicon.png"));
-	the_mainwindow->show();
+
+	mw->setWindowIcon(QIcon(":/image/appicon.png"));
+	mw->show();
 
 #if USE_SPLASH
 	splash.finish(&w);
 #endif
 
-	the_mainwindow->preexec();
+	mw->preexec();
 
 	int r = a.exec();
 
-	delete the_mainwindow;
+	delete mw;
 
 	return r;
 }

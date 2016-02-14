@@ -51,7 +51,8 @@ SOURCES += src/main.cpp\
     src/LocationLineEdit.cpp \
     src/SleepTimerDialog.cpp \
     src/TinyMainWindow.cpp \
-    src/TinyMainWindowPrivate.cpp
+    src/TinyMainWindowPrivate.cpp \
+    src/BasicMainWindow.cpp
 
 HEADERS  += src/MainWindow.h \
 	src/MusicPlayerClient.h \
@@ -92,7 +93,8 @@ HEADERS  += src/MainWindow.h \
     src/SleepTimerDialog.h \
     src/TinyMainWindow.h \
     src/TinyMainWindowPrivate.h \
-    src/Common.h
+    src/Common.h \
+    src/BasicMainWindow.h
 
 FORMS    += src/MainWindow.ui \
 	src/VerticalVolumePopup.ui \

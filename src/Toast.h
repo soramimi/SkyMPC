@@ -4,6 +4,8 @@
 #include <QLabel>
 #include <QTimer>
 
+class BasicMainWindow;
+
 class Toast : public QLabel
 {
 	Q_OBJECT
@@ -16,9 +18,11 @@ public:
 private:
 	QTimer timer;
 	int delay;
-	explicit Toast(QWidget *parent, QString const &text, Length length);
+	explicit Toast(BasicMainWindow *parent, QString const &text, Length length);
 public:
-	static void show(QWidget *parent, QString const &text, Length length);
+	~Toast();
+
+	static void show(BasicMainWindow *parent, QString const &text, Length length);
 public slots:
 	void onTimeout();
 

@@ -1,6 +1,7 @@
 #include "Toast.h"
+#include "BasicMainWindow.h"
 
-Toast::Toast(QWidget *parent, QString const &text, Length length)
+Toast::Toast(BasicMainWindow *parent, QString const &text, Length length)
 	: QLabel(parent)
 {
 	setWindowFlags(Qt::ToolTip | Qt::CustomizeWindowHint);
@@ -22,9 +23,17 @@ Toast::Toast(QWidget *parent, QString const &text, Length length)
 	timer.start(delay);
 }
 
+Toast::~Toast()
+{
+	qDebug("dtor");
+}
+
 void Toast::onTimeout()
 {
-	delete this;
+	disconnect(&timer, SIGNAL(timeout()), this, SLOT(onTimeout()));
+	setParent(0);
+	this->deleteLater();
+//	delete this;
 }
 
 void Toast::showEvent(QShowEvent *e)
@@ -41,7 +50,7 @@ void Toast::showEvent(QShowEvent *e)
 	setGeometry(QRect(x - w / 2, y - h / 2, w, h));
 }
 
-void Toast::show(QWidget *parent, QString const &text, Length length)
+void Toast::show(BasicMainWindow *parent, QString const &text, Length length)
 {
 	Toast *p = new Toast(parent, text, length);
 	p->QLabel::show();
