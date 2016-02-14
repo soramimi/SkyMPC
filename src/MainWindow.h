@@ -68,6 +68,7 @@ protected:
 	void updatePlayIcon();
 	void updatePlaylist();
 	void updateTreeTopLevel();
+	void doUpdateStatus();
 private slots:
 	void on_action_consume_triggered();
 	void on_action_debug_triggered();
@@ -120,8 +121,6 @@ private slots:
 	void onSliderPressed();
 	void onSliderReleased();
 	void onTreeViewContextMenuEvent(QContextMenuEvent *);
-	void onUpdateStatus();
-	void onVolumeChanged();
 };
 
 #endif // MAINWINDOW_H

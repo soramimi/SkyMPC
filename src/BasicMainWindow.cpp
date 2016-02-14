@@ -13,7 +13,19 @@
 BasicMainWindow::BasicMainWindow(QWidget *parent)
 	: QMainWindow(parent)
 {
+	pv = new Private();
+	connect(&pv->volume_popup, SIGNAL(valueChanged()), this, SLOT(onVolumeChanged()));
+	connect(&pv->status_thread, SIGNAL(onUpdate()), this, SLOT(onUpdateStatus()));
 }
+
+BasicMainWindow::~BasicMainWindow()
+{
+	stopStatusThread();
+	pv->mpc.close();
+	delete pv;
+}
+
+
 
 QString BasicMainWindow::makeStyleSheetText()
 {
@@ -319,6 +331,14 @@ void BasicMainWindow::doQuickLoad2()
 	loadPlaylist("_quick_save_2_", true);
 }
 
+void BasicMainWindow::doUpdateStatus()
+{
+	updatePlayingStatus();
+	if (pv->status.current_song != pv->status.current_song_indicator) {
+		updateCurrentSongIndicator();
+	}
+}
+
 bool BasicMainWindow::isAutoReconnectAtStartup()
 {
 	bool f = true;
@@ -557,6 +577,17 @@ BasicMainWindow *BasicMainWindow::findMainWindow(QObject *hint)
 		if (mw) return mw;
 	}
 	return 0;
+}
+
+void BasicMainWindow::onVolumeChanged()
+{
+	int v = pv->volume_popup.value();
+	pv->mpc.do_setvol(v);
+}
+
+void BasicMainWindow::onUpdateStatus()
+{
+	doUpdateStatus();
 }
 
 

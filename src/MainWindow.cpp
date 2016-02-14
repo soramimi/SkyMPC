@@ -70,14 +70,10 @@ static QTreeWidgetItem *new_QTreeWidgetItem(QTreeWidgetItem *parent)
 	return item;
 }
 
-
-
-
 MainWindow::MainWindow(QWidget *parent) :
 	BasicMainWindow(parent),
 	ui(new Ui::MainWindow)
 {
-	pv = new Private();
 	ui->setupUi(this);
 
 	pv->release_mouse_event = false;
@@ -136,10 +132,8 @@ MainWindow::MainWindow(QWidget *parent) :
 	connect(ui->treeWidget, SIGNAL(onContextMenuEvent(QContextMenuEvent*)), this, SLOT(onTreeViewContextMenuEvent(QContextMenuEvent*)));
 	connect(ui->listWidget_playlist, SIGNAL(onContextMenu(QContextMenuEvent*)), this, SLOT(onListViewContextMenuEvent(QContextMenuEvent*)));
 	connect(ui->listWidget_playlist, SIGNAL(onDropEvent(bool)), this, SLOT(onDropEvent(bool)));
-	connect(&pv->volume_popup, SIGNAL(valueChanged()), this, SLOT(onVolumeChanged()));
 	connect(ui->horizontalSlider, SIGNAL(sliderPressed()), this, SLOT(onSliderPressed()));
 	connect(ui->horizontalSlider, SIGNAL(sliderReleased()), this, SLOT(onSliderReleased()));
-	connect(&pv->status_thread, SIGNAL(onUpdate()), this, SLOT(onUpdateStatus()));
 
 	setRepeatEnabled(false);
 	setRandomEnabled(false);
@@ -193,10 +187,7 @@ MainWindow::MainWindow(QWidget *parent) :
 
 MainWindow::~MainWindow()
 {
-	pv->mpc.close();
-	stopStatusThread();
 	delete ui;
-	delete pv;
 }
 
 QString MainWindow::songPath(QTreeWidgetItem const *item) const
@@ -451,17 +442,7 @@ void MainWindow::keyPressEvent(QKeyEvent *event)
 	}
 }
 
-void MainWindow::onUpdateStatus()
-{
-	if (ui->horizontalSlider->isSliderDown()) {
-		// nop
-	} else {
-		updatePlayingStatus();
-		if (pv->status.current_song != pv->status.current_song_indicator) {
-			updateCurrentSongIndicator();
-		}
-	}
-}
+
 
 
 
@@ -698,6 +679,13 @@ void MainWindow::updateTreeTopLevel()
 			treeitem->addChild(g);
 			ui->treeWidget->addTopLevelItem(treeitem);
 		}
+	}
+}
+
+void MainWindow::doUpdateStatus()
+{
+	if (!ui->horizontalSlider->isSliderDown()) {
+		BasicMainWindow::doUpdateStatus();
 	}
 }
 
@@ -1126,11 +1114,7 @@ void MainWindow::on_toolButton_sleep_timer_clicked()
 	execSleepTimerDialog();
 }
 
-void MainWindow::onVolumeChanged()
-{
-	int v = pv->volume_popup.value();
-	pv->mpc.do_setvol(v);
-}
+
 
 void MainWindow::onSliderPressed()
 {

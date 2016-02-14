@@ -76,6 +76,7 @@ private slots:
 	void on_toolButton_close_clicked();
 protected:
 	void timerEvent(QTimerEvent *);
+	void displayPlayStatus(const QString &, const QString &, const QString &);
 };
 
 #endif // TINYMAINWINDOW_H

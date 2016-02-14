@@ -43,7 +43,6 @@ TinyMainWindow::TinyMainWindow(QWidget *parent) :
 	BasicMainWindow(parent),
 	ui(new Ui::TinyMainWindow)
 {
-	pv = new Private();
 	ui->setupUi(this);
 	setWindowFlags(Qt::Window | Qt::FramelessWindowHint);
 	setAttribute(Qt::WA_QuitOnClose);
@@ -97,9 +96,6 @@ TinyMainWindow::TinyMainWindow(QWidget *parent) :
 	pv->menu.addAction(ui->action_help_about);
 	pv->menu.addAction(ui->action_debug);
 
-	connect(&pv->volume_popup, SIGNAL(valueChanged()), this, SLOT(onVolumeChanged()));
-	connect(&pv->status_thread, SIGNAL(onUpdate()), this, SLOT(onUpdateStatus()));
-
 	setRepeatEnabled(false);
 	setRandomEnabled(false);
 
@@ -142,10 +138,7 @@ TinyMainWindow::TinyMainWindow(QWidget *parent) :
 
 TinyMainWindow::~TinyMainWindow()
 {
-	pv->mpc.close();
-	stopStatusThread();
 	delete ui;
-	delete pv;
 }
 
 QIcon TinyMainWindow::folderIcon()
@@ -222,6 +215,12 @@ void TinyMainWindow::timerEvent(QTimerEvent *)
 //	pv->status_label3->setText(text3);
 
 	checkDisconnected();
+}
+
+void TinyMainWindow::displayPlayStatus(const QString &title, const QString &artist, const QString & /*disc*/)
+{
+	ui->label_title->setText(title);
+	ui->label_artist->setText(artist);
 }
 
 void TinyMainWindow::setRepeatEnabled(bool f)

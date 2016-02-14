@@ -8,6 +8,7 @@ class Host;
 class Command;
 
 class BasicMainWindow : public QMainWindow {
+	Q_OBJECT
 protected:
 	struct Private;
 	Private *pv;
@@ -31,7 +32,7 @@ protected:
 	virtual void setConsumeEnabled(bool f);
 	virtual void setRandomEnabled(bool f);
 
-	virtual void displayPlayStatus(const QString & /*title*/, const QString & /*artist*/, const QString & /*disc*/) {}
+	virtual void displayPlayStatus(const QString & /*title*/, const QString & /*artist*/, const QString & /*disc*/) = 0;
 	virtual void seekProgressSlider(double /*elapsed*/, double /*total*/) {}
 	virtual void displayProgress(double /*elapsed*/) {}
 	virtual void updatePlayIcon() {}
@@ -52,8 +53,10 @@ protected:
 	void doQuickSave2();
 	void doQuickLoad1();
 	void doQuickLoad2();
+	virtual void doUpdateStatus();
 public:
 	BasicMainWindow(QWidget *parent);
+	~BasicMainWindow();
 	virtual void eatMouse();
 	virtual bool isAutoReconnectAtStartup();
 	virtual void preexec();
@@ -72,6 +75,9 @@ public:
 	void execAddLocationDialog();
 
 	static BasicMainWindow *findMainWindow(QObject *hint = nullptr);
+private slots:
+	void onVolumeChanged();
+	void onUpdateStatus();
 };
 
 enum {
