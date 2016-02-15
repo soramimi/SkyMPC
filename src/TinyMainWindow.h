@@ -34,10 +34,14 @@ public:
 protected:
 	virtual bool event(QEvent *event);
 	virtual bool eventFilter(QObject *, QEvent *);
-	void changeEvent(QEvent *e);
 	virtual void closeEvent(QCloseEvent *);
-	void updatePlaylist();
 	virtual void mouseReleaseEvent(QMouseEvent *);
+	void changeEvent(QEvent *e);
+	void timerEvent(QTimerEvent *);
+	void displayPlayStatus(const QString &, const QString &, const QString &);
+	void displayProgress(const QString &text);
+	void updatePlaylist();
+	void updatePlayIcon();
 private slots:
 	void on_toolButton_play_clicked();
 	void onVolumeChanged();
@@ -70,13 +74,9 @@ private slots:
 	void on_action_playlist_quick_load_2_triggered();
 	void on_action_playlist_clear_triggered();
 	void on_action_playlist_edit_triggered();
-	void on_action_edit_keyboard_customize_triggered();
 	void on_toolButton_consume_clicked();
 	void on_action_sleep_timer_triggered();
 	void on_toolButton_close_clicked();
-protected:
-	void timerEvent(QTimerEvent *);
-	void displayPlayStatus(const QString &, const QString &, const QString &);
 };
 
 #endif // TINYMAINWINDOW_H

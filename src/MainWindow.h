@@ -33,7 +33,7 @@ private:
 	QString songPath(QListWidgetItem const *item) const;
 	bool isPlaceHolder(QTreeWidgetItem *item) const;
 	void on_edit_location();
-	void displayProgress(double elapsed);
+	void displayProgress(const QString &text);
 	void seekProgressSlider(double elapsed, double total);
 	static bool isRoot(QTreeWidgetItem *item);
 	static bool isFolder(QTreeWidgetItem *item);
@@ -59,7 +59,6 @@ protected:
 	void deletePlaylistItem(QListWidgetItem *item, bool updateplaylist);
 	void deleteSelectedSongs();
 	void displayPlayStatus(QString const &title, QString const &artist, QString const &disc);
-	void displayStopStatus();
 	void refreshTreeItem(QTreeWidgetItem *item);
 	void setPageConnected();
 	void setPageDisconnected();
@@ -75,7 +74,6 @@ private slots:
 	void on_action_edit_copy_triggered();
 	void on_action_edit_cut_triggered();
 	void on_action_edit_delete_triggered();
-	void on_action_edit_keyboard_customize_triggered();
 	void on_action_edit_paste_bottom_triggered();
 	void on_action_edit_paste_insert_triggered();
 	void on_action_file_close_triggered();

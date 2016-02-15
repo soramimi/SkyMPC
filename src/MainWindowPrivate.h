@@ -28,12 +28,6 @@ struct SongItem {
 	}
 };
 
-enum class PlayingStatus {
-	Stop,
-	Play,
-	Pause,
-};
-
 struct BasicMainWindow::Private {
 	QLabel *status_label1;
 	QLabel *status_label2;
@@ -63,8 +57,8 @@ struct BasicMainWindow::Private {
 
 	QIcon folder_icon;
 
-	std::map<QString, QAction *> command_action_map;
-	std::map<int, QString> key_command_map;
+//	std::map<QString, QAction *> command_action_map;
+//	std::map<int, QString> key_command_map;
 
 	bool release_mouse_event = false;
 

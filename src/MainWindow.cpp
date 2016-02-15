@@ -430,21 +430,7 @@ void MainWindow::keyPressEvent(QKeyEvent *event)
 		return;
 #endif
 	}
-	{
-		auto it = pv->key_command_map.find(key);
-		if (it != pv->key_command_map.end()) {
-			Command c(it->second);
-			if (execCommand(c)) {
-				event->accept();
-				return;
-			}
-		}
-	}
 }
-
-
-
-
 
 void MainWindow::timerEvent(QTimerEvent *)
 {
@@ -505,9 +491,6 @@ void MainWindow::setPageConnected()
 	ui->stackedWidget->setCurrentWidget(ui->page_connected);
 }
 
-// MPDサーバへ接続
-
-
 void MainWindow::setVolumeEnabled(bool f)
 {
 	if (f) {
@@ -530,8 +513,6 @@ void MainWindow::clearTreeAndList()
 	ui->listWidget_playlist->clear();
 }
 
-
-
 void MainWindow::setRepeatEnabled(bool f)
 {
 	if (pv->repeat_enabled != f) {
@@ -550,7 +531,6 @@ void MainWindow::setSingleEnabled(bool f)
 	BasicMainWindow::setSingleEnabled(f);
 }
 
-
 void MainWindow::setConsumeEnabled(bool f)
 {
 	if (pv->consume_enabled != f) {
@@ -560,7 +540,6 @@ void MainWindow::setConsumeEnabled(bool f)
 	BasicMainWindow::setConsumeEnabled(f);
 }
 
-
 void MainWindow::setRandomEnabled(bool f)
 {
 	if (pv->random_enabled != f) {
@@ -569,7 +548,6 @@ void MainWindow::setRandomEnabled(bool f)
 	}
 	BasicMainWindow::setRandomEnabled(f);
 }
-
 
 void MainWindow::changeEvent(QEvent *e)
 {
@@ -583,13 +561,9 @@ void MainWindow::changeEvent(QEvent *e)
 	}
 }
 
-void MainWindow::displayProgress(double elapsed)
+void MainWindow::displayProgress(QString const &text)
 {
-	char tmp[100];
-	int e = (int)elapsed;
-	int t = (int)pv->total_seconds;
-	sprintf(tmp, "%u:%02u / %u:%02u", e / 60, e % 60, t / 60, t % 60);
-	ui->label_progress->setText(tmp);
+	ui->label_progress->setText(text);
 }
 
 void MainWindow::seekProgressSlider(double elapsed, double total)
@@ -600,14 +574,7 @@ void MainWindow::seekProgressSlider(double elapsed, double total)
 	ui->horizontalSlider->setUpdatesEnabled(true);
 }
 
-void MainWindow::displayStopStatus()
-{
-	ui->label_title->clear();
-	ui->label_artist->clear();
-	ui->label_disc->clear();
-	seekProgressSlider(0, 0);
-	displayProgress(0);
-}
+
 
 void MainWindow::displayPlayStatus(QString const &title, QString const &artist, QString const &disc)
 {
@@ -616,24 +583,28 @@ void MainWindow::displayPlayStatus(QString const &title, QString const &artist, 
 	ui->label_disc->setText(disc);
 }
 
-void MainWindow::updatePlayIcon()
+void BasicMainWindow::updatePlayIcon(PlayingStatus status, QToolButton *button, QAction *action)
 {
-	PlayingStatus status = pv->status.playing;
 	if (status == PlayingStatus::Play) {
 		QString text = tr("Pause");
-		ui->toolButton_play->setText(text);
-		ui->toolButton_play->setToolTip(text);
-		ui->toolButton_play->setIcon(QIcon(":/image/pause.svgz"));
-		ui->action_play->setText(tr("&Pause"));
-		ui->action_play->setIcon(QIcon(":/image/pause.svgz"));
+		button->setText(text);
+		button->setToolTip(text);
+		button->setIcon(QIcon(":/image/pause.svgz"));
+		action->setText(tr("&Pause"));
+		action->setIcon(QIcon(":/image/pause.svgz"));
 	} else {
 		QString text = tr("Play");
-		ui->toolButton_play->setText(text);
-		ui->toolButton_play->setToolTip(text);
-		ui->toolButton_play->setIcon(QIcon(":/image/play.svgz"));
-		ui->action_play->setText(tr("&Play"));
-		ui->action_play->setIcon(QIcon(":/image/play.svgz"));
+		button->setText(text);
+		button->setToolTip(text);
+		button->setIcon(QIcon(":/image/play.svgz"));
+		action->setText(tr("&Play"));
+		action->setIcon(QIcon(":/image/play.svgz"));
 	}
+}
+
+void MainWindow::updatePlayIcon()
+{
+	BasicMainWindow::updatePlayIcon(pv->status.playing, ui->toolButton_play, ui->action_play);
 }
 
 void MainWindow::updateCurrentSongIndicator()
@@ -1025,8 +996,6 @@ void MainWindow::on_toolButton_volume_clicked()
 	pv->volume_popup.show();
 }
 
-
-
 void MainWindow::updatePlaylist()
 {
 	QList<MusicPlayerClient::Item> vec;
@@ -1100,7 +1069,6 @@ void MainWindow::updatePlaylist()
 		int count = ui->listWidget_playlist->count();
 		QString text1 = tr("%1 songs in playlist").arg(count);
 		pv->status_label1->setText(text1);
-
 	}
 }
 
@@ -1113,8 +1081,6 @@ void MainWindow::on_toolButton_sleep_timer_clicked()
 {
 	execSleepTimerDialog();
 }
-
-
 
 void MainWindow::onSliderPressed()
 {
@@ -1136,7 +1102,7 @@ void MainWindow::onSliderReleased()
 
 void MainWindow::on_horizontalSlider_valueChanged(int value)
 {
-	displayProgress(value / 100.0);
+	BasicMainWindow::displayProgress(value / 100.0);
 }
 
 void MainWindow::on_action_file_close_triggered()
@@ -1475,15 +1441,6 @@ void MainWindow::on_action_debug_triggered()
 {
 }
 
-void MainWindow::on_action_edit_keyboard_customize_triggered()
-{
-#if 0
-	KeyboardCustomizeDialog dlg(this);
-	dlg.exec();
-#else
-	Command c("play");
-	execCommand(c);
-#endif
-}
+
 
 

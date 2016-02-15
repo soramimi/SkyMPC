@@ -223,6 +223,16 @@ void TinyMainWindow::displayPlayStatus(const QString &title, const QString &arti
 	ui->label_artist->setText(artist);
 }
 
+void TinyMainWindow::updatePlayIcon()
+{
+	BasicMainWindow::updatePlayIcon(pv->status.playing, ui->toolButton_play, ui->action_play);
+}
+
+void TinyMainWindow::displayProgress(const QString &text)
+{
+	pv->status_label1->setText(text);
+}
+
 void TinyMainWindow::setRepeatEnabled(bool f)
 {
 	if (pv->repeat_enabled != f) {
@@ -334,6 +344,7 @@ void TinyMainWindow::updatePlaylist()
 
 	QApplication::restoreOverrideCursor();
 }
+
 void TinyMainWindow::mouseReleaseEvent(QMouseEvent *e)
 {
 	releaseMouseIfGrabbed();
@@ -454,7 +465,6 @@ void TinyMainWindow::on_toolButton_next_clicked()
 void TinyMainWindow::on_toolButton_single_clicked()
 {
 	ui->action_single->trigger();
-
 }
 
 void TinyMainWindow::on_toolButton_consume_clicked()
@@ -526,17 +536,6 @@ void TinyMainWindow::on_action_sleep_timer_triggered()
 
 void TinyMainWindow::on_action_debug_triggered()
 {
-}
-
-void TinyMainWindow::on_action_edit_keyboard_customize_triggered()
-{
-#if 0
-	KeyboardCustomizeDialog dlg(this);
-	dlg.exec();
-#else
-	Command c("play");
-	execCommand(c);
-#endif
 }
 
 void TinyMainWindow::on_toolButton_close_clicked()

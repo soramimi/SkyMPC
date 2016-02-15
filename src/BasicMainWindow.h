@@ -6,6 +6,13 @@
 
 class Host;
 class Command;
+class QToolButton;
+
+enum class PlayingStatus {
+	Stop,
+	Play,
+	Pause,
+};
 
 class BasicMainWindow : public QMainWindow {
 	Q_OBJECT
@@ -25,7 +32,7 @@ protected:
 	virtual void setPageDisconnected() {}
 	virtual void setVolumeEnabled(bool) {}
 	virtual void clearTreeAndList() {}
-	virtual void displayStopStatus() {}
+	void displayStopStatus();
 
 	virtual void setRepeatEnabled(bool f);
 	virtual void setSingleEnabled(bool f);
@@ -34,11 +41,12 @@ protected:
 
 	virtual void displayPlayStatus(const QString & /*title*/, const QString & /*artist*/, const QString & /*disc*/) = 0;
 	virtual void seekProgressSlider(double /*elapsed*/, double /*total*/) {}
-	virtual void displayProgress(double /*elapsed*/) {}
+	virtual void displayProgress(const QString & /*text*/) {}
 	virtual void updatePlayIcon() {}
 	virtual void updatePlaylist() {}
 	virtual void updateCurrentSongIndicator() {}
 	void invalidateCurrentSongIndicator();
+	void displayProgress(double elapsed);
 
 	static QString makeServerText(const Host &host);
 	QString serverName() const;
@@ -54,13 +62,13 @@ protected:
 	void doQuickLoad1();
 	void doQuickLoad2();
 	virtual void doUpdateStatus();
+	void updatePlayIcon(PlayingStatus status, QToolButton *button, QAction *action);
 public:
 	BasicMainWindow(QWidget *parent);
 	~BasicMainWindow();
 	virtual void eatMouse();
 	virtual bool isAutoReconnectAtStartup();
 	virtual void preexec();
-	bool execCommand(const Command &c);
 	void connectToMPD(const Host &host);
 	bool isPlaying() const;
 	void startStatusThread();

@@ -129,6 +129,7 @@ void BasicMainWindow::updatePlayingStatus()
 
 		if (status == PlayingStatus::Stop) {
 			pv->total_seconds = 0;
+			displayPlayStatus(QString(), QString(), QString());
 			displayStopStatus();
 		} else {
 			pv->status.current_song = info.status.get("song").toInt();
@@ -201,6 +202,25 @@ void BasicMainWindow::updatePlayingStatus()
 		pv->status.playing = status;
 		updatePlayIcon();
 		invalidateCurrentSongIndicator();
+	}
+}
+
+void BasicMainWindow::displayStopStatus()
+{
+	seekProgressSlider(0, 0);
+	displayProgress(0);
+}
+
+void BasicMainWindow::displayProgress(double elapsed)
+{
+	if (pv->total_seconds > 0) {
+		char tmp[100];
+		int e = (int)elapsed;
+		int t = (int)pv->total_seconds;
+		sprintf(tmp, "%u:%02u / %u:%02u", e / 60, e % 60, t / 60, t % 60);
+		displayProgress(QString(tmp));
+	} else {
+		displayProgress(QString());
 	}
 }
 
@@ -378,18 +398,6 @@ void BasicMainWindow::preexec()
 
 	startTimer(1000);
 	connectToMPD(pv->host);
-}
-
-bool BasicMainWindow::execCommand(const Command &c)
-{
-	auto it = pv->command_action_map.find(c.command());
-	if (it != pv->command_action_map.end()) {
-		QAction *a = it->second;
-		Q_ASSERT(a);
-		a->trigger();
-		return true;
-	}
-	return false;
 }
 
 void BasicMainWindow::connectToMPD(const Host &host)
