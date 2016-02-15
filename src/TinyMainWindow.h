@@ -37,11 +37,11 @@ protected:
 	virtual void closeEvent(QCloseEvent *);
 	virtual void mouseReleaseEvent(QMouseEvent *);
 	void changeEvent(QEvent *e);
-	void timerEvent(QTimerEvent *);
 	void displayPlayStatus(const QString &, const QString &, const QString &);
 	void displayProgress(const QString &text);
 	void updatePlaylist();
 	void updatePlayIcon();
+	void displayExtraInformation(const QString &text2, const QString &text3);
 private slots:
 	void on_toolButton_play_clicked();
 	void onVolumeChanged();

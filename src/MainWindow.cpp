@@ -432,48 +432,8 @@ void MainWindow::keyPressEvent(QKeyEvent *event)
 	}
 }
 
-void MainWindow::timerEvent(QTimerEvent *)
+void MainWindow::displayExtraInformation(QString const &text2, QString const &text3)
 {
-	QString text2;
-	QString text3;
-	if (pv->connected) {
-		QTime time;
-		time.start();
-		if (pv->mpc.ping(1)) {
-			int ms = time.elapsed();
-			pv->ping_failed_count = 0;
-			text3 = "ping:";
-			text3 += QString::number(ms);
-			text3 += "ms";
-		} else {
-			pv->ping_failed_count++;
-			if (pv->ping_failed_count >= 10) {
-				pv->mpc.close();
-				checkDisconnected();
-			}
-			text3 = tr("Waiting for connection");
-			text3 += " (";
-			text3 += QString::number(pv->ping_failed_count);
-			text3 += ')';
-		}
-
-		if (isPlaying() && pv->sleep_time.isValid()) {
-			QDateTime now = QDateTime::currentDateTime();
-			qint64 secs = now.secsTo(pv->sleep_time);
-			if (secs > 0) {
-				int s = secs % 60;
-				int m = (secs / 60) % 60;
-				int h = (secs / 3600);
-				char tmp[100];
-				sprintf(tmp, "%u:%02u:%02u", h, m, s);
-				text2 = tr("Pause in %1 later").arg(tmp);
-			} else {
-				pv->sleep_time = QDateTime();
-				pause();
-			}
-		}
-	}
-
 	if (text2.isEmpty()) {
 		pv->status_label2->setVisible(false);
 	} else {
@@ -482,9 +442,11 @@ void MainWindow::timerEvent(QTimerEvent *)
 	}
 
 	pv->status_label3->setText(text3);
-
-	checkDisconnected();
 }
+
+
+
+
 
 void MainWindow::setPageConnected()
 {
