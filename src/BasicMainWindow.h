@@ -63,6 +63,8 @@ protected:
 	void doQuickLoad2();
 	virtual void doUpdateStatus();
 	void updatePlayIcon(PlayingStatus status, QToolButton *button, QAction *action);
+	virtual void displayExtraInformation(const QString &text2, const QString &text3) = 0;
+	void timerEvent(QTimerEvent *);
 public:
 	BasicMainWindow(QWidget *parent);
 	~BasicMainWindow();

@@ -55,8 +55,8 @@ TinyMainWindow::TinyMainWindow(QWidget *parent) :
 	ui->statusBar->addWidget(pv->status_label1, 1);
 	pv->status_label2 = new QLabel();
 	ui->statusBar->addWidget(pv->status_label2, 0);
-//	pv->status_label3 = new QLabel();
-//	ui->statusBar->addWidget(pv->status_label3, 0);
+	pv->status_label3 = new QLabel();
+	ui->statusBar->addWidget(pv->status_label3, 0);
 
 #if 0 //def Q_OS_WIN
 	priv->folder_icon = QIcon(":/image/winfolder.png");
@@ -183,28 +183,8 @@ bool TinyMainWindow::event(QEvent *event)
 	return QMainWindow::event(event);
 }
 
-void TinyMainWindow::timerEvent(QTimerEvent *)
+void TinyMainWindow::displayExtraInformation(QString const &text2, QString const &text3)
 {
-	QString text2;
-	QString text3;
-	if (pv->connected) {
-		if (isPlaying() && pv->sleep_time.isValid()) {
-			QDateTime now = QDateTime::currentDateTime();
-			qint64 secs = now.secsTo(pv->sleep_time);
-			if (secs > 0) {
-				int s = secs % 60;
-				int m = (secs / 60) % 60;
-				int h = (secs / 3600);
-				char tmp[100];
-				sprintf(tmp, "%u:%02u:%02u", h, m, s);
-				text2 = tr("Pause in %1 later").arg(tmp);
-			} else {
-				pv->sleep_time = QDateTime();
-				pause();
-			}
-		}
-	}
-
 	if (text2.isEmpty()) {
 		pv->status_label2->setVisible(false);
 	} else {
@@ -212,9 +192,8 @@ void TinyMainWindow::timerEvent(QTimerEvent *)
 		pv->status_label2->setVisible(true);
 	}
 
-//	pv->status_label3->setText(text3);
-
-	checkDisconnected();
+	pv->status_label3->setText(text3);
+	pv->status_label3->setVisible(true);
 }
 
 void TinyMainWindow::displayPlayStatus(const QString &title, const QString &artist, const QString & /*disc*/)

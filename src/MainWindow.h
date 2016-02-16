@@ -63,11 +63,11 @@ protected:
 	void setPageConnected();
 	void setPageDisconnected();
 	void setVolumeEnabled(bool f);
-	void timerEvent(QTimerEvent *);
 	void updatePlayIcon();
 	void updatePlaylist();
 	void updateTreeTopLevel();
 	void doUpdateStatus();
+	void displayExtraInformation(const QString &text2, const QString &text3);
 private slots:
 	void on_action_consume_triggered();
 	void on_action_debug_triggered();
