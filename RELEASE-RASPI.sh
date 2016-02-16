@@ -2,7 +2,7 @@
 cd build
 rm -fr SkyMPC
 mkdir SkyMPC
-rm SkyMPC-raspi.tar.gz SkyMPC
+rm SkyMPC-raspi.tar.gz
 cp Raspberry/SkyMPC SkyMPC
 cp ../SkyMPC_ja.qm SkyMPC
 cp ../SkyMPC.svg SkyMPC
