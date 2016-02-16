@@ -491,6 +491,11 @@ void MainWindow::setPageConnected()
 	ui->stackedWidget->setCurrentWidget(ui->page_connected);
 }
 
+void MainWindow::setPageDisconnected()
+{
+	ui->stackedWidget->setCurrentWidget(ui->page_disconnecccted);
+}
+
 void MainWindow::setVolumeEnabled(bool f)
 {
 	if (f) {
@@ -500,11 +505,6 @@ void MainWindow::setVolumeEnabled(bool f)
 		ui->toolButton_volume->setEnabled(false);
 		ui->toolButton_volume->setToolTip(tr("Volume change is not supported"));
 	}
-}
-
-void MainWindow::setPageDisconnected()
-{
-	ui->stackedWidget->setCurrentWidget(ui->page_disconnecccted);
 }
 
 void MainWindow::clearTreeAndList()
@@ -850,9 +850,6 @@ void MainWindow::onTreeViewContextMenuEvent(QContextMenuEvent *)
 
 void MainWindow::onListViewContextMenuEvent(QContextMenuEvent *)
 {
-	if (ui->listWidget_playlist->selectedItems().isEmpty()) {
-		return;
-	}
 	QMenu menu;
 	QAction a_PlayFromHere(tr("Play from here"), 0);
 	QAction a_Edit(tr("Edit"), 0);
@@ -863,17 +860,24 @@ void MainWindow::onListViewContextMenuEvent(QContextMenuEvent *)
 	QAction a_Delete(tr("Delete"), 0);
 	QAction a_Clear(tr("Clear play list"), 0);
 	QAction a_Property(tr("Property"), 0);
-	menu.addAction(&a_PlayFromHere);
-	menu.addSeparator();
-	menu.addAction(&a_Edit);
-	menu.addAction(&a_Cut);
-	menu.addAction(&a_Copy);
-	menu.addAction(&a_PasteInsert);
-	menu.addAction(&a_PasteAppend);
-	menu.addAction(&a_Delete);
-	menu.addAction(&a_Clear);
-	menu.addSeparator();
-	menu.addAction(&a_Property);
+	QAction a_AddLocation(tr("Add location"), 0);
+	if (ui->listWidget_playlist->selectedItems().isEmpty()) {
+		menu.addAction(&a_AddLocation);
+	} else {
+		menu.addAction(&a_PlayFromHere);
+		menu.addSeparator();
+		menu.addAction(&a_Edit);
+		menu.addAction(&a_AddLocation);
+		menu.addSeparator();
+		menu.addAction(&a_Cut);
+		menu.addAction(&a_Copy);
+		menu.addAction(&a_PasteInsert);
+		menu.addAction(&a_PasteAppend);
+		menu.addAction(&a_Delete);
+		menu.addAction(&a_Clear);
+		menu.addSeparator();
+		menu.addAction(&a_Property);
+	}
 	QAction *act = menu.exec(QCursor::pos() + QPoint(8, -8));
 	if (act == &a_PlayFromHere) {
 		int i = ui->listWidget_playlist->currentIndex().row();
@@ -882,6 +886,9 @@ void MainWindow::onListViewContextMenuEvent(QContextMenuEvent *)
 		}
 	} else if (act == &a_Edit) {
 		on_edit_location();
+	} else if (act == &a_AddLocation) {
+		execAddLocationDialog();
+		return;
 	} else if (act == &a_Cut) {
 		ui->action_edit_cut->trigger();
 	} else if (act == &a_Copy) {

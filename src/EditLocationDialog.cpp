@@ -104,6 +104,7 @@ void EditLocationDialog::accept()
 			bool ret = false;
 			QString newtext;
 			if (list.isEmpty()) {
+				newtext = loc; // revert to old text
 				ret = true;
 			} else if (list.size() == 1) {
 				if (list[0] == loc) {

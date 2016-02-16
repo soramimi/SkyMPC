@@ -55,24 +55,44 @@
 <context>
     <name>BasicMainWindow</name>
     <message>
-        <location filename="src/BasicMainWindow.cpp" line="301"/>
+        <location filename="src/BasicMainWindow.cpp" line="333"/>
         <source>Quick Save 1 was completed</source>
         <translation>クイックセーブ1が完了しました</translation>
     </message>
     <message>
-        <location filename="src/BasicMainWindow.cpp" line="308"/>
+        <location filename="src/BasicMainWindow.cpp" line="340"/>
         <source>Quick Save 2 was completed</source>
         <translation>クイックセーブ2が完了しました</translation>
     </message>
     <message>
-        <location filename="src/BasicMainWindow.cpp" line="513"/>
+        <location filename="src/BasicMainWindow.cpp" line="539"/>
         <source>Failed to load playlist.</source>
         <translation>プレイリストの読み込みに失敗しました。</translation>
     </message>
     <message>
-        <location filename="src/BasicMainWindow.cpp" line="523"/>
+        <location filename="src/BasicMainWindow.cpp" line="549"/>
         <source>Failed to save playlist.</source>
         <translation>プレイリストの保存に失敗しました。</translation>
+    </message>
+    <message>
+        <location filename="src/MainWindow.cpp" line="589"/>
+        <source>Pause</source>
+        <translation>一時停止</translation>
+    </message>
+    <message>
+        <location filename="src/MainWindow.cpp" line="593"/>
+        <source>&amp;Pause</source>
+        <translation>一時停止(&amp;P)</translation>
+    </message>
+    <message>
+        <location filename="src/MainWindow.cpp" line="596"/>
+        <source>Play</source>
+        <translation>再生</translation>
+    </message>
+    <message>
+        <location filename="src/MainWindow.cpp" line="600"/>
+        <source>&amp;Play</source>
+        <translation>再生(&amp;P)</translation>
     </message>
 </context>
 <context>
@@ -333,7 +353,6 @@
         <location filename="src/MainWindow.ui" line="211"/>
         <location filename="src/MainWindow.ui" line="214"/>
         <location filename="src/MainWindow.ui" line="902"/>
-        <location filename="src/MainWindow.cpp" line="649"/>
         <source>Play</source>
         <translation>再生</translation>
     </message>
@@ -377,7 +396,7 @@
     </message>
     <message>
         <location filename="src/MainWindow.ui" line="502"/>
-        <location filename="src/MainWindow.cpp" line="534"/>
+        <location filename="src/MainWindow.cpp" line="503"/>
         <source>Volume</source>
         <translation>ボリューム</translation>
     </message>
@@ -443,7 +462,6 @@
     </message>
     <message>
         <location filename="src/MainWindow.ui" line="899"/>
-        <location filename="src/MainWindow.cpp" line="653"/>
         <source>&amp;Play</source>
         <translation>再生(&amp;P)</translation>
     </message>
@@ -674,7 +692,7 @@
     </message>
     <message>
         <location filename="src/MainWindow.ui" line="1026"/>
-        <location filename="src/MainWindow.cpp" line="899"/>
+        <location filename="src/MainWindow.cpp" line="855"/>
         <source>Edit</source>
         <translation>編集</translation>
     </message>
@@ -685,7 +703,7 @@
     </message>
     <message>
         <location filename="src/MainWindow.ui" line="1037"/>
-        <location filename="src/MainWindow.cpp" line="902"/>
+        <location filename="src/MainWindow.cpp" line="858"/>
         <source>Paste (Insert)</source>
         <translation>ここに貼り付け</translation>
     </message>
@@ -701,6 +719,7 @@
     </message>
     <message>
         <location filename="src/MainWindow.ui" line="1048"/>
+        <location filename="src/MainWindow.cpp" line="863"/>
         <source>Add location</source>
         <translation>場所を追加</translation>
     </message>
@@ -720,78 +739,76 @@
         <translation></translation>
     </message>
     <message>
-        <location filename="src/MainWindow.cpp" line="124"/>
+        <location filename="src/MainWindow.cpp" line="120"/>
         <source>&amp;About SkyMPC</source>
         <translation>SkyMPCについて(&amp;A)</translation>
     </message>
     <message>
-        <location filename="src/MainWindow.cpp" line="1113"/>
+        <location filename="src/MainWindow.cpp" line="1077"/>
         <source>%1 songs in playlist</source>
         <translation>プレイリストに%1曲あります</translation>
     </message>
     <message>
-        <location filename="src/MainWindow.cpp" line="221"/>
+        <location filename="src/MainWindow.cpp" line="212"/>
         <source>Now sleep timer is working.</source>
         <translation>スリープタイマーが動作中です。</translation>
     </message>
     <message>
-        <location filename="src/MainWindow.cpp" line="222"/>
+        <location filename="src/MainWindow.cpp" line="213"/>
         <source>If this program is closed, the sleep timer will be canceled.</source>
         <oldsource>If this application is closed, the sleep timer will be canceled.</oldsource>
         <translation>プログラムを終了した場合、スリープタイマーはキャンセルされます。</translation>
     </message>
     <message>
-        <location filename="src/MainWindow.cpp" line="223"/>
+        <location filename="src/MainWindow.cpp" line="214"/>
         <source>Are you sure you want to close ?</source>
         <translation>終了してよろしいですか？</translation>
     </message>
     <message>
-        <location filename="src/MainWindow.cpp" line="502"/>
+        <location filename="src/MainWindow.cpp" line="469"/>
         <source>Pause in %1 later</source>
         <translation>あと %1 で停止します</translation>
     </message>
     <message>
-        <location filename="src/MainWindow.cpp" line="642"/>
         <source>Pause</source>
-        <translation>一時停止</translation>
+        <translation type="vanished">一時停止</translation>
     </message>
     <message>
-        <location filename="src/MainWindow.cpp" line="646"/>
         <source>&amp;Pause</source>
-        <translation>一時停止(&amp;P)</translation>
+        <translation type="vanished">一時停止(&amp;P)</translation>
     </message>
     <message>
-        <location filename="src/MainWindow.cpp" line="879"/>
+        <location filename="src/MainWindow.cpp" line="838"/>
         <source>Add to play list</source>
         <translation>プレイリストに追加</translation>
     </message>
     <message>
-        <location filename="src/MainWindow.cpp" line="898"/>
+        <location filename="src/MainWindow.cpp" line="854"/>
         <source>Play from here</source>
         <translation>ここから再生</translation>
     </message>
     <message>
-        <location filename="src/MainWindow.cpp" line="900"/>
+        <location filename="src/MainWindow.cpp" line="856"/>
         <source>Cut</source>
         <translation>切り取り</translation>
     </message>
     <message>
-        <location filename="src/MainWindow.cpp" line="901"/>
+        <location filename="src/MainWindow.cpp" line="857"/>
         <source>Copy</source>
         <translation>コピー</translation>
     </message>
     <message>
-        <location filename="src/MainWindow.cpp" line="903"/>
+        <location filename="src/MainWindow.cpp" line="859"/>
         <source>Paste (Append)</source>
         <translation>最後に貼り付け</translation>
     </message>
     <message>
-        <location filename="src/MainWindow.cpp" line="904"/>
+        <location filename="src/MainWindow.cpp" line="860"/>
         <source>Delete</source>
         <translation>削除</translation>
     </message>
     <message>
-        <location filename="src/MainWindow.cpp" line="905"/>
+        <location filename="src/MainWindow.cpp" line="861"/>
         <source>Clear play list</source>
         <translation>プレイリストを消去</translation>
     </message>
@@ -808,39 +825,39 @@
         <translation type="vanished">プレイリストの削除に失敗しました。</translation>
     </message>
     <message>
-        <location filename="src/MainWindow.cpp" line="1309"/>
+        <location filename="src/MainWindow.cpp" line="1266"/>
         <source>Please select only one item before use this command.</source>
         <oldsource>Please select only one item before run this item.</oldsource>
         <translation>アイテムと一つ洗濯してから実行してください。</translation>
     </message>
     <message>
-        <location filename="src/MainWindow.cpp" line="880"/>
-        <location filename="src/MainWindow.cpp" line="906"/>
+        <location filename="src/MainWindow.cpp" line="839"/>
+        <location filename="src/MainWindow.cpp" line="862"/>
         <source>Property</source>
         <translation>プロパティ</translation>
     </message>
     <message>
-        <location filename="src/MainWindow.cpp" line="487"/>
+        <location filename="src/MainWindow.cpp" line="454"/>
         <source>Waiting for connection</source>
         <translation>接続を待機しています</translation>
     </message>
     <message>
-        <location filename="src/MainWindow.cpp" line="537"/>
+        <location filename="src/MainWindow.cpp" line="506"/>
         <source>Volume change is not supported</source>
         <translation>ボリュームの変更はサポートされていません</translation>
     </message>
     <message>
-        <location filename="src/MainWindow.cpp" line="1229"/>
+        <location filename="src/MainWindow.cpp" line="1186"/>
         <source>Reconnected</source>
         <translation>再接続しました</translation>
     </message>
     <message>
-        <location filename="src/MainWindow.cpp" line="1280"/>
+        <location filename="src/MainWindow.cpp" line="1237"/>
         <source>The name is invalid.</source>
         <translation>名前が不正です。</translation>
     </message>
     <message>
-        <location filename="src/MainWindow.cpp" line="1470"/>
+        <location filename="src/MainWindow.cpp" line="1427"/>
         <source>Overlapped item was not found.</source>
         <translation>重複したアイテムは見つかりませんでした。</translation>
     </message>
@@ -1386,27 +1403,27 @@
         <translation></translation>
     </message>
     <message>
-        <location filename="src/TinyMainWindow.cpp" line="94"/>
+        <location filename="src/TinyMainWindow.cpp" line="93"/>
         <source>&amp;About SkyMPC</source>
         <translation>SkyMPCについて(&amp;A)</translation>
     </message>
     <message>
-        <location filename="src/TinyMainWindow.cpp" line="160"/>
+        <location filename="src/TinyMainWindow.cpp" line="153"/>
         <source>Now sleep timer is working.</source>
         <translation>スリープタイマーが動作中です。</translation>
     </message>
     <message>
-        <location filename="src/TinyMainWindow.cpp" line="161"/>
+        <location filename="src/TinyMainWindow.cpp" line="154"/>
         <source>If this program is closed, the sleep timer will be canceled.</source>
         <translation>プログラムを終了した場合、スリープタイマーはキャンセルされます。</translation>
     </message>
     <message>
-        <location filename="src/TinyMainWindow.cpp" line="162"/>
+        <location filename="src/TinyMainWindow.cpp" line="155"/>
         <source>Are you sure you want to close ?</source>
         <translation>終了してよろしいですか？</translation>
     </message>
     <message>
-        <location filename="src/TinyMainWindow.cpp" line="207"/>
+        <location filename="src/TinyMainWindow.cpp" line="200"/>
         <source>Pause in %1 later</source>
         <translation>あと %1 で停止します</translation>
     </message>
@@ -1419,7 +1436,7 @@
         <translation type="vanished">一時停止(&amp;P)</translation>
     </message>
     <message>
-        <location filename="src/TinyMainWindow.cpp" line="432"/>
+        <location filename="src/TinyMainWindow.cpp" line="442"/>
         <source>Reconnected</source>
         <translation>再接続しました</translation>
     </message>
@@ -1436,17 +1453,17 @@
         <translation type="vanished">プレイリストの削除に失敗しました。</translation>
     </message>
     <message>
-        <location filename="src/TinyMainWindow.cpp" line="473"/>
+        <location filename="src/TinyMainWindow.cpp" line="482"/>
         <source>The name is invalid.</source>
         <translation>名前が不正です。</translation>
     </message>
     <message>
-        <location filename="src/TinyMainWindow.cpp" line="497"/>
+        <location filename="src/TinyMainWindow.cpp" line="506"/>
         <source>Quick Save 1 was completed</source>
         <translation>クイックセーブ1が完了しました</translation>
     </message>
     <message>
-        <location filename="src/TinyMainWindow.cpp" line="504"/>
+        <location filename="src/TinyMainWindow.cpp" line="513"/>
         <source>Quick Save 2 was completed</source>
         <translation>クイックセーブ2が完了しました</translation>
     </message>

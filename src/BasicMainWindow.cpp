@@ -411,11 +411,9 @@ void BasicMainWindow::connectToMPD(const Host &host)
 	pv->host = host;
 	if (pv->mpc.open(pv->host)) {
 		pv->connected = true;
-
+		setPageConnected();
 		updatePlayingStatus();
-
 		updateTreeTopLevel();
-
 		updatePlaylist();
 
 		// check volume support
@@ -553,14 +551,19 @@ bool BasicMainWindow::savePlaylist(const QString &name)
 	}
 }
 
-
-
 void BasicMainWindow::execAddLocationDialog()
 {
+	QString http = "http://";
 	EditLocationDialog dlg(this);
-	dlg.setLocation("http://");
+	dlg.setLocation(http);
 	if (dlg.exec() == QDialog::Accepted) {
-		QStringList locs = dlg.location().split(' ', QString::SkipEmptyParts);
+		QStringList locs;
+		QString text = dlg.location().trimmed();
+		if (text.startsWith(http)) {
+			locs = text.split(' ', QString::SkipEmptyParts);
+		} else {
+			locs = text.split('\n', QString::SkipEmptyParts);
+		}
 		for (QString const &loc : locs) {
 			if (!loc.isEmpty()) {
 				pv->mpc.do_add(loc);
