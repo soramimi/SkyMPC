@@ -13,7 +13,8 @@ TEMPLATE = app
 
 TRANSLATIONS = SkyMPC_ja.ts
 
-SOURCES += src/main.cpp\
+SOURCES += ../source_revision.c \
+	src/main.cpp \
 	src/MainWindow.cpp \
 	src/MusicPlayerClient.cpp \
 	src/MyTreeWidget.cpp \
