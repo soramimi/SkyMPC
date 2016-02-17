@@ -1,3 +1,5 @@
 build/*
 SkyMPC.pro.user
 SkyMPC.rc
+source_revision.c
+

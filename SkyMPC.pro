@@ -13,7 +13,7 @@ TEMPLATE = app
 
 TRANSLATIONS = SkyMPC_ja.ts
 
-SOURCES += ../source_revision.c \
+SOURCES += source_revision.c \
 	src/main.cpp \
 	src/MainWindow.cpp \
 	src/MusicPlayerClient.cpp \
