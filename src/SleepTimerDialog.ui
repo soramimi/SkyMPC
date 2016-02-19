@@ -66,7 +66,7 @@
      <item>
       <widget class="QPushButton" name="pushButton_start">
        <property name="text">
-        <string>Start</string>
+        <string>&amp;Start</string>
        </property>
        <property name="default">
         <bool>true</bool>
@@ -76,7 +76,7 @@
      <item>
       <widget class="QPushButton" name="pushButton_stop">
        <property name="text">
-        <string>Stop</string>
+        <string>S&amp;top</string>
        </property>
       </widget>
      </item>

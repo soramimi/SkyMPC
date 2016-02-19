@@ -1130,6 +1130,10 @@
    </property>
   </action>
   <action name="action_sleep_timer">
+   <property name="icon">
+    <iconset resource="../resources.qrc">
+     <normaloff>:/image/timer.svgz</normaloff>:/image/timer.svgz</iconset>
+   </property>
    <property name="text">
     <string>Sleep &amp;timer...</string>
    </property>
