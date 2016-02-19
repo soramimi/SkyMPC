@@ -13,9 +13,12 @@ class EditPlaylistDialog : public QDialog
 {
 	Q_OBJECT
 private:
+	Ui::EditPlaylistDialog *ui;
 	MusicPlayerClient *mpc;
 	void updatePlaylistList();
 	void saveSettings();
+	bool selectItem(const QString &name);
+	bool isTemporaryItem(const QString &name);
 public:
 	explicit EditPlaylistDialog(QWidget *parent, MusicPlayerClient *mpc);
 	~EditPlaylistDialog();
@@ -35,8 +38,6 @@ private slots:
 	void on_pushButton_delete_clicked();
 	void on_pushButton_save_clicked();
 	void on_checkBox_show_temporary_clicked();
-private:
-	Ui::EditPlaylistDialog *ui;
 };
 
 #endif // LOADPLAYLISTDIALOG_H

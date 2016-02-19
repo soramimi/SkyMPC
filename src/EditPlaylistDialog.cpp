@@ -44,6 +44,11 @@ void EditPlaylistDialog::saveSettings()
 	}
 }
 
+bool EditPlaylistDialog::isTemporaryItem(QString const &name)
+{
+	return name.startsWith('_') && name.endsWith('_');
+}
+
 void EditPlaylistDialog::updatePlaylistList()
 {
 	bool showtemp = ui->checkBox_show_temporary->isChecked();
@@ -56,13 +61,26 @@ void EditPlaylistDialog::updatePlaylistList()
 	for (MusicPlayerClient::Item const &item : items) {
 		if (item.kind == "playlist") {
 			QString name = item.text;
-			if (!showtemp && name.size() > 1 && name.startsWith('_') && name.endsWith('_')) {
+			if (!showtemp && name.size() > 1 && isTemporaryItem(name)) {
 				// nop
 			} else {
 				ui->listWidget_list->addItem(name);
 			}
 		}
 	}
+}
+
+bool EditPlaylistDialog::selectItem(QString const &name)
+{
+	int n = ui->listWidget_list->count();
+	for (int i = 0; i < n; i++) {
+		QListWidgetItem *item = ui->listWidget_list->item(i);
+		if (item->text() == name) {
+			ui->listWidget_list->setCurrentItem(item);
+			return true;
+		}
+	}
+	return false;
 }
 
 void EditPlaylistDialog::changeEvent(QEvent *e)
@@ -193,6 +211,7 @@ void EditPlaylistDialog::on_pushButton_save_clicked()
 	}
 	mpc->do_save(name);
 	updatePlaylistList();
+	selectItem(name);
 }
 
 void EditPlaylistDialog::on_checkBox_show_temporary_clicked()
