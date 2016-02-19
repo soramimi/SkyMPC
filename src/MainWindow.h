@@ -13,6 +13,7 @@ class MainWindow;
 }
 class QTreeWidgetItem;
 class QListWidgetItem;
+class QComboBox;
 
 struct ResultItem;
 
@@ -38,6 +39,8 @@ private:
 	static bool isRoot(QTreeWidgetItem *item);
 	static bool isFolder(QTreeWidgetItem *item);
 	static bool isFile(QTreeWidgetItem *item);
+	QComboBox *serversComboBox();
+	void updateServersComboBox(QComboBox *cbox);
 public:
 	explicit MainWindow(QWidget *parent = 0);
 	~MainWindow();

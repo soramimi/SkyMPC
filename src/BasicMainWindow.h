@@ -48,7 +48,6 @@ protected:
 	void invalidateCurrentSongIndicator();
 	void displayProgress(double elapsed);
 
-	static QString makeServerText(const Host &host);
 	QString serverName() const;
 	void showNotify(const QString &text);
 	void showError(const QString &text);
@@ -84,6 +83,7 @@ public:
 	bool savePlaylist(const QString &name);
 	void execAddLocationDialog();
 
+	static QString makeServerText(const Host &host);
 	static BasicMainWindow *findMainWindow(QObject *hint = nullptr);
 private slots:
 	void onVolumeChanged();

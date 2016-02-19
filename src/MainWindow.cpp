@@ -243,27 +243,38 @@ void MainWindow::closeEvent(QCloseEvent *event)
 	QMainWindow::closeEvent(event);
 }
 
-void MainWindow::updateServersComboBox()
+QComboBox *MainWindow::serversComboBox()
 {
-	ui->comboBox->setUpdatesEnabled(false);
-	ui->comboBox->clear();
+	return ui->comboBox;
+}
+
+void MainWindow::updateServersComboBox(QComboBox *cbox)
+{
+	cbox->setUpdatesEnabled(false);
+	cbox->clear();
 	int sel = -1;
 	std::vector<ServerItem> servers;
 	loadPresetServers(&servers);
 	for (int i = 0; i < (int)servers.size(); i++) {
 		QString text = servers[i].name;
-		ui->comboBox->addItem(text);
+		cbox->addItem(text);
 		if (pv->host == servers[i].host) {
 			sel = i;
 		}
 	}
 	if (sel < 0) {
 		QString text = makeServerText(pv->host);
-		sel = ui->comboBox->count();
-		ui->comboBox->addItem(text);
+		sel = cbox->count();
+		cbox->addItem(text);
 	}
-	ui->comboBox->setCurrentIndex(sel);
-	ui->comboBox->setUpdatesEnabled(true);
+	cbox->setCurrentIndex(sel);
+	cbox->setUpdatesEnabled(true);
+}
+
+void MainWindow::updateServersComboBox()
+{
+	QComboBox *cbox = serversComboBox();
+	updateServersComboBox(cbox);
 }
 
 bool MainWindow::eventFilter(QObject *obj, QEvent *event)
