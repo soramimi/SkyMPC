@@ -19,7 +19,7 @@
         <translation></translation>
     </message>
     <message>
-        <location filename="src/AboutDialog.cpp" line="17"/>
+        <location filename="src/AboutDialog.cpp" line="19"/>
         <source>About SkyMPC</source>
         <translation>SkyMPCについて</translation>
     </message>
@@ -85,22 +85,22 @@
         <translation>プレイリストの保存に失敗しました。</translation>
     </message>
     <message>
-        <location filename="src/MainWindow.cpp" line="551"/>
+        <location filename="src/MainWindow.cpp" line="562"/>
         <source>Pause</source>
         <translation>一時停止</translation>
     </message>
     <message>
-        <location filename="src/MainWindow.cpp" line="555"/>
+        <location filename="src/MainWindow.cpp" line="566"/>
         <source>&amp;Pause</source>
         <translation>一時停止(&amp;P)</translation>
     </message>
     <message>
-        <location filename="src/MainWindow.cpp" line="558"/>
+        <location filename="src/MainWindow.cpp" line="569"/>
         <source>Play</source>
         <translation>再生</translation>
     </message>
     <message>
-        <location filename="src/MainWindow.cpp" line="562"/>
+        <location filename="src/MainWindow.cpp" line="573"/>
         <source>&amp;Play</source>
         <translation>再生(&amp;P)</translation>
     </message>
@@ -304,17 +304,17 @@
         <translation>閉じる(&amp;C)</translation>
     </message>
     <message>
-        <location filename="src/EditPlaylistDialog.cpp" line="172"/>
+        <location filename="src/EditPlaylistDialog.cpp" line="190"/>
         <source>Delete the playlist:</source>
         <translation>プレイリストを削除します:</translation>
     </message>
     <message>
-        <location filename="src/EditPlaylistDialog.cpp" line="172"/>
+        <location filename="src/EditPlaylistDialog.cpp" line="190"/>
         <source>Are you sure ?</source>
         <translation>よろしいですか？</translation>
     </message>
     <message>
-        <location filename="src/EditPlaylistDialog.cpp" line="191"/>
+        <location filename="src/EditPlaylistDialog.cpp" line="209"/>
         <source>The name is invalid.</source>
         <translation>名前が不正です。</translation>
     </message>
@@ -406,7 +406,7 @@
     </message>
     <message>
         <location filename="src/MainWindow.ui" line="502"/>
-        <location filename="src/MainWindow.cpp" line="465"/>
+        <location filename="src/MainWindow.cpp" line="476"/>
         <source>Volume</source>
         <translation>ボリューム</translation>
     </message>
@@ -491,12 +491,12 @@
         <translation>重複の削除</translation>
     </message>
     <message>
-        <location filename="src/MainWindow.ui" line="1134"/>
+        <location filename="src/MainWindow.ui" line="1138"/>
         <source>Sleep &amp;timer...</source>
         <translation>スリープタイマー(&amp;T)...</translation>
     </message>
     <message>
-        <location filename="src/MainWindow.ui" line="1137"/>
+        <location filename="src/MainWindow.ui" line="1141"/>
         <source>Shift+F1</source>
         <translation></translation>
     </message>
@@ -702,7 +702,7 @@
     </message>
     <message>
         <location filename="src/MainWindow.ui" line="1026"/>
-        <location filename="src/MainWindow.cpp" line="817"/>
+        <location filename="src/MainWindow.cpp" line="828"/>
         <source>Edit</source>
         <translation>編集</translation>
     </message>
@@ -713,7 +713,7 @@
     </message>
     <message>
         <location filename="src/MainWindow.ui" line="1037"/>
-        <location filename="src/MainWindow.cpp" line="820"/>
+        <location filename="src/MainWindow.cpp" line="831"/>
         <source>Paste (Insert)</source>
         <translation>ここに貼り付け</translation>
     </message>
@@ -729,7 +729,7 @@
     </message>
     <message>
         <location filename="src/MainWindow.ui" line="1048"/>
-        <location filename="src/MainWindow.cpp" line="825"/>
+        <location filename="src/MainWindow.cpp" line="836"/>
         <source>Add location</source>
         <translation>場所を追加</translation>
     </message>
@@ -754,7 +754,7 @@
         <translation>SkyMPCについて(&amp;A)</translation>
     </message>
     <message>
-        <location filename="src/MainWindow.cpp" line="1039"/>
+        <location filename="src/MainWindow.cpp" line="1050"/>
         <source>%1 songs in playlist</source>
         <translation>プレイリストに%1曲あります</translation>
     </message>
@@ -787,37 +787,37 @@
         <translation type="vanished">一時停止(&amp;P)</translation>
     </message>
     <message>
-        <location filename="src/MainWindow.cpp" line="800"/>
+        <location filename="src/MainWindow.cpp" line="811"/>
         <source>Add to play list</source>
         <translation>プレイリストに追加</translation>
     </message>
     <message>
-        <location filename="src/MainWindow.cpp" line="816"/>
+        <location filename="src/MainWindow.cpp" line="827"/>
         <source>Play from here</source>
         <translation>ここから再生</translation>
     </message>
     <message>
-        <location filename="src/MainWindow.cpp" line="818"/>
+        <location filename="src/MainWindow.cpp" line="829"/>
         <source>Cut</source>
         <translation>切り取り</translation>
     </message>
     <message>
-        <location filename="src/MainWindow.cpp" line="819"/>
+        <location filename="src/MainWindow.cpp" line="830"/>
         <source>Copy</source>
         <translation>コピー</translation>
     </message>
     <message>
-        <location filename="src/MainWindow.cpp" line="821"/>
+        <location filename="src/MainWindow.cpp" line="832"/>
         <source>Paste (Append)</source>
         <translation>最後に貼り付け</translation>
     </message>
     <message>
-        <location filename="src/MainWindow.cpp" line="822"/>
+        <location filename="src/MainWindow.cpp" line="833"/>
         <source>Delete</source>
         <translation>削除</translation>
     </message>
     <message>
-        <location filename="src/MainWindow.cpp" line="823"/>
+        <location filename="src/MainWindow.cpp" line="834"/>
         <source>Clear play list</source>
         <translation>プレイリストを消去</translation>
     </message>
@@ -834,14 +834,14 @@
         <translation type="vanished">プレイリストの削除に失敗しました。</translation>
     </message>
     <message>
-        <location filename="src/MainWindow.cpp" line="1228"/>
+        <location filename="src/MainWindow.cpp" line="1239"/>
         <source>Please select only one item before use this command.</source>
         <oldsource>Please select only one item before run this item.</oldsource>
         <translation>アイテムと一つ洗濯してから実行してください。</translation>
     </message>
     <message>
-        <location filename="src/MainWindow.cpp" line="801"/>
-        <location filename="src/MainWindow.cpp" line="824"/>
+        <location filename="src/MainWindow.cpp" line="812"/>
+        <location filename="src/MainWindow.cpp" line="835"/>
         <source>Property</source>
         <translation>プロパティ</translation>
     </message>
@@ -850,22 +850,22 @@
         <translation type="vanished">接続を待機しています</translation>
     </message>
     <message>
-        <location filename="src/MainWindow.cpp" line="468"/>
+        <location filename="src/MainWindow.cpp" line="479"/>
         <source>Volume change is not supported</source>
         <translation>ボリュームの変更はサポートされていません</translation>
     </message>
     <message>
-        <location filename="src/MainWindow.cpp" line="1148"/>
+        <location filename="src/MainWindow.cpp" line="1159"/>
         <source>Reconnected</source>
         <translation>再接続しました</translation>
     </message>
     <message>
-        <location filename="src/MainWindow.cpp" line="1199"/>
+        <location filename="src/MainWindow.cpp" line="1210"/>
         <source>The name is invalid.</source>
         <translation>名前が不正です。</translation>
     </message>
     <message>
-        <location filename="src/MainWindow.cpp" line="1389"/>
+        <location filename="src/MainWindow.cpp" line="1400"/>
         <source>Overlapped item was not found.</source>
         <translation>重複したアイテムは見つかりませんでした。</translation>
     </message>
@@ -988,13 +988,15 @@
     </message>
     <message>
         <location filename="src/SleepTimerDialog.ui" line="69"/>
-        <source>Start</source>
-        <translation>開始</translation>
+        <source>&amp;Start</source>
+        <oldsource>Start</oldsource>
+        <translation>開始(&amp;S)</translation>
     </message>
     <message>
         <location filename="src/SleepTimerDialog.ui" line="79"/>
-        <source>Stop</source>
-        <translation>停止</translation>
+        <source>S&amp;top</source>
+        <oldsource>Stop</oldsource>
+        <translation>停止(&amp;T)</translation>
     </message>
     <message>
         <location filename="src/SleepTimerDialog.ui" line="86"/>
