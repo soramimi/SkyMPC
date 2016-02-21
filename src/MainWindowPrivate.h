@@ -62,6 +62,8 @@ struct BasicMainWindow::Private {
 
 	bool release_mouse_event = false;
 
+	QString connect_text;
+
 	QDateTime sleep_time;
 
 	int ping_failed_count = 0;

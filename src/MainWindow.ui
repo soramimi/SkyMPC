@@ -39,7 +39,7 @@
        </sizepolicy>
       </property>
       <property name="currentIndex">
-       <number>0</number>
+       <number>1</number>
       </property>
       <widget class="QWidget" name="page_connected">
        <property name="sizePolicy">
@@ -653,9 +653,9 @@
            </spacer>
           </item>
           <item>
-           <widget class="QPushButton" name="pushButton_manage_connections">
-            <property name="text">
-             <string>Connect...</string>
+           <widget class="QComboBox" name="comboBox_2">
+            <property name="sizeAdjustPolicy">
+             <enum>QComboBox::AdjustToContents</enum>
             </property>
            </widget>
           </item>
@@ -1171,7 +1171,6 @@
   <tabstop>horizontalSlider</tabstop>
   <tabstop>treeWidget</tabstop>
   <tabstop>listWidget_playlist</tabstop>
-  <tabstop>pushButton_manage_connections</tabstop>
  </tabstops>
  <resources>
   <include location="../resources.qrc"/>

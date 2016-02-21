@@ -451,6 +451,8 @@ void BasicMainWindow::connectToMPD(const Host &host)
 {
 	stopSleepTimer();
 
+	qApp->setOverrideCursor(Qt::WaitCursor);
+
 	pv->ping_failed_count = 0;
 	pv->mpc.close();
 	stopStatusThread();
@@ -492,6 +494,8 @@ void BasicMainWindow::connectToMPD(const Host &host)
 		clearTreeAndList();
 		setPageDisconnected();
 	}
+
+	qApp->restoreOverrideCursor();
 
 	startStatusThread();
 }

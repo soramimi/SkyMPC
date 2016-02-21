@@ -22,6 +22,10 @@ class MainWindow : public BasicMainWindow
 	Q_OBJECT
 private:
 	Ui::MainWindow *ui;
+	QString strConnect() const
+	{
+		return tr("Connect...");
+	}
 private:
     QIcon folderIcon();
 	void updateCurrentSongIndicator();
@@ -40,7 +44,8 @@ private:
 	static bool isFolder(QTreeWidgetItem *item);
 	static bool isFile(QTreeWidgetItem *item);
 	QComboBox *serversComboBox();
-	void updateServersComboBox(QComboBox *cbox);
+	void updateServersComboBox(QComboBox *cbox, const QString &firstitem);
+	void comboboxIndexChanged(QComboBox *cbox, int index);
 public:
 	explicit MainWindow(QWidget *parent = 0);
 	~MainWindow();
@@ -101,7 +106,6 @@ private slots:
 	void on_action_single_triggered();
 	void on_action_sleep_timer_triggered();
 	void on_action_stop_triggered();
-	void on_comboBox_currentIndexChanged(int index);
 	void on_horizontalSlider_valueChanged(int value);
 	void on_listWidget_playlist_doubleClicked(const QModelIndex &index);
 	void on_pushButton_manage_connections_clicked();
@@ -122,6 +126,8 @@ private slots:
 	void onSliderPressed();
 	void onSliderReleased();
 	void onTreeViewContextMenuEvent(QContextMenuEvent *);
+	void on_comboBox_currentIndexChanged(int index);
+	void on_comboBox_2_currentIndexChanged(int index);
 };
 
 #endif // MAINWINDOW_H
