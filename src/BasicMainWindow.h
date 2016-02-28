@@ -3,10 +3,12 @@
 
 #include <QMainWindow>
 #include <QEvent>
+#include "MusicPlayerClient.h"
 
 class Host;
 class Command;
 class QToolButton;
+class QListWidget;
 
 enum class PlayingStatus {
 	Stop,
@@ -19,6 +21,7 @@ class BasicMainWindow : public QMainWindow {
 protected:
 	struct Private;
 	Private *pv;
+	MusicPlayerClient *mpc();
 	static QString makeStyleSheetText();
 	void releaseMouseIfGrabbed();
 	void stopSleepTimer();
@@ -44,7 +47,7 @@ protected:
 	virtual void displayProgress(const QString & /*text*/) {}
 	virtual void updatePlayIcon() {}
 	virtual void updatePlaylist() {}
-	virtual void updateCurrentSongIndicator() {}
+	virtual void updateCurrentSongInfo() {}
 	void invalidateCurrentSongIndicator();
 	void displayProgress(double elapsed);
 
@@ -64,6 +67,7 @@ protected:
 	void updatePlayIcon(PlayingStatus status, QToolButton *button, QAction *action);
 	virtual void displayExtraInformation(const QString &text2, const QString &text3) = 0;
 	void timerEvent(QTimerEvent *);
+	static void updatePlaylist(MusicPlayerClient *mpc, QListWidget *listwidget, QList<MusicPlayerClient::Item> *items);
 public:
 	BasicMainWindow(QWidget *parent);
 	~BasicMainWindow();

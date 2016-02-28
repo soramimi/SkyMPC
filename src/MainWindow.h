@@ -28,7 +28,7 @@ private:
 	}
 private:
     QIcon folderIcon();
-	void updateCurrentSongIndicator();
+	void updateCurrentSongInfo();
 	void updateTree(ResultItem *info);
 	void clearTreeAndList();
 	void updateServersComboBox();
@@ -46,6 +46,8 @@ private:
 	QComboBox *serversComboBox();
 	void updateServersComboBox(QComboBox *cbox, const QString &firstitem);
 	void comboboxIndexChanged(QComboBox *cbox, int index);
+	void updateWindowTitle();
+	void paste(int row);
 public:
 	explicit MainWindow(QWidget *parent = 0);
 	~MainWindow();

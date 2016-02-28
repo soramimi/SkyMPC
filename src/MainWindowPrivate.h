@@ -41,9 +41,12 @@ struct BasicMainWindow::Private {
 		PlayingStatus playing;
 		int current_song = 0;
 		int current_song_indicator = -1;
-		QString windowtitle;
-		QString song_information;
 		double total = 0;
+		QString current_file;
+		QString current_title;
+		QString current_artist;
+		QString current_disc;
+		int current_track = 0;
 	} status;
 	double total_seconds = 0;
 	bool repeat_enabled = false;

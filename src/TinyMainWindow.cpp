@@ -273,7 +273,7 @@ void TinyMainWindow::updatePlaylist()
 {
 	QList<MusicPlayerClient::Item> vec;
 
-	if (!pv->mpc.do_playlistinfo(QString(), &vec)) {
+	if (!mpc()->do_playlistinfo(QString(), &vec)) {
 		return;
 	}
 
@@ -291,7 +291,7 @@ void TinyMainWindow::updatePlaylist()
 				QString time;
 				{
 					QList<MusicPlayerClient::Item> v;
-					pv->mpc.do_listallinfo(path, &v);
+					mpc()->do_listallinfo(path, &v);
 					if (v.size() == 1) {
 						text = v.front().map.get("Title");
 						artist = v.front().map.get("Artist");
@@ -338,13 +338,13 @@ void TinyMainWindow::on_toolButton_sleep_timer_clicked()
 void TinyMainWindow::onVolumeChanged()
 {
 	int v = pv->volume_popup.value();
-	pv->mpc.do_setvol(v);
+	mpc()->do_setvol(v);
 }
 
 void TinyMainWindow::onSliderPressed()
 {
 	if (pv->status.playing == PlayingStatus::Play) {
-		pv->mpc.do_pause(true);
+		mpc()->do_pause(true);
 	}
 }
 
@@ -371,32 +371,32 @@ void TinyMainWindow::on_action_stop_triggered()
 
 void TinyMainWindow::on_action_previous_triggered()
 {
-	pv->mpc.do_previous();
+	mpc()->do_previous();
 }
 
 void TinyMainWindow::on_action_next_triggered()
 {
-	pv->mpc.do_next();
+	mpc()->do_next();
 }
 
 void TinyMainWindow::on_action_repeat_triggered()
 {
-	pv->mpc.do_repeat(!pv->repeat_enabled);
+	mpc()->do_repeat(!pv->repeat_enabled);
 }
 
 void TinyMainWindow::on_action_random_triggered()
 {
-	pv->mpc.do_random(!pv->random_enabled);
+	mpc()->do_random(!pv->random_enabled);
 }
 
 void TinyMainWindow::on_action_single_triggered()
 {
-	pv->mpc.do_single(!pv->single_enabled);
+	mpc()->do_single(!pv->single_enabled);
 }
 
 void TinyMainWindow::on_action_consume_triggered()
 {
-	pv->mpc.do_consume(!pv->consume_enabled);
+	mpc()->do_consume(!pv->consume_enabled);
 }
 
 void TinyMainWindow::on_action_network_connect_triggered()
@@ -453,7 +453,7 @@ void TinyMainWindow::on_toolButton_consume_clicked()
 
 void TinyMainWindow::on_action_playlist_edit_triggered()
 {
-	EditPlaylistDialog dlg(this, &pv->mpc);
+	EditPlaylistDialog dlg(this, mpc());
 	if (dlg.exec() != QDialog::Accepted) return;
 	QString name = dlg.name();
 	if (name.isEmpty()) return;

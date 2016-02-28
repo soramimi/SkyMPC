@@ -25,7 +25,6 @@ Toast::Toast(BasicMainWindow *parent, QString const &text, Length length)
 
 Toast::~Toast()
 {
-	qDebug("dtor");
 }
 
 void Toast::onTimeout()
