@@ -110,7 +110,6 @@ private slots:
 	void on_action_stop_triggered();
 	void on_horizontalSlider_valueChanged(int value);
 	void on_listWidget_playlist_doubleClicked(const QModelIndex &index);
-	void on_pushButton_manage_connections_clicked();
 	void on_toolButton_consume_clicked();
 	void on_toolButton_next_clicked();
 	void on_toolButton_play_clicked();

@@ -113,17 +113,12 @@ void BasicMainWindow::eatMouse()
 
 void BasicMainWindow::updatePlayingStatus()
 {
-	bool updateplaylist = false;
-
 	PlayingStatus status = PlayingStatus::Stop;
 
 	if (mpc()->isOpen()) {
 		PlayingInfo info;
 		pv->status_thread.data(&info);
 		QString current_file = info.property.get("file");
-		if (current_file != pv->status.current_file) {
-			updateplaylist = true;
-		}
 		QString state = info.status.get("state");
 		if (state == "play") {
 			status = PlayingStatus::Play;

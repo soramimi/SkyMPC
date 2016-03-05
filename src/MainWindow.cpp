@@ -1264,10 +1264,7 @@ void MainWindow::on_action_edit_delete_triggered()
 	}
 }
 
-void MainWindow::on_pushButton_manage_connections_clicked()
-{
-	ui->action_network_connect->trigger();
-}
+
 
 void MainWindow::comboboxIndexChanged(QComboBox *cbox, int index)
 {
