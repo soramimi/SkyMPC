@@ -1,7 +1,6 @@
 #include "MemoryReader.h"
 
 MemoryReader::MemoryReader(char const *ptr, qint64 len)
-	: offset(-1)
 {
 	setData(ptr, len);
 }
@@ -20,20 +19,12 @@ bool MemoryReader::isSequential() const
 bool MemoryReader::open(OpenMode mode)
 {
 	mode |= QIODevice::Unbuffered;
-	if (mode == (QIODevice::ReadOnly | QIODevice::Unbuffered)) {
-		if (begin && begin < end && offset == -1) {
-			if (QIODevice::open(mode)) {
-				offset = 0;
-				return true;
-			}
-		}
-	}
-	return false;
+	return QIODevice::open(mode | QIODevice::Unbuffered);
 }
 
 qint64 MemoryReader::pos() const
 {
-	return offset;
+	return QIODevice::pos();
 }
 
 qint64 MemoryReader::size() const
@@ -46,38 +37,20 @@ qint64 MemoryReader::size() const
 
 bool MemoryReader::seek(qint64 pos)
 {
-	if (begin && begin < end) {
-		if (begin + pos <= end) {
-			offset = pos;
-			return true;
-		}
-	}
-	return false;
+	return QIODevice::seek(pos);
 }
 
 bool MemoryReader::atEnd() const
 {
-	if (begin && begin < end && offset != -1 && begin + offset < end) {
-		return false;
-	}
-	return true;
+	return QIODevice::atEnd();
 }
 
 bool MemoryReader::reset()
 {
 	if (begin && begin < end) {
-		offset = 0;
 		return true;
 	}
 	return false;
-}
-
-qint64 MemoryReader::bytesAvailable() const
-{
-	if (begin && begin < end && offset != -1 && begin + offset < end) {
-		return end - (begin + offset);
-	}
-	return 0;
 }
 
 qint64 MemoryReader::bytesToWrite() const
@@ -107,44 +80,9 @@ qint64 MemoryReader::readData(char *data, qint64 maxlen)
 		if (n > maxlen) {
 			n = maxlen;
 		}
-		if (data) {
-			memcpy(data, begin + offset, n);
-		}
-		offset += n;
+		memcpy(data, begin + pos(), n);
 	}
 	return n;
-}
-
-qint64 MemoryReader::readLineData(char *data, qint64 maxlen)
-{
-	if (begin && begin < end && offset != -1 && begin + offset < end) {
-		char const *start = begin + offset;
-		char const *ptr = start;
-		while (ptr < end) {
-			if (*ptr == '\n') {
-				ptr++;
-				break;
-			}
-			if (*ptr == '\r') {
-				ptr++;
-				if (ptr < end && *ptr == '\n') {
-					ptr++;
-				}
-				break;
-			}
-			ptr++;
-		}
-		qint64 n = ptr - start;
-		if (n > maxlen) {
-			n = maxlen;
-		}
-		if (data) {
-			memcpy(data, start, n);
-		}
-		offset += n;
-		return n;
-	}
-	return 0;
 }
 
 qint64 MemoryReader::writeData(const char * /*data*/, qint64 /*len*/)

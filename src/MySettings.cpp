@@ -3,6 +3,7 @@
 #include <QApplication>
 #include <QDir>
 #include <QString>
+#include <QStandardPaths>
 
 #ifdef QT_VERSION
 #include "pathcat.h"
@@ -13,17 +14,12 @@ char const *KEY_AutoReconnect = "AutoReconnect";
 #if defined(Q_OS_WIN)
 #include <windows.h>
 #include <shlobj.h>
+#include <QDebug>
 
 QString makeApplicationDataDir()
 {
-	QString dir;
-	ushort tmp[MAX_PATH];
-	if (SHGetSpecialFolderPath(0, (wchar_t *)tmp, CSIDL_APPDATA, FALSE)) {
-		QString org = QApplication::organizationName();
-		QString name = QApplication::applicationName();
-		dir = pathcat(QString::fromUtf16((ushort const *)tmp), org + '/' + name);
-		QDir().mkpath(dir);
-	}
+	QString dir = QStandardPaths::writableLocation(QStandardPaths::AppDataLocation);
+	QDir().mkpath(dir);
 	return dir;
 }
 

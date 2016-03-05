@@ -1,13 +1,13 @@
 #ifndef MEMORYREADER_H
 #define MEMORYREADER_H
 
+#include <QBuffer>
 #include <QIODevice>
 
 class MemoryReader : public QIODevice {
 private:
 	char const *begin;
 	char const *end;
-	qint64 offset;
 public:
 	MemoryReader(char const *ptr = 0, qint64 len = 0);
 	void setData(char const *ptr, qint64 len);
@@ -18,14 +18,12 @@ public:
 	virtual bool seek(qint64 pos);
 	virtual bool atEnd() const;
 	virtual bool reset();
-	virtual qint64 bytesAvailable() const;
 	virtual qint64 bytesToWrite() const;
 	virtual bool canReadLine() const;
 	virtual bool waitForReadyRead(int msecs);
 	virtual bool waitForBytesWritten(int msecs);
 protected:
 	virtual qint64 readData(char *data, qint64 maxlen);
-	virtual qint64 readLineData(char *data, qint64 maxlen);
 	virtual qint64 writeData(const char *data, qint64 len);
 };
 

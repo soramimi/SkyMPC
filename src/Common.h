@@ -62,20 +62,4 @@ public:
 	}
 };
 
-class Font {
-private:
-	QString const name;
-	int pt = 10;
-public:
-	Font(QString const &name, int pt)
-		: name(name)
-		, pt(pt)
-	{
-	}
-	QString text() const
-	{
-		return "font: " + QString::number(pt) + "pt \"" + name + "\";";
-	}
-};
-
 #endif // COMMON_H

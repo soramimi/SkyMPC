@@ -34,32 +34,30 @@ MusicPlayerClient *BasicMainWindow::mpc()
 
 QString BasicMainWindow::makeStyleSheetText()
 {
+	auto font = [](QString const &name, int pt){
+		return QString("font: %1pt \"%2\";").arg(pt).arg(name);
+	};
+
 #ifdef Q_OS_WIN
-	Font default_font("Meiryo", 10);
-	Font progress_font("Arial", 10);
+	QString default_font = font("Meiryo", 10);
+	QString progress_font = font("Arial", 10);
 #endif
 
 #ifdef Q_OS_MAC
-	Font default_font("Lucida Grande", 14);
-	Font progress_font("Lucida Grande", 14);
+	QString default_font = font("Lucida Grande", 14);
+	QString progress_font = font("Lucida Grande", 14);
 #endif
 
 #ifdef Q_OS_LINUX
-	Font default_font("VL PGothic", 10);
-	Font progress_font("VL PGothic", 10);
+	QString default_font = font("VL PGothic", 10);
+	QString progress_font = font("VL PGothic", 10);
 #endif
 
 	QString s;
-	s += "* {";
-	s += default_font.text();
-	s += "}";
-	s += "#label_title, #label_artist, #label_disc {";
-	s += "font-weight: bold;";
-	s += "}";
-	s += "#label_progress {";
-	s += progress_font.text();
-	s += "}";
-	return s;
+	s += "* {%1}";
+	s += "#label_title, #label_artist, #label_disc {font-weight: bold;}";
+	s += "#label_progress {%2}";
+	return s.arg(default_font).arg(progress_font);
 }
 
 void BasicMainWindow::releaseMouseIfGrabbed()
