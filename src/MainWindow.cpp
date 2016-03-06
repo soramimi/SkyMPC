@@ -13,6 +13,7 @@
 #include "MySettings.h"
 #include "platform.h"
 #include "SelectLocationDialog.h"
+#include "ServersComboBox.h"
 #include "SleepTimerDialog.h"
 #include "SongPropertyDialog.h"
 #include "VolumeIndicatorPopup.h"
@@ -246,44 +247,20 @@ void MainWindow::closeEvent(QCloseEvent *event)
 QComboBox *MainWindow::serversComboBox()
 {
 	if (ui->stackedWidget->currentWidget() == ui->page_connected) {
-		return ui->comboBox;
+		return ui->comboBox_servers1;
 	}
-	return ui->comboBox_2;
+	return ui->comboBox_servers2;
 }
 
-void MainWindow::updateServersComboBox(QComboBox *cbox, QString const &firstitem)
-{
-	cbox->setUpdatesEnabled(false);
-	cbox->clear();
-	int sel = -1;
-	if (!firstitem.isEmpty()) {
-		cbox->addItem(firstitem);
-	}
-	std::vector<ServerItem> servers;
-	loadPresetServers(&servers);
-	for (int i = 0; i < (int)servers.size(); i++) {
-		int row = cbox->count();
-		QString text = servers[i].name;
-		cbox->addItem(text);
-		cbox->setItemData(row, text);
-		if (pv->host == servers[i].host) {
-			sel = i;
-		}
-	}
-	if (sel < 0) {
-		QString text = makeServerText(pv->host);
-		sel = cbox->count();
-		cbox->addItem(text);
-	}
-	cbox->addItem(strConnect());
-	cbox->setCurrentIndex(sel);
-	cbox->setUpdatesEnabled(true);
-}
+
+
+
+
 
 void MainWindow::updateServersComboBox()
 {
-	updateServersComboBox(ui->comboBox, QString());
-	updateServersComboBox(ui->comboBox_2, tr("MPD Servers"));
+	ui->comboBox_servers1->resetContents(pv->host);
+	ui->comboBox_servers2->resetContents(pv->host, true);
 }
 
 bool MainWindow::eventFilter(QObject *obj, QEvent *event)
@@ -382,8 +359,8 @@ void MainWindow::keyPressEvent(QKeyEvent *event)
 		if (i >= 0) {
 			std::vector<ServerItem> servers;
 			loadPresetServers(&servers);
-			if (i < ui->comboBox->count()) {
-				ui->comboBox->setCurrentIndex(i);
+			if (i < ui->comboBox_servers1->count()) {
+				ui->comboBox_servers1->setCurrentIndex(i);
 			}
 			event->accept();
 			return;
@@ -470,7 +447,7 @@ void MainWindow::setPageConnected()
 void MainWindow::setPageDisconnected()
 {
 	ui->stackedWidget->setCurrentWidget(ui->page_disconnecccted);
-	ui->comboBox_2->setCurrentIndex(0);
+	ui->comboBox_servers2->setCurrentIndex(0);
 }
 
 void MainWindow::setVolumeEnabled(bool f)
@@ -1269,37 +1246,21 @@ void MainWindow::on_pushButton_manage_connections_clicked()
 	ui->action_network_connect->trigger();
 }
 
+
+
 void MainWindow::comboboxIndexChanged(QComboBox *cbox, int index)
 {
-	if (cbox->updatesEnabled()) {
-		QString name = cbox->itemData(index).toString();
-		if (name.isEmpty() && cbox->itemText(index) == strConnect()) {
-			ui->action_network_connect->trigger();
-		} else {
-			Host host;
-			std::vector<ServerItem> servers;
-			loadPresetServers(&servers);
-			for (ServerItem const &server : servers) {
-				if (name == server.name) {
-					host = server.host;
-				}
-			}
-			if (!host.isValid()) {
-				host = Host(name);
-			}
-			connectToMPD(host);
-		}
-	}
+	onServersComboBoxIndexChanged(cbox, index, ui->action_network_connect);
 }
 
-void MainWindow::on_comboBox_currentIndexChanged(int index)
+void MainWindow::on_comboBox_servers1_currentIndexChanged(int index)
 {
-	comboboxIndexChanged(ui->comboBox, index);
+	comboboxIndexChanged(ui->comboBox_servers1, index);
 }
 
-void MainWindow::on_comboBox_2_currentIndexChanged(int index)
+void MainWindow::on_comboBox_servers2_currentIndexChanged(int index)
 {
-	comboboxIndexChanged(ui->comboBox_2, index);
+	comboboxIndexChanged(ui->comboBox_servers2, index);
 }
 
 void MainWindow::on_action_playlist_add_location_triggered()

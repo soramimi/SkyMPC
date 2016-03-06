@@ -272,6 +272,9 @@
       </property>
      </spacer>
     </item>
+    <item>
+     <widget class="ServersComboBox" name="comboBox_servers"/>
+    </item>
    </layout>
   </widget>
   <widget class="QStatusBar" name="statusBar">
@@ -569,6 +572,13 @@
   </action>
  </widget>
  <layoutdefault spacing="6" margin="11"/>
+ <customwidgets>
+  <customwidget>
+   <class>ServersComboBox</class>
+   <extends>QComboBox</extends>
+   <header>ServersComboBox.h</header>
+  </customwidget>
+ </customwidgets>
  <tabstops>
   <tabstop>toolButton_play</tabstop>
   <tabstop>toolButton_stop</tabstop>

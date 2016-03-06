@@ -10,7 +10,9 @@
 #include "SleepTimerDialog.h"
 #include "Toast.h"
 #include <QApplication>
+#include <QComboBox>
 #include <QListWidget>
+#include "ServersComboBox.h"
 
 BasicMainWindow::BasicMainWindow(QWidget *parent)
 	: QMainWindow(parent)
@@ -240,17 +242,6 @@ void BasicMainWindow::invalidateCurrentSongIndicator()
 	pv->status.current_song_indicator = -1;
 }
 
-QString BasicMainWindow::makeServerText(const Host &host)
-{
-	QString name;
-	name = host.address();
-	if (name.indexOf(':') >= 0) {
-		name = '[' + name + ']';
-	}
-	name += ':' + QString::number(host.port());
-	return name;
-}
-
 QString BasicMainWindow::serverName() const
 {
 	return pv->host.address();
@@ -457,6 +448,60 @@ void BasicMainWindow::updatePlaylist(MusicPlayerClient *mpc, QListWidget *listwi
 	listwidget->setCurrentRow(row);
 	listwidget->setUpdatesEnabled(true);
 	QApplication::restoreOverrideCursor();
+}
+
+void BasicMainWindow::makeServersComboBox(QComboBox *cbox, const QString &firstitem, const Host &current_host)
+{
+	cbox->setUpdatesEnabled(false);
+	cbox->clear();
+	int sel = -1;
+	if (!firstitem.isEmpty()) {
+		cbox->addItem(firstitem);
+	}
+	std::vector<ServerItem> servers;
+	loadPresetServers(&servers);
+	for (int i = 0; i < (int)servers.size(); i++) {
+		int row = cbox->count();
+		QString text = servers[i].name;
+		cbox->addItem(text);
+		cbox->setItemData(row, text);
+		if (current_host == servers[i].host) {
+			sel = i;
+		}
+	}
+	if (sel < 0) {
+		QString text = ServersComboBox::makeServerText(current_host);
+		sel = cbox->count();
+		cbox->addItem(text);
+	}
+	cbox->addItem(ServersComboBox::trConnect());
+	cbox->setCurrentIndex(sel);
+	cbox->setUpdatesEnabled(true);
+}
+
+void BasicMainWindow::onServersComboBoxIndexChanged(QComboBox *cbox, int index, QAction *action_connect_dialog)
+{
+	if (cbox->updatesEnabled()) {
+		QString name = cbox->itemData(index).toString();
+		if (name.isEmpty() && cbox->itemText(index) == ServersComboBox::trConnect()) {
+			if (action_connect_dialog) {
+				action_connect_dialog->trigger();
+			}
+		} else {
+			Host host;
+			std::vector<ServerItem> servers;
+			loadPresetServers(&servers);
+			for (ServerItem const &server : servers) {
+				if (name == server.name) {
+					host = server.host;
+				}
+			}
+			if (!host.isValid()) {
+				host = Host(name);
+			}
+			connectToMPD(host);
+		}
+	}
 }
 
 bool BasicMainWindow::isAutoReconnectAtStartup()

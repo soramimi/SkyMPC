@@ -11,6 +11,7 @@
 #include "MySettings.h"
 #include "platform.h"
 #include "SelectLocationDialog.h"
+#include "ServersComboBox.h"
 #include "SleepTimerDialog.h"
 #include "SongPropertyDialog.h"
 #include "TinyMainWindowPrivate.h"
@@ -269,61 +270,6 @@ QString TinyMainWindow::timeText(MusicPlayerClient::Item const &item)
 	return QString();
 }
 
-void TinyMainWindow::updatePlaylist()
-{
-	QList<MusicPlayerClient::Item> vec;
-
-	if (!mpc()->do_playlistinfo(QString(), &vec)) {
-		return;
-	}
-
-	QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
-
-	for (MusicPlayerClient::Item const &mpcitem : vec) {
-		if (mpcitem.kind == "file") {
-			QString path = mpcitem.text;
-			QString text;
-			QString artist;
-			if (path.indexOf("://") > 0) {
-				text = path;
-			} else {
-				QString album;
-				QString time;
-				{
-					QList<MusicPlayerClient::Item> v;
-					mpc()->do_listallinfo(path, &v);
-					if (v.size() == 1) {
-						text = v.front().map.get("Title");
-						artist = v.front().map.get("Artist");
-						album = v.front().map.get("Album");
-						time = timeText(v.front());
-					}
-				}
-				QString suffix;
-				if (!artist.isEmpty() && !album.isEmpty()) {
-					suffix = artist + '/' + album;
-				} else if (!artist.isEmpty()) {
-					suffix = artist;
-				} else if (!album.isEmpty()) {
-					suffix = album;
-				}
-#if DISPLAY_TIME
-				if (!time.isEmpty()) {
-					text += " (" + time + ")";
-				}
-#endif
-				if (!suffix.isEmpty()) {
-					text += " -- " + suffix;
-				}
-			}
-			//QString id = mpcitem.map.get("Id");
-			//QString pos = mpcitem.map.get("Pos");
-		}
-	}
-
-	QApplication::restoreOverrideCursor();
-}
-
 void TinyMainWindow::mouseReleaseEvent(QMouseEvent *e)
 {
 	releaseMouseIfGrabbed();
@@ -520,4 +466,14 @@ void TinyMainWindow::on_action_debug_triggered()
 void TinyMainWindow::on_toolButton_close_clicked()
 {
 	close();
+}
+
+void TinyMainWindow::updateServersComboBox()
+{
+	ui->comboBox_servers->resetContents(pv->host);
+}
+
+void TinyMainWindow::on_comboBox_servers_currentIndexChanged(int index)
+{
+	onServersComboBoxIndexChanged(ui->comboBox_servers, index, nullptr);
 }

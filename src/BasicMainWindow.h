@@ -9,6 +9,7 @@ class Host;
 class Command;
 class QToolButton;
 class QListWidget;
+class QComboBox;
 
 enum class PlayingStatus {
 	Stop,
@@ -68,6 +69,8 @@ protected:
 	virtual void displayExtraInformation(const QString &text2, const QString &text3) = 0;
 	void timerEvent(QTimerEvent *);
 	static void updatePlaylist(MusicPlayerClient *mpc, QListWidget *listwidget, QList<MusicPlayerClient::Item> *items);
+	static void makeServersComboBox(QComboBox *cbox, const QString &firstitem, const Host &current_host);
+	void onServersComboBoxIndexChanged(QComboBox *cbox, int index, QAction *action_connect_dialog);
 public:
 	BasicMainWindow(QWidget *parent);
 	~BasicMainWindow();
@@ -87,7 +90,6 @@ public:
 	bool savePlaylist(const QString &name);
 	void execAddLocationDialog();
 
-	static QString makeServerText(const Host &host);
 	static BasicMainWindow *findMainWindow(QObject *hint = nullptr);
 private slots:
 	void onVolumeChanged();

@@ -39,7 +39,7 @@
        </sizepolicy>
       </property>
       <property name="currentIndex">
-       <number>1</number>
+       <number>0</number>
       </property>
       <widget class="QWidget" name="page_connected">
        <property name="sizePolicy">
@@ -337,7 +337,7 @@
                <number>2</number>
               </property>
               <item>
-               <widget class="QComboBox" name="comboBox"/>
+               <widget class="ServersComboBox" name="comboBox_servers1"/>
               </item>
               <item>
                <layout class="QHBoxLayout" name="horizontalLayout_7">
@@ -653,7 +653,7 @@
            </spacer>
           </item>
           <item>
-           <widget class="QComboBox" name="comboBox_2">
+           <widget class="ServersComboBox" name="comboBox_servers2">
             <property name="sizeAdjustPolicy">
              <enum>QComboBox::AdjustToContents</enum>
             </property>
@@ -1154,13 +1154,18 @@
    <extends>QListWidget</extends>
    <header>MyListWidget.h</header>
   </customwidget>
+  <customwidget>
+   <class>ServersComboBox</class>
+   <extends>QComboBox</extends>
+   <header>ServersComboBox.h</header>
+  </customwidget>
  </customwidgets>
  <tabstops>
   <tabstop>toolButton_play</tabstop>
   <tabstop>toolButton_stop</tabstop>
   <tabstop>toolButton_prev</tabstop>
   <tabstop>toolButton_next</tabstop>
-  <tabstop>comboBox</tabstop>
+  <tabstop>comboBox_servers1</tabstop>
   <tabstop>toolButton_repeat</tabstop>
   <tabstop>toolButton_random</tabstop>
   <tabstop>toolButton_single</tabstop>
