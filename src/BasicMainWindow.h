@@ -43,7 +43,7 @@ protected:
 	virtual void setConsumeEnabled(bool f);
 	virtual void setRandomEnabled(bool f);
 
-	virtual void displayPlayStatus(const QString & /*title*/, const QString & /*artist*/, const QString & /*disc*/) = 0;
+	virtual void displayCurrentSongLabels(const QString & /*title*/, const QString & /*artist*/, const QString & /*disc*/) = 0;
 	virtual void seekProgressSlider(double /*elapsed*/, double /*total*/) {}
 	virtual void displayProgress(const QString & /*text*/) {}
 	virtual void updatePlayIcon() {}
@@ -70,7 +70,8 @@ protected:
 	void timerEvent(QTimerEvent *);
 	static void updatePlaylist(MusicPlayerClient *mpc, QListWidget *listwidget, QList<MusicPlayerClient::Item> *items);
 	static void makeServersComboBox(QComboBox *cbox, const QString &firstitem, const Host &current_host);
-	void onServersComboBoxIndexChanged(QComboBox *cbox, int index, QAction *action_connect_dialog);
+	void onServersComboBoxIndexChanged(QComboBox *cbox, int index);
+	void execConnectionDialog();
 public:
 	BasicMainWindow(QWidget *parent);
 	~BasicMainWindow();

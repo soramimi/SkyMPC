@@ -130,7 +130,7 @@ void BasicMainWindow::updatePlayingStatus()
 
 		if (status == PlayingStatus::Stop) {
 			pv->total_seconds = 0;
-			displayPlayStatus(QString(), QString(), QString());
+			displayCurrentSongLabels(QString(), QString(), QString());
 			displayStopStatus();
 		} else {
 			pv->status.current_song = info.status.get("song").toInt();
@@ -474,14 +474,12 @@ void BasicMainWindow::makeServersComboBox(QComboBox *cbox, const QString &firsti
 	cbox->setUpdatesEnabled(true);
 }
 
-void BasicMainWindow::onServersComboBoxIndexChanged(QComboBox *cbox, int index, QAction *action_connect_dialog)
+void BasicMainWindow::onServersComboBoxIndexChanged(QComboBox *cbox, int index)
 {
 	if (cbox->updatesEnabled()) {
 		QString name = cbox->itemData(index).toString();
 		if (name.isEmpty() && cbox->itemText(index) == ServersComboBox::trConnect()) {
-			if (action_connect_dialog) {
-				action_connect_dialog->trigger();
-			}
+			execConnectionDialog();
 		} else {
 			Host host;
 			std::vector<ServerItem> servers;
@@ -497,6 +495,16 @@ void BasicMainWindow::onServersComboBoxIndexChanged(QComboBox *cbox, int index, 
 			connectToMPD(host);
 		}
 	}
+}
+
+void BasicMainWindow::execConnectionDialog()
+{
+	ConnectionDialog dlg(this, pv->host);
+	if (dlg.exec() == QDialog::Accepted) {
+		Host host = dlg.host();
+		connectToMPD(host);
+	}
+	updateServersComboBox();
 }
 
 bool BasicMainWindow::isAutoReconnectAtStartup()

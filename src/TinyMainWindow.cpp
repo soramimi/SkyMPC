@@ -196,7 +196,7 @@ void TinyMainWindow::displayExtraInformation(QString const &text2, QString const
 	pv->status_label3->setVisible(true);
 }
 
-void TinyMainWindow::displayPlayStatus(const QString &title, const QString &artist, const QString & /*disc*/)
+void TinyMainWindow::displayCurrentSongLabels(const QString &title, const QString &artist, const QString & /*disc*/)
 {
 	ui->label_title->setText(title);
 	ui->label_artist->setText(artist);
@@ -254,6 +254,11 @@ void TinyMainWindow::changeEvent(QEvent *e)
 	default:
 		break;
 	}
+}
+
+void TinyMainWindow::updateCurrentSongInfo()
+{
+	displayCurrentSongLabels(pv->status.current_title, pv->status.current_artist, pv->status.current_disc);
 }
 
 QString TinyMainWindow::timeText(MusicPlayerClient::Item const &item)
@@ -346,11 +351,7 @@ void TinyMainWindow::on_action_consume_triggered()
 
 void TinyMainWindow::on_action_network_connect_triggered()
 {
-	ConnectionDialog dlg(this, pv->host);
-	if (dlg.exec() == QDialog::Accepted) {
-		Host host = dlg.host();
-		connectToMPD(host);
-	}
+	execConnectionDialog();
 }
 
 void TinyMainWindow::on_action_network_disconnect_triggered()
@@ -466,10 +467,10 @@ void TinyMainWindow::on_toolButton_close_clicked()
 
 void TinyMainWindow::updateServersComboBox()
 {
-	ui->comboBox_servers->resetContents(pv->host);
+	ui->comboBox_servers->resetContents(pv->host, false, true);
 }
 
 void TinyMainWindow::on_comboBox_servers_currentIndexChanged(int index)
 {
-	onServersComboBoxIndexChanged(ui->comboBox_servers, index, nullptr);
+	onServersComboBoxIndexChanged(ui->comboBox_servers, index);
 }

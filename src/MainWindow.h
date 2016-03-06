@@ -63,7 +63,7 @@ protected:
 	void changeEvent(QEvent *e);
 	void deletePlaylistItem(QListWidgetItem *item, bool updateplaylist);
 	void deleteSelectedSongs();
-	void displayPlayStatus(QString const &title, QString const &artist, QString const &disc);
+	void displayCurrentSongLabels(QString const &title, QString const &artist, QString const &disc);
 	void refreshTreeItem(QTreeWidgetItem *item);
 	void setPageConnected();
 	void setPageDisconnected();

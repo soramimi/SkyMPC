@@ -37,7 +37,7 @@ protected:
 	virtual void closeEvent(QCloseEvent *);
 	virtual void mouseReleaseEvent(QMouseEvent *);
 	void changeEvent(QEvent *e);
-	void displayPlayStatus(const QString &, const QString &, const QString &);
+	void displayCurrentSongLabels(const QString &, const QString &, const QString &);
 	void displayProgress(const QString &text);
 	void updatePlayIcon();
 	void displayExtraInformation(const QString &text2, const QString &text3);
@@ -81,6 +81,7 @@ private slots:
 
 protected:
 	void updateServersComboBox();
+	void updateCurrentSongInfo();
 };
 
 #endif // TINYMAINWINDOW_H

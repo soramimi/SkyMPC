@@ -19,7 +19,7 @@ QString ServersComboBox::makeServerText(const Host &host)
 	return name;
 }
 
-void ServersComboBox::resetContents(const Host &current_host, bool caption)
+void ServersComboBox::resetContents(const Host &current_host, bool caption, bool connection)
 {
 	setUpdatesEnabled(false);
 	clear();
@@ -43,7 +43,9 @@ void ServersComboBox::resetContents(const Host &current_host, bool caption)
 		sel = count();
 		addItem(text);
 	}
-	addItem(trConnect());
+	if (connection) {
+		addItem(trConnect());
+	}
 	setCurrentIndex(sel);
 	setUpdatesEnabled(true);
 

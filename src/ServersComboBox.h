@@ -10,7 +10,7 @@ class ServersComboBox : public QComboBox
 public:
 	explicit ServersComboBox(QWidget *parent = 0);
 
-	void resetContents(const Host &current_host, bool caption = false);
+	void resetContents(const Host &current_host, bool caption, bool connection);
 signals:
 
 public slots:

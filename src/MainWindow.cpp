@@ -259,8 +259,8 @@ QComboBox *MainWindow::serversComboBox()
 
 void MainWindow::updateServersComboBox()
 {
-	ui->comboBox_servers1->resetContents(pv->host);
-	ui->comboBox_servers2->resetContents(pv->host, true);
+	ui->comboBox_servers1->resetContents(pv->host, false, true);
+	ui->comboBox_servers2->resetContents(pv->host, true, true);
 }
 
 bool MainWindow::eventFilter(QObject *obj, QEvent *event)
@@ -528,7 +528,7 @@ void MainWindow::seekProgressSlider(double elapsed, double total)
 	ui->horizontalSlider->setUpdatesEnabled(true);
 }
 
-void MainWindow::displayPlayStatus(QString const &title, QString const &artist, QString const &disc)
+void MainWindow::displayCurrentSongLabels(QString const &title, QString const &artist, QString const &disc)
 {
 	ui->label_title->setText(title);
 	ui->label_artist->setText(artist);
@@ -588,7 +588,7 @@ void MainWindow::updateCurrentSongInfo()
 
 		pv->status.current_song_indicator = pv->status.current_song;
 
-		displayPlayStatus(pv->status.current_title, pv->status.current_artist, pv->status.current_disc);
+		displayCurrentSongLabels(pv->status.current_title, pv->status.current_artist, pv->status.current_disc);
 
 		updateWindowTitle();
 	} else {
@@ -1073,14 +1073,11 @@ void MainWindow::on_action_consume_triggered()
 	mpc()->do_consume(!pv->consume_enabled);
 }
 
+
+
 void MainWindow::on_action_network_connect_triggered()
 {
-	ConnectionDialog dlg(this, pv->host);
-	if (dlg.exec() == QDialog::Accepted) {
-		Host host = dlg.host();
-		connectToMPD(host);
-	}
-	updateServersComboBox();
+	execConnectionDialog();
 }
 
 void MainWindow::on_action_network_disconnect_triggered()
@@ -1247,7 +1244,7 @@ void MainWindow::on_action_edit_delete_triggered()
 
 void MainWindow::comboboxIndexChanged(QComboBox *cbox, int index)
 {
-	onServersComboBoxIndexChanged(cbox, index, ui->action_network_connect);
+	onServersComboBoxIndexChanged(cbox, index);
 }
 
 void MainWindow::on_comboBox_servers1_currentIndexChanged(int index)
