@@ -13,6 +13,7 @@
 #include <QComboBox>
 #include <QListWidget>
 #include "ServersComboBox.h"
+#include "TinyMainWindow.h"
 
 BasicMainWindow::BasicMainWindow(QWidget *parent)
 	: QMainWindow(parent)
@@ -740,6 +741,15 @@ BasicMainWindow *BasicMainWindow::findMainWindow(QObject *hint)
 		if (mw) return mw;
 	}
 	return 0;
+}
+
+bool BasicMainWindow::isTinyMode(QObject *hint)
+{
+	BasicMainWindow *mw = findMainWindow(hint);
+	if (dynamic_cast<TinyMainWindow *>(mw)) {
+		return true;
+	}
+	return false;
 }
 
 void BasicMainWindow::onVolumeChanged()

@@ -23,6 +23,10 @@ ConnectionDialog::ConnectionDialog(QWidget *parent, Host const &host) :
 	flags &= ~Qt::WindowContextHelpButtonHint;
 	setWindowFlags(flags);
 
+	if (BasicMainWindow::isTinyMode(parent)) {
+		setWindowState(Qt::WindowFullScreen);
+	}
+
     ui->tableWidget->horizontalHeader()->setVisible(true);
 
 	int size = ui->tableWidget->font().pointSize();

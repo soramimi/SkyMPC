@@ -92,6 +92,8 @@ public:
 	void execAddLocationDialog();
 
 	static BasicMainWindow *findMainWindow(QObject *hint = nullptr);
+	static bool isTinyMode(QObject *hint = nullptr);
+
 private slots:
 	void onVolumeChanged();
 	void onUpdateStatus();
