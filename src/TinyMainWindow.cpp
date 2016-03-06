@@ -101,7 +101,6 @@ TinyMainWindow::TinyMainWindow(QWidget *parent) :
 	setRandomEnabled(false);
 
 	if (!start_with_shift_key) {
-		Qt::WindowStates state = windowState();
 		MySettings settings;
 
 		settings.beginGroup("Connection");
@@ -410,10 +409,7 @@ void TinyMainWindow::on_action_playlist_edit_triggered()
 	loadPlaylist(name, dlg.forReplace());
 }
 
-void TinyMainWindow::on_pushButton_manage_connections_clicked()
-{
-	ui->action_network_connect->trigger();
-}
+
 
 void TinyMainWindow::on_action_playlist_add_location_triggered()
 {

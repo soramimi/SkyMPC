@@ -63,7 +63,6 @@ private slots:
 	void on_action_single_triggered();
 	void on_action_consume_triggered();
 	void on_toolButton_single_clicked();
-	void on_pushButton_manage_connections_clicked();
 	void on_action_playlist_add_location_triggered();
 	void on_action_playlist_update_triggered();
 	void on_action_file_close_triggered();
