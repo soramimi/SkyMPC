@@ -35,26 +35,26 @@ SOURCES += source_revision.c \
 	src/KeyboardCustomizeDialog.cpp \
 	src/KeyScanWidget.cpp \
 	src/Server.cpp \
-    src/ConnectionDialog.cpp \
-    src/AskRemoveDuplicatedFileDialog.cpp \
-    src/version.cpp \
-    src/LegacyWindowsStyleTreeControl.cpp \
-    src/win32.cpp \
+	src/ConnectionDialog.cpp \
+	src/AskRemoveDuplicatedFileDialog.cpp \
+	src/version.cpp \
+	src/LegacyWindowsStyleTreeControl.cpp \
+	src/win32.cpp \
 	src/platform.cpp \
-    src/TestConnectionThread.cpp \
-    src/EditLocationDialog.cpp \
-    src/Toast.cpp \
-    src/StatusThread.cpp \
-    src/PlaylistFile.cpp \
-    src/SelectLocationDialog.cpp \
-    src/webclient.cpp \
-    src/MemoryReader.cpp \
-    src/LocationLineEdit.cpp \
-    src/SleepTimerDialog.cpp \
-    src/TinyMainWindow.cpp \
-    src/TinyMainWindowPrivate.cpp \
-    src/BasicMainWindow.cpp \
-    src/ServersComboBox.cpp
+	src/TestConnectionThread.cpp \
+	src/EditLocationDialog.cpp \
+	src/Toast.cpp \
+	src/StatusThread.cpp \
+	src/PlaylistFile.cpp \
+	src/SelectLocationDialog.cpp \
+	src/webclient.cpp \
+	src/MemoryReader.cpp \
+	src/LocationLineEdit.cpp \
+	src/SleepTimerDialog.cpp \
+	src/TinyMainWindow.cpp \
+	src/TinyMainWindowPrivate.cpp \
+	src/BasicMainWindow.cpp \
+	src/ServersComboBox.cpp
 
 HEADERS  += src/MainWindow.h \
 	src/MusicPlayerClient.h \
@@ -77,27 +77,27 @@ HEADERS  += src/MainWindow.h \
 	src/KeyboardCustomizeDialog.h \
 	src/KeyScanWidget.h \
 	src/Server.h \
-    src/ConnectionDialog.h \
-    src/AskRemoveDuplicatedFileDialog.h \
-    src/version.h \
-    src/LegacyWindowsStyleTreeControl.h \
-    src/win32.h \
+	src/ConnectionDialog.h \
+	src/AskRemoveDuplicatedFileDialog.h \
+	src/version.h \
+	src/LegacyWindowsStyleTreeControl.h \
+	src/win32.h \
 	src/platform.h \
-    src/TestConnectionThread.h \
-    src/EditLocationDialog.h \
-    src/Toast.h \
-    src/StatusThread.h \
-    src/PlaylistFile.h \
-    src/SelectLocationDialog.h \
-    src/webclient.h \
-    src/MemoryReader.h \
-    src/LocationLineEdit.h \
-    src/SleepTimerDialog.h \
-    src/TinyMainWindow.h \
-    src/TinyMainWindowPrivate.h \
-    src/Common.h \
-    src/BasicMainWindow.h \
-    src/ServersComboBox.h
+	src/TestConnectionThread.h \
+	src/EditLocationDialog.h \
+	src/Toast.h \
+	src/StatusThread.h \
+	src/PlaylistFile.h \
+	src/SelectLocationDialog.h \
+	src/webclient.h \
+	src/MemoryReader.h \
+	src/LocationLineEdit.h \
+	src/SleepTimerDialog.h \
+	src/TinyMainWindow.h \
+	src/TinyMainWindowPrivate.h \
+	src/Common.h \
+	src/BasicMainWindow.h \
+	src/ServersComboBox.h
 
 FORMS    += src/MainWindow.ui \
 	src/VerticalVolumePopup.ui \
@@ -109,12 +109,12 @@ FORMS    += src/MainWindow.ui \
 	src/RenameDialog.ui \
 	src/VolumeIndicatorPopup.ui \
 	src/KeyboardCustomizeDialog.ui \
-    src/ConnectionDialog.ui \
+	src/ConnectionDialog.ui \
 	src/AskRemoveDuplicatedFileDialog.ui \
-    src/EditLocationDialog.ui \
-    src/SelectLocationDialog.ui \
-    src/SleepTimerDialog.ui \
-    src/TinyMainWindow.ui
+	src/EditLocationDialog.ui \
+	src/SelectLocationDialog.ui \
+	src/SleepTimerDialog.ui \
+	src/TinyMainWindow.ui
 
 RESOURCES += \
 	resources.qrc
