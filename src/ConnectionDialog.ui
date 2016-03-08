@@ -235,13 +235,6 @@
        </property>
       </widget>
      </item>
-     <item row="0" column="3" colspan="3">
-      <widget class="QCheckBox" name="checkBox_auto_reconnect">
-       <property name="text">
-        <string>Automatically &amp;reconnect at startup</string>
-       </property>
-      </widget>
-     </item>
      <item row="1" column="0">
       <widget class="QPushButton" name="pushButton_down">
        <property name="text">
@@ -269,7 +262,14 @@
        </property>
       </spacer>
      </item>
-     <item row="1" column="3">
+     <item row="1" column="5">
+      <widget class="QPushButton" name="pushButton_close">
+       <property name="text">
+        <string>&amp;Close</string>
+       </property>
+      </widget>
+     </item>
+     <item row="1" column="4">
       <widget class="QPushButton" name="pushButton_connect">
        <property name="text">
         <string>&amp;Connect</string>
@@ -279,17 +279,10 @@
        </property>
       </widget>
      </item>
-     <item row="1" column="4">
-      <widget class="QPushButton" name="pushButton_save_and_close">
+     <item row="0" column="4" colspan="2">
+      <widget class="QCheckBox" name="checkBox_auto_reconnect">
        <property name="text">
-        <string>&amp;Save</string>
-       </property>
-      </widget>
-     </item>
-     <item row="1" column="5">
-      <widget class="QPushButton" name="pushButton_close">
-       <property name="text">
-        <string>Cancel</string>
+        <string>Automatically &amp;reconnect at startup</string>
        </property>
       </widget>
      </item>
@@ -319,8 +312,8 @@
    <slot>accept()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>320</x>
-     <y>309</y>
+     <x>482</x>
+     <y>302</y>
     </hint>
     <hint type="destinationlabel">
      <x>326</x>
@@ -335,12 +328,12 @@
    <slot>reject()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>409</x>
-     <y>306</y>
+     <x>637</x>
+     <y>292</y>
     </hint>
     <hint type="destinationlabel">
-     <x>412</x>
-     <y>328</y>
+     <x>650</x>
+     <y>294</y>
     </hint>
    </hints>
   </connection>

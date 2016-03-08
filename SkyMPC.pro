@@ -54,7 +54,8 @@ SOURCES += source_revision.c \
 	src/TinyMainWindow.cpp \
 	src/TinyMainWindowPrivate.cpp \
 	src/BasicMainWindow.cpp \
-	src/ServersComboBox.cpp
+	src/ServersComboBox.cpp \
+    src/TinyConnectionDialog.cpp
 
 HEADERS  += src/MainWindow.h \
 	src/MusicPlayerClient.h \
@@ -97,7 +98,8 @@ HEADERS  += src/MainWindow.h \
 	src/TinyMainWindowPrivate.h \
 	src/Common.h \
 	src/BasicMainWindow.h \
-	src/ServersComboBox.h
+	src/ServersComboBox.h \
+    src/TinyConnectionDialog.h
 
 FORMS    += src/MainWindow.ui \
 	src/VerticalVolumePopup.ui \
@@ -114,7 +116,8 @@ FORMS    += src/MainWindow.ui \
 	src/EditLocationDialog.ui \
 	src/SelectLocationDialog.ui \
 	src/SleepTimerDialog.ui \
-	src/TinyMainWindow.ui
+	src/TinyMainWindow.ui \
+    src/TinyConnectionDialog.ui
 
 RESOURCES += \
 	resources.qrc

@@ -1,11 +1,9 @@
-#include "ConnectionDialog.h"
-#include "ui_ConnectionDialog.h"
+#include "MusicPlayerClient.h"
+#include "TinyConnectionDialog.h"
+#include "ui_TinyConnectionDialog.h"
+#include "QMessageBox"
 #include "TestConnectResultDialog.h"
 #include "TestConnectionThread.h"
-#include "MySettings.h"
-#include "MainWindow.h"
-#include "TinyMainWindow.h"
-#include <QMessageBox>
 
 enum {
 	C_NAME,
@@ -14,20 +12,18 @@ enum {
 	C_DESC,
 };
 
-ConnectionDialog::ConnectionDialog(QWidget *parent, Host const &host)
+TinyConnectionDialog::TinyConnectionDialog(QWidget *parent, Host const &host)
 	: QDialog(parent)
-	, ui(new Ui::ConnectionDialog)
+	, ui(new Ui::TinyConnectionDialog)
 {
 	ui->setupUi(this);
 	auto flags = windowFlags();
 	flags &= ~Qt::WindowContextHelpButtonHint;
 	setWindowFlags(flags);
 
-	if (BasicMainWindow::isTinyMode(parent)) {
-		setWindowState(Qt::WindowFullScreen);
-	}
+	setWindowState(Qt::WindowFullScreen);
 
-    ui->tableWidget->horizontalHeader()->setVisible(true);
+	ui->tableWidget->horizontalHeader()->setVisible(true);
 
 	int size = ui->tableWidget->font().pointSize();
 #if defined(Q_OS_WIN)
@@ -63,37 +59,45 @@ ConnectionDialog::ConnectionDialog(QWidget *parent, Host const &host)
 			ui->tableWidget->selectRow(row);
 		}
 	}
-
-	BasicMainWindow *mw = BasicMainWindow::findMainWindow(this);
-	if (mw) {
-		bool f = mw->isAutoReconnectAtStartup();
-		ui->checkBox_auto_reconnect->setChecked(f);
-	}
 }
 
-ConnectionDialog::~ConnectionDialog()
+TinyConnectionDialog::~TinyConnectionDialog()
 {
 	delete ui;
 }
 
-void ConnectionDialog::accept()
+void TinyConnectionDialog::accept()
 {
 	savePresetServers(&servers);
-	saveAutoReconnect();
 	QDialog::accept();
+
 }
 
-void ConnectionDialog::reject()
+void TinyConnectionDialog::reject()
 {
 	savePresetServers(&servers);
-	saveAutoReconnect();
 	QDialog::reject();
+
+}
+
+ServerItem *TinyConnectionDialog::selectedServer()
+{
+	int row = ui->tableWidget->currentRow();
+	if (row >= 0 && row < (int)servers.size()) {
+		ServerItem *s = &servers[row];
+		current_host = s->host;
+		return s;
+	}
+	return 0;
+}
+
+ServerItem const *TinyConnectionDialog::selectedServer() const
+{
+	return const_cast<TinyConnectionDialog *>(this)->selectedServer();
 }
 
 
-
-
-Host ConnectionDialog::host() const
+Host TinyConnectionDialog::host() const
 {
 	ServerItem const *s = selectedServer();
 	if (s) {
@@ -102,7 +106,13 @@ Host ConnectionDialog::host() const
 	return Host();
 }
 
-void ConnectionDialog::updateList()
+void TinyConnectionDialog::loadServers()
+{
+	loadPresetServers(&servers);
+	updateList();
+}
+
+void TinyConnectionDialog::updateList()
 {
 	int row = ui->tableWidget->currentRow();
 	int rowcount = (int)servers.size();
@@ -143,59 +153,16 @@ void ConnectionDialog::updateList()
 	ui->tableWidget->setCurrentItem(sel);
 }
 
-void ConnectionDialog::loadServers()
-{
-	loadPresetServers(&servers);
-	updateList();
-}
-
-void ConnectionDialog::saveServers()
-{
-	if (!savePresetServers(&servers)) {
-		QMessageBox::critical(this, QApplication::applicationName(), tr("Could not create the file."));
-	}
-}
-
-bool ConnectionDialog::isAutoReconnect() const
-{
-	return ui->checkBox_auto_reconnect->isChecked();
-}
-
-void ConnectionDialog::saveAutoReconnect()
-{
-	MySettings settings;
-	settings.beginGroup("Connection");
-	bool f = isAutoReconnect();
-	settings.setValue(KEY_AutoReconnect, f);
-	settings.endGroup();
-}
-
-ServerItem *ConnectionDialog::selectedServer()
-{
-	int row = ui->tableWidget->currentRow();
-	if (row >= 0 && row < (int)servers.size()) {
-		ServerItem *s = &servers[row];
-		current_host = s->host;
-		return s;
-	}
-	return 0;
-}
-
-ServerItem const *ConnectionDialog::selectedServer() const
-{
-	return const_cast<ConnectionDialog *>(this)->selectedServer();
-}
-
-void ConnectionDialog::selectServer(ServerItem const *server)
+void TinyConnectionDialog::selectServer(ServerItem const *server)
 {
 	ui->lineEdit_name->setText(server->name);
 	ui->lineEdit_address->setText(server->host.address());
 	ui->lineEdit_port->setText(QString::number(server->host.port()));
 	ui->lineEdit_password->setText(server->host.password());
-	ui->lineEdit_desc->setText(server->description);
+//	ui->lineEdit_desc->setText(server->description);
 }
 
-void ConnectionDialog::updateServer(int row, int col)
+void TinyConnectionDialog::updateServer(int row, int col)
 {
 	if (row >= 0 && row < (int)servers.size()) {
 		ServerItem *server = &servers[row];
@@ -219,8 +186,8 @@ void ConnectionDialog::updateServer(int row, int col)
 				item->setText(QString::number(server->host.port()));
 				break;
 			case C_DESC:
-				server->description = ui->lineEdit_desc->text();
-				item->setText(server->description);
+//				server->description = ui->lineEdit_desc->text();
+//				item->setText(server->description);
 				break;
 			}
 			ui->tableWidget->resizeColumnsToContents();
@@ -229,27 +196,7 @@ void ConnectionDialog::updateServer(int row, int col)
 	}
 }
 
-void ConnectionDialog::on_pushButton_up_clicked()
-{
-	int row = ui->tableWidget->currentRow();
-	if (row > 0 && row < (int)servers.size()) {
-		std::swap(servers[row - 1], servers[row]);
-		updateList();
-		ui->tableWidget->selectRow(row - 1);
-	}
-}
-
-void ConnectionDialog::on_pushButton_down_clicked()
-{
-	int row = ui->tableWidget->currentRow();
-	if (row >= 0 && row + 1 < (int)servers.size()) {
-		std::swap(servers[row], servers[row + 1]);
-		updateList();
-		ui->tableWidget->selectRow(row + 1);
-	}
-}
-
-void ConnectionDialog::on_tableWidget_currentItemChanged(QTableWidgetItem * /*current*/, QTableWidgetItem * /*previous*/)
+void TinyConnectionDialog::on_tableWidget_currentItemChanged(QTableWidgetItem * /*current*/, QTableWidgetItem * /*previous*/)
 {
 	ServerItem const *s = selectedServer();
 	if (s) {
@@ -257,27 +204,22 @@ void ConnectionDialog::on_tableWidget_currentItemChanged(QTableWidgetItem * /*cu
 	}
 }
 
-void ConnectionDialog::on_lineEdit_name_textChanged(const QString &)
+void TinyConnectionDialog::on_lineEdit_name_textChanged(const QString &)
 {
 	updateServer(ui->tableWidget->currentRow(), C_NAME);
 }
 
-void ConnectionDialog::on_lineEdit_desc_textChanged(const QString &)
-{
-	updateServer(ui->tableWidget->currentRow(), C_DESC);
-}
-
-void ConnectionDialog::on_lineEdit_address_textChanged(const QString &)
+void TinyConnectionDialog::on_lineEdit_address_textChanged(const QString &)
 {
 	updateServer(ui->tableWidget->currentRow(), C_ADDR);
 }
 
-void ConnectionDialog::on_lineEdit_port_textChanged(const QString &)
+void TinyConnectionDialog::on_lineEdit_port_textChanged(const QString &)
 {
 	updateServer(ui->tableWidget->currentRow(), C_PORT);
 }
 
-void ConnectionDialog::on_lineEdit_password_textChanged(const QString &str)
+void TinyConnectionDialog::on_lineEdit_password_textChanged(const QString &str)
 {
 	int row = ui->tableWidget->currentRow();
 	if (row >= 0 && row < (int)servers.size()) {
@@ -286,7 +228,7 @@ void ConnectionDialog::on_lineEdit_password_textChanged(const QString &str)
 	}
 }
 
-void ConnectionDialog::on_pushButton_delete_clicked()
+void TinyConnectionDialog::on_pushButton_delete_clicked()
 {
 	int row = ui->tableWidget->currentRow();
 	if (row >= 0 && row < (int)servers.size()) {
@@ -304,7 +246,7 @@ void ConnectionDialog::on_pushButton_delete_clicked()
 	}
 }
 
-void ConnectionDialog::on_pushButton_new_clicked()
+void TinyConnectionDialog::on_pushButton_new_clicked()
 {
 	ServerItem item;
 	item.host = current_host;
@@ -319,7 +261,7 @@ void ConnectionDialog::on_pushButton_new_clicked()
 	ui->lineEdit_name->selectAll();
 }
 
-void ConnectionDialog::on_pushButton_test_connection_clicked()
+void TinyConnectionDialog::on_pushButton_test_connection_clicked()
 {
 	ServerItem const *s = selectedServer();
 	if (s) {
@@ -332,7 +274,7 @@ void ConnectionDialog::on_pushButton_test_connection_clicked()
 	}
 }
 
-void ConnectionDialog::on_tableWidget_itemDoubleClicked(QTableWidgetItem * /*item*/)
+void TinyConnectionDialog::on_tableWidget_itemDoubleClicked(QTableWidgetItem * /*item*/)
 {
 	accept();
 }

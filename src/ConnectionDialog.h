@@ -32,6 +32,7 @@ public:
 	~ConnectionDialog();
 
 	virtual void accept();
+	virtual void reject();
 
 	Host host() const;
 
@@ -44,7 +45,6 @@ private slots:
 	void on_pushButton_delete_clicked();
 	void on_pushButton_down_clicked();
 	void on_pushButton_new_clicked();
-	void on_pushButton_save_and_close_clicked();
 	void on_pushButton_test_connection_clicked();
 	void on_pushButton_up_clicked();
 	void on_tableWidget_currentItemChanged(QTableWidgetItem *current, QTableWidgetItem *previous);

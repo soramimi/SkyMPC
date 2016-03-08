@@ -18,6 +18,7 @@
 #include "SongPropertyDialog.h"
 #include "VolumeIndicatorPopup.h"
 #include "webclient.h"
+#include "TinyConnectionDialog.h"
 #include <list>
 #include <QBuffer>
 #include <QClipboard>
@@ -1342,6 +1343,12 @@ void MainWindow::unify()
 
 void MainWindow::on_action_debug_triggered()
 {
+	TinyConnectionDialog dlg(this, pv->host);
+	if (dlg.exec() == QDialog::Accepted) {
+		Host host = dlg.host();
+		connectToMPD(host);
+	}
+	updateServersComboBox();
 }
 
 
