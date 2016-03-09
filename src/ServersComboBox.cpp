@@ -12,10 +12,12 @@ QString ServersComboBox::makeServerText(const Host &host)
 {
 	QString name;
 	name = host.address();
-	if (name.indexOf(':') >= 0) {
-		name = '[' + name + ']';
+	if (host.isValid()) {
+		if (name.indexOf(':') >= 0) {
+			name = '[' + name + ']';
+		}
+		name += ':' + QString::number(host.port());
 	}
-	name += ':' + QString::number(host.port());
 	return name;
 }
 
@@ -38,10 +40,12 @@ void ServersComboBox::resetContents(const Host &current_host, bool caption, bool
 			sel = i;
 		}
 	}
-	if (sel < 0) {
+	if (sel < 0 && current_host.isValid()) {
 		QString text = makeServerText(current_host);
-		sel = count();
-		addItem(text);
+		if (!text.isEmpty()) {
+			sel = count();
+			addItem(text);
+		}
 	}
 	if (connection) {
 		addItem(trConnect());

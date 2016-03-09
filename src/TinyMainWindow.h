@@ -82,6 +82,7 @@ private slots:
 protected:
 	void updateServersComboBox();
 	void updateCurrentSongInfo();
+	void execConnectionDialog();
 };
 
 #endif // TINYMAINWINDOW_H

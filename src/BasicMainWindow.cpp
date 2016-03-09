@@ -498,15 +498,15 @@ void BasicMainWindow::onServersComboBoxIndexChanged(QComboBox *cbox, int index)
 	}
 }
 
-void BasicMainWindow::execConnectionDialog()
-{
-	ConnectionDialog dlg(this, pv->host);
-	if (dlg.exec() == QDialog::Accepted) {
-		Host host = dlg.host();
-		connectToMPD(host);
-	}
-	updateServersComboBox();
-}
+//void BasicMainWindow::execConnectionDialog()
+//{
+//	ConnectionDialog dlg(this, pv->host);
+//	if (dlg.exec() == QDialog::Accepted) {
+//		Host host = dlg.host();
+//		connectToMPD(host);
+//	}
+//	updateServersComboBox();
+//}
 
 bool BasicMainWindow::isAutoReconnectAtStartup()
 {

@@ -18,7 +18,7 @@
 #include "Toast.h"
 #include "VolumeIndicatorPopup.h"
 #include "webclient.h"
-#include <list>
+#include "TinyConnectionDialog.h"
 #include <QBuffer>
 #include <QClipboard>
 #include <QKeyEvent>
@@ -254,6 +254,16 @@ void TinyMainWindow::changeEvent(QEvent *e)
 	default:
 		break;
 	}
+}
+
+void TinyMainWindow::execConnectionDialog()
+{
+	TinyConnectionDialog dlg(this, pv->host);
+	if (dlg.exec() == QDialog::Accepted) {
+		Host host = dlg.host();
+		connectToMPD(host);
+	}
+	updateServersComboBox();
 }
 
 void TinyMainWindow::updateCurrentSongInfo()

@@ -71,7 +71,7 @@ protected:
 	static void updatePlaylist(MusicPlayerClient *mpc, QListWidget *listwidget, QList<MusicPlayerClient::Item> *items);
 	static void makeServersComboBox(QComboBox *cbox, const QString &firstitem, const Host &current_host);
 	void onServersComboBoxIndexChanged(QComboBox *cbox, int index);
-	void execConnectionDialog();
+	virtual void execConnectionDialog() = 0;
 public:
 	BasicMainWindow(QWidget *parent);
 	~BasicMainWindow();

@@ -55,7 +55,8 @@ SOURCES += source_revision.c \
 	src/TinyMainWindowPrivate.cpp \
 	src/BasicMainWindow.cpp \
 	src/ServersComboBox.cpp \
-    src/TinyConnectionDialog.cpp
+    src/TinyConnectionDialog.cpp \
+    src/BasicConnectionDialog.cpp
 
 HEADERS  += src/MainWindow.h \
 	src/MusicPlayerClient.h \
@@ -99,7 +100,8 @@ HEADERS  += src/MainWindow.h \
 	src/Common.h \
 	src/BasicMainWindow.h \
 	src/ServersComboBox.h \
-    src/TinyConnectionDialog.h
+    src/TinyConnectionDialog.h \
+    src/BasicConnectionDialog.h
 
 FORMS    += src/MainWindow.ui \
 	src/VerticalVolumePopup.ui \

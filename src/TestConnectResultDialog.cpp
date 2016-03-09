@@ -1,6 +1,7 @@
 #include "TestConnectResultDialog.h"
 #include "ui_TestConnectResultDialog.h"
 #include <QThread>
+#include "TinyConnectionDialog.h"
 
 TestConnectResultDialog::TestConnectResultDialog(QWidget *parent) :
 	QDialog(parent),
@@ -11,6 +12,10 @@ TestConnectResultDialog::TestConnectResultDialog(QWidget *parent) :
 	auto flags = windowFlags();
 	flags &= ~Qt::WindowContextHelpButtonHint;
 	setWindowFlags(flags);
+
+	if (parent->windowState() == Qt::WindowFullScreen) {
+		setWindowState(Qt::WindowFullScreen);
+	}
 }
 
 TestConnectResultDialog::~TestConnectResultDialog()

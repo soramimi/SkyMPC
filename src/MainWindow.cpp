@@ -990,6 +990,16 @@ void MainWindow::updatePlaylist()
 	}
 }
 
+void MainWindow::execConnectionDialog()
+{
+	ConnectionDialog dlg(this, pv->host);
+	if (dlg.exec() == QDialog::Accepted) {
+		Host host = dlg.host();
+		connectToMPD(host);
+	}
+	updateServersComboBox();
+}
+
 void BasicMainWindow::stopSleepTimer()
 {
 	startSleepTimer(0);

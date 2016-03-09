@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>365</width>
-    <height>317</height>
+    <height>318</height>
    </rect>
   </property>
   <property name="sizePolicy">
@@ -38,23 +38,7 @@
    <item>
     <layout class="QHBoxLayout" name="horizontalLayout_2">
      <item>
-      <widget class="QTableWidget" name="tableWidget">
-       <property name="editTriggers">
-        <set>QAbstractItemView::NoEditTriggers</set>
-       </property>
-       <property name="selectionMode">
-        <enum>QAbstractItemView::SingleSelection</enum>
-       </property>
-       <property name="selectionBehavior">
-        <enum>QAbstractItemView::SelectRows</enum>
-       </property>
-       <attribute name="horizontalHeaderStretchLastSection">
-        <bool>true</bool>
-       </attribute>
-       <attribute name="verticalHeaderVisible">
-        <bool>false</bool>
-       </attribute>
-      </widget>
+      <widget class="QTableWidget" name="tableWidget"/>
      </item>
      <item>
       <layout class="QVBoxLayout" name="verticalLayout">
@@ -67,6 +51,19 @@
           <string>&amp;New</string>
          </property>
         </widget>
+       </item>
+       <item>
+        <spacer name="verticalSpacer_2">
+         <property name="orientation">
+          <enum>Qt::Vertical</enum>
+         </property>
+         <property name="sizeHint" stdset="0">
+          <size>
+           <width>20</width>
+           <height>40</height>
+          </size>
+         </property>
+        </spacer>
        </item>
        <item>
         <widget class="QPushButton" name="pushButton_delete">
@@ -204,9 +201,9 @@
       </widget>
      </item>
      <item>
-      <widget class="QPushButton" name="pushButton_save_and_close">
+      <widget class="QPushButton" name="pushButton_close">
        <property name="text">
-        <string>&amp;Close</string>
+        <string>C&amp;lose</string>
        </property>
       </widget>
      </item>
@@ -224,7 +221,7 @@
   <tabstop>lineEdit_password</tabstop>
   <tabstop>pushButton_test_connection</tabstop>
   <tabstop>pushButton_connect</tabstop>
-  <tabstop>pushButton_save_and_close</tabstop>
+  <tabstop>pushButton_close</tabstop>
  </tabstops>
  <resources/>
  <connections>
@@ -245,7 +242,7 @@
    </hints>
   </connection>
   <connection>
-   <sender>pushButton_save_and_close</sender>
+   <sender>pushButton_close</sender>
    <signal>clicked()</signal>
    <receiver>TinyConnectionDialog</receiver>
    <slot>reject()</slot>
