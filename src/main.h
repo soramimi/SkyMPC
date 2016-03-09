@@ -11,7 +11,10 @@ enum {
 	ITEM_IsRoot,
 	ITEM_IsFolder,
 	ITEM_IsFile,
+	ITEM_IsPlaylist,
+	ITEM_PosRole,
 	ITEM_PathRole,
+	ITEM_RangeRole,
 	ITEM_SongIdRole,
 };
 

@@ -33,7 +33,7 @@ SongPropertyDialog::SongPropertyDialog(QWidget *parent, std::vector<MusicPlayerC
 			unsigned int t = val.toUInt();
 			if (t > 0) {
 				char tmp[100];
-				sprintf(tmp, " (%u:%u)", t / 60, t % 60);
+				sprintf(tmp, " (%u:%02u)", t / 60, t % 60);
 				val += tmp;
 			}
 		}

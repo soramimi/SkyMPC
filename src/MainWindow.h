@@ -24,6 +24,8 @@ private:
 	Ui::MainWindow *ui;
 private:
     QIcon folderIcon();
+	QIcon songIcon();
+	QIcon playlistIcon();
 	void updateCurrentSongInfo();
 	void updateTree(ResultItem *info);
 	void clearTreeAndList();
@@ -31,7 +33,7 @@ private:
 	QString serverName() const;
 	void execPrimaryCommand(QTreeWidgetItem *item);
 	QString songPath(QTreeWidgetItem const *item) const;
-	QString songPath(QListWidgetItem const *item) const;
+	QString songPath(QListWidgetItem const *item, bool for_export) const;
 	bool isPlaceHolder(QTreeWidgetItem *item) const;
 	void on_edit_location();
 	void displayProgress(const QString &text);
@@ -39,10 +41,15 @@ private:
 	static bool isRoot(QTreeWidgetItem *item);
 	static bool isFolder(QTreeWidgetItem *item);
 	static bool isFile(QTreeWidgetItem *item);
+	static bool isPlaylist(QTreeWidgetItem *item);
 	QComboBox *serversComboBox();
 	void comboboxIndexChanged(QComboBox *cbox, int index);
 	void updateWindowTitle();
 	void paste(int row);
+	void loadPlaylistAndPlay(const QString &path);
+	int playlistFileCount() const;
+	void execPlaylistPropertyDialog(const QString &path);
+	void updatePrimaryStatusLabel();
 public:
 	explicit MainWindow(QWidget *parent = 0);
 	~MainWindow();
@@ -51,8 +58,6 @@ public:
 	void setSingleEnabled(bool f);
 	void setConsumeEnabled(bool f);
 	void setRandomEnabled(bool f);
-
-	void unify();
 
 protected:
 	virtual bool event(QEvent *event);
@@ -119,12 +124,13 @@ private slots:
 	void on_treeWidget_itemDoubleClicked(QTreeWidgetItem *item, int column);
 	void on_treeWidget_itemExpanded(QTreeWidgetItem *item);
 	void onDropEvent(bool done);
-	void onListViewContextMenuEvent(QContextMenuEvent *);
 	void onSliderPressed();
 	void onSliderReleased();
 	void onTreeViewContextMenuEvent(QContextMenuEvent *);
+	void onListViewContextMenuEvent(QContextMenuEvent *);
 	void on_comboBox_servers1_currentIndexChanged(int index);
 	void on_comboBox_servers2_currentIndexChanged(int index);
+	void on_listWidget_playlist_itemSelectionChanged();
 };
 
 #endif // MAINWINDOW_H

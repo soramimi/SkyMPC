@@ -39,10 +39,9 @@ struct BasicMainWindow::Private {
 	std::vector<SongItem> drop_before;
 	struct Playing {
 		PlayingStatus playing;
-		int current_song = 0;
+		int current_song_pos = 0;
 		int current_song_indicator = -1;
 		double total = 0;
-		QString current_file;
 		QString current_title;
 		QString current_artist;
 		QString current_disc;
@@ -59,6 +58,8 @@ struct BasicMainWindow::Private {
 	QMenu menu;
 
 	QIcon folder_icon;
+	QIcon song_icon;
+	QIcon playlist_icon;
 
 //	std::map<QString, QAction *> command_action_map;
 //	std::map<int, QString> key_command_map;

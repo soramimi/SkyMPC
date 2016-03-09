@@ -2,6 +2,7 @@
 #include "ui_EditPlaylistDialog.h"
 #include "RenameDialog.h"
 #include <QMessageBox>
+#include "BasicMainWindow.h"
 #include "MySettings.h"
 #include "SavePlaylistDialog.h"
 
@@ -195,6 +196,11 @@ void EditPlaylistDialog::on_pushButton_delete_clicked()
 
 void EditPlaylistDialog::on_pushButton_save_clicked()
 {
+	BasicMainWindow *mw = BasicMainWindow::findMainWindow(this);
+	if (mw && !mw->validateForSavePlaylist()) {
+		return;
+	}
+
 	QString name;
 	{
 		QListWidgetItem *listitem = ui->listWidget_list->currentItem();

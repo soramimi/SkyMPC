@@ -26,5 +26,6 @@
         <file>image/server.png</file>
         <file>image/timer.svgz</file>
         <file>image/close.svgz</file>
+        <file>image/playlist.png</file>
     </qresource>
 </RCC>

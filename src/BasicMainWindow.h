@@ -29,6 +29,9 @@ protected:
 	void stopStatusThread();
 	void execSleepTimerDialog();
 
+	int currentPlaylistCount();
+	static QString textForExport(const MusicPlayerClient::Item &item);
+
 	void updatePlayingStatus();
 	virtual void updateServersComboBox() {}
 	virtual void setPageConnected() {}
@@ -57,7 +60,7 @@ protected:
 	void showError(const QString &text);
 	void update(bool mpdupdate);
 	void checkDisconnected();
-	void execSongProperty(const QString &path, bool addplaylist);
+	void execSongProperty(const QString &path, int listrow, bool addplaylist);
 	void clearPlaylist();
 	void startSleepTimer(int mins);
 	void doQuickSave1();
@@ -68,7 +71,7 @@ protected:
 	void updatePlayIcon(PlayingStatus status, QToolButton *button, QAction *action);
 	virtual void displayExtraInformation(const QString &text2, const QString &text3) = 0;
 	void timerEvent(QTimerEvent *);
-	static void updatePlaylist(MusicPlayerClient *mpc, QListWidget *listwidget, QList<MusicPlayerClient::Item> *items);
+	static void updatePlaylist(QListWidget *listwidget, QList<MusicPlayerClient::Item> *items);
 	static void makeServersComboBox(QComboBox *cbox, const QString &firstitem, const Host &current_host);
 	void onServersComboBoxIndexChanged(QComboBox *cbox, int index);
 	virtual void execConnectionDialog() = 0;
@@ -94,6 +97,8 @@ public:
 	static BasicMainWindow *findMainWindow(QObject *hint = nullptr);
 	static bool isTinyMode(QObject *hint = nullptr);
 
+	void unify();
+	bool validateForSavePlaylist();
 private slots:
 	void onVolumeChanged();
 	void onUpdateStatus();

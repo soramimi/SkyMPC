@@ -88,52 +88,72 @@
 <context>
     <name>BasicMainWindow</name>
     <message>
-        <location filename="src/BasicMainWindow.cpp" line="311"/>
+        <location filename="src/BasicMainWindow.cpp" line="313"/>
         <source>Quick Save 1 was completed</source>
         <translation>クイックセーブ1が完了しました</translation>
     </message>
     <message>
-        <location filename="src/BasicMainWindow.cpp" line="318"/>
+        <location filename="src/BasicMainWindow.cpp" line="320"/>
         <source>Quick Save 2 was completed</source>
         <translation>クイックセーブ2が完了しました</translation>
     </message>
     <message>
-        <location filename="src/BasicMainWindow.cpp" line="360"/>
+        <location filename="src/BasicMainWindow.cpp" line="362"/>
         <source>Waiting for connection</source>
         <translation>接続を待機しています</translation>
     </message>
     <message>
-        <location filename="src/BasicMainWindow.cpp" line="375"/>
+        <location filename="src/BasicMainWindow.cpp" line="377"/>
         <source>Pause in %1 later</source>
         <translation>あと %1 で停止します</translation>
     </message>
     <message>
-        <location filename="src/BasicMainWindow.cpp" line="692"/>
+        <location filename="src/BasicMainWindow.cpp" line="748"/>
         <source>Failed to load playlist.</source>
         <translation>プレイリストの読み込みに失敗しました。</translation>
     </message>
     <message>
-        <location filename="src/BasicMainWindow.cpp" line="702"/>
+        <location filename="src/BasicMainWindow.cpp" line="767"/>
+        <source>The playlist contains the unsupported playlist item.</source>
+        <translation>このプレイリストには対応していないアイテムが含まれています。</translation>
+    </message>
+    <message>
+        <location filename="src/BasicMainWindow.cpp" line="769"/>
+        <source>This operation probably does not work as expected.</source>
+        <translation>この操作は期待通りに動作しない可能性があります。</translation>
+    </message>
+    <message>
+        <location filename="src/BasicMainWindow.cpp" line="771"/>
+        <source>Do you want to continue ?</source>
+        <translation>続行しますか？</translation>
+    </message>
+    <message>
+        <location filename="src/BasicMainWindow.cpp" line="780"/>
         <source>Failed to save playlist.</source>
         <translation>プレイリストの保存に失敗しました。</translation>
     </message>
     <message>
-        <location filename="src/MainWindow.cpp" line="542"/>
+        <location filename="src/BasicMainWindow.cpp" line="857"/>
+        <source>Overlapped item was not found.</source>
+        <translation>重複したアイテムは見つかりませんでした。</translation>
+    </message>
+    <message>
+        <location filename="src/MainWindow.cpp" line="595"/>
         <source>Pause</source>
         <translation>一時停止</translation>
     </message>
     <message>
-        <location filename="src/MainWindow.cpp" line="547"/>
+        <location filename="src/MainWindow.cpp" line="600"/>
         <source>&amp;Pause</source>
         <translation>一時停止(&amp;P)</translation>
     </message>
     <message>
-        <location filename="src/MainWindow.cpp" line="550"/>
+        <location filename="src/MainWindow.cpp" line="603"/>
         <source>Play</source>
         <translation>再生</translation>
     </message>
     <message>
-        <location filename="src/MainWindow.cpp" line="555"/>
+        <location filename="src/MainWindow.cpp" line="608"/>
         <source>&amp;Play</source>
         <translation>再生(&amp;P)</translation>
     </message>
@@ -405,7 +425,7 @@
     </message>
     <message>
         <location filename="src/MainWindow.ui" line="502"/>
-        <location filename="src/MainWindow.cpp" line="458"/>
+        <location filename="src/MainWindow.cpp" line="511"/>
         <source>Volume</source>
         <translation>ボリューム</translation>
     </message>
@@ -697,7 +717,7 @@
     </message>
     <message>
         <location filename="src/MainWindow.ui" line="1026"/>
-        <location filename="src/MainWindow.cpp" line="823"/>
+        <location filename="src/MainWindow.cpp" line="940"/>
         <source>Edit</source>
         <translation>編集</translation>
     </message>
@@ -708,7 +728,7 @@
     </message>
     <message>
         <location filename="src/MainWindow.ui" line="1037"/>
-        <location filename="src/MainWindow.cpp" line="826"/>
+        <location filename="src/MainWindow.cpp" line="943"/>
         <source>Paste (Insert)</source>
         <translation>ここに貼り付け</translation>
     </message>
@@ -724,7 +744,7 @@
     </message>
     <message>
         <location filename="src/MainWindow.ui" line="1048"/>
-        <location filename="src/MainWindow.cpp" line="831"/>
+        <location filename="src/MainWindow.cpp" line="948"/>
         <source>Add location</source>
         <translation>場所を追加</translation>
     </message>
@@ -744,97 +764,97 @@
         <translation></translation>
     </message>
     <message>
-        <location filename="src/MainWindow.cpp" line="122"/>
+        <location filename="src/MainWindow.cpp" line="125"/>
         <source>&amp;About SkyMPC</source>
         <translation>SkyMPCについて(&amp;A)</translation>
     </message>
     <message>
-        <location filename="src/MainWindow.cpp" line="988"/>
+        <location filename="src/MainWindow.cpp" line="1097"/>
         <source>%1 songs in playlist</source>
         <translation>プレイリストに%1曲あります</translation>
     </message>
     <message>
-        <location filename="src/MainWindow.cpp" line="214"/>
+        <location filename="src/MainWindow.cpp" line="235"/>
         <source>Now sleep timer is working.</source>
         <translation>スリープタイマーが動作中です。</translation>
     </message>
     <message>
-        <location filename="src/MainWindow.cpp" line="215"/>
+        <location filename="src/MainWindow.cpp" line="236"/>
         <source>If this program is closed, the sleep timer will be canceled.</source>
         <oldsource>If this application is closed, the sleep timer will be canceled.</oldsource>
         <translation>プログラムを終了した場合、スリープタイマーはキャンセルされます。</translation>
     </message>
     <message>
-        <location filename="src/MainWindow.cpp" line="216"/>
+        <location filename="src/MainWindow.cpp" line="237"/>
         <source>Are you sure you want to close ?</source>
         <translation>終了してよろしいですか？</translation>
     </message>
     <message>
-        <location filename="src/MainWindow.cpp" line="806"/>
+        <location filename="src/MainWindow.cpp" line="919"/>
         <source>Add to play list</source>
         <translation>プレイリストに追加</translation>
     </message>
     <message>
-        <location filename="src/MainWindow.cpp" line="822"/>
+        <location filename="src/MainWindow.cpp" line="939"/>
         <source>Play from here</source>
         <translation>ここから再生</translation>
     </message>
     <message>
-        <location filename="src/MainWindow.cpp" line="824"/>
+        <location filename="src/MainWindow.cpp" line="941"/>
         <source>Cut</source>
         <translation>切り取り</translation>
     </message>
     <message>
-        <location filename="src/MainWindow.cpp" line="825"/>
+        <location filename="src/MainWindow.cpp" line="942"/>
         <source>Copy</source>
         <translation>コピー</translation>
     </message>
     <message>
-        <location filename="src/MainWindow.cpp" line="827"/>
+        <location filename="src/MainWindow.cpp" line="944"/>
         <source>Paste (Append)</source>
         <translation>最後に貼り付け</translation>
     </message>
     <message>
-        <location filename="src/MainWindow.cpp" line="828"/>
+        <location filename="src/MainWindow.cpp" line="945"/>
         <source>Delete</source>
         <translation>削除</translation>
     </message>
     <message>
-        <location filename="src/MainWindow.cpp" line="829"/>
+        <location filename="src/MainWindow.cpp" line="946"/>
         <source>Clear play list</source>
         <translation>プレイリストを消去</translation>
     </message>
     <message>
-        <location filename="src/MainWindow.cpp" line="1184"/>
+        <location filename="src/MainWindow.cpp" line="1099"/>
+        <source>%1 songs selected</source>
+        <translation>%1曲が選択されています</translation>
+    </message>
+    <message>
+        <location filename="src/MainWindow.cpp" line="1310"/>
         <source>Please select only one item before use this command.</source>
         <oldsource>Please select only one item before run this item.</oldsource>
         <translation>アイテムと一つ洗濯してから実行してください。</translation>
     </message>
     <message>
-        <location filename="src/MainWindow.cpp" line="807"/>
-        <location filename="src/MainWindow.cpp" line="830"/>
+        <location filename="src/MainWindow.cpp" line="920"/>
+        <location filename="src/MainWindow.cpp" line="947"/>
         <source>Property</source>
         <translation>プロパティ</translation>
     </message>
     <message>
-        <location filename="src/MainWindow.cpp" line="461"/>
+        <location filename="src/MainWindow.cpp" line="514"/>
         <source>Volume change is not supported</source>
         <translation>ボリュームの変更はサポートされていません</translation>
     </message>
     <message>
-        <location filename="src/MainWindow.cpp" line="1104"/>
+        <location filename="src/MainWindow.cpp" line="1230"/>
         <source>Reconnected</source>
         <translation>再接続しました</translation>
     </message>
     <message>
-        <location filename="src/MainWindow.cpp" line="1155"/>
+        <location filename="src/MainWindow.cpp" line="1281"/>
         <source>The name is invalid.</source>
         <translation>名前が不正です。</translation>
-    </message>
-    <message>
-        <location filename="src/MainWindow.cpp" line="1335"/>
-        <source>Overlapped item was not found.</source>
-        <translation>重複したアイテムは見つかりませんでした。</translation>
     </message>
 </context>
 <context>
@@ -976,8 +996,9 @@
     <name>SongPropertyDialog</name>
     <message>
         <location filename="src/SongPropertyDialog.ui" line="14"/>
-        <source>Song Property</source>
-        <translation>曲のプロパティ</translation>
+        <source>Property</source>
+        <oldsource>Song Property</oldsource>
+        <translation>プロパティ</translation>
     </message>
     <message>
         <location filename="src/SongPropertyDialog.ui" line="50"/>

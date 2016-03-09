@@ -1,19 +1,21 @@
 #include "BasicMainWindow.h"
 #include "AskRemoveDuplicatedFileDialog.h"
-#include "Common.h"
 #include "ConnectionDialog.h"
 #include "EditLocationDialog.h"
 #include "main.h"
 #include "MainWindowPrivate.h"
 #include "MusicPlayerClient.h"
 #include "MySettings.h"
+#include "Server.h"
+#include "ServersComboBox.h"
 #include "SleepTimerDialog.h"
+#include "TinyMainWindow.h"
 #include "Toast.h"
 #include <QApplication>
 #include <QComboBox>
 #include <QListWidget>
-#include "ServersComboBox.h"
-#include "TinyMainWindow.h"
+#include <QMessageBox>
+#include <set>
 
 BasicMainWindow::BasicMainWindow(QWidget *parent)
 	: QMainWindow(parent)
@@ -121,7 +123,6 @@ void BasicMainWindow::updatePlayingStatus()
 	if (mpc()->isOpen()) {
 		PlayingInfo info;
 		pv->status_thread.data(&info);
-		QString current_file = info.property.get("file");
 		QString state = info.status.get("state");
 		if (state == "play") {
 			status = PlayingStatus::Play;
@@ -131,10 +132,11 @@ void BasicMainWindow::updatePlayingStatus()
 
 		if (status == PlayingStatus::Stop) {
 			pv->total_seconds = 0;
+			pv->status.current_song_pos = -1;
 			displayCurrentSongLabels(QString(), QString(), QString());
 			displayStopStatus();
 		} else {
-			pv->status.current_song = info.status.get("song").toInt();
+			pv->status.current_song_pos = info.status.get("song").toInt();
 
 			pv->volume = info.status.get("volume").toInt();
 
@@ -332,7 +334,7 @@ void BasicMainWindow::doQuickLoad2()
 void BasicMainWindow::doUpdateStatus()
 {
 	updatePlayingStatus();
-	if (pv->status.current_song != pv->status.current_song_indicator) {
+	if (pv->status.current_song_pos != pv->status.current_song_indicator) {
 		updatePlaylist();
 		updateCurrentSongInfo();
 	}
@@ -385,7 +387,9 @@ void BasicMainWindow::timerEvent(QTimerEvent *)
 	checkDisconnected();
 }
 
-void BasicMainWindow::updatePlaylist(MusicPlayerClient *mpc, QListWidget *listwidget, QList<MusicPlayerClient::Item> *items)
+
+
+void BasicMainWindow::updatePlaylist(QListWidget *listwidget, QList<MusicPlayerClient::Item> *items)
 {
 	QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
 
@@ -398,20 +402,30 @@ void BasicMainWindow::updatePlaylist(MusicPlayerClient *mpc, QListWidget *listwi
 		if (mpcitem.kind == "file") {
 			QString path = mpcitem.text;
 			QString text;
-			QString artist;
+			QString range;
+			int pos;
 			if (path.indexOf("://") > 0) {
 				text = path;
 			} else {
-				QString album;
-				QString time;
-				{
-					QList<MusicPlayerClient::Item> v;
-					mpc->do_listallinfo(path, &v);
-					if (v.size() == 1) {
-						text = v.front().map.get("Title");
-						artist = v.front().map.get("Artist");
-						album = v.front().map.get("Album");
-						time = MusicPlayerClient::timeText(v.front());
+				if (0) { // debug
+					qDebug() << "---" << path;
+					std::map<QString, QString> const &map = mpcitem.map.map;
+					for (auto const &pair : map) {
+						qDebug() << pair.first << "=" << pair.second;
+					}
+				}
+				QString title = mpcitem.map.get("Title");
+				QString artist = mpcitem.map.get("Artist");
+				QString album = mpcitem.map.get("Album");
+				pos = mpcitem.map.get("Pos").toInt();
+				range = mpcitem.map.get("Range");
+				text = title;
+				if (text.isEmpty()) {
+					int i = path.lastIndexOf('/');
+					if (i < 0) {
+						text = path;
+					} else {
+						text = path.mid(i + 1);
 					}
 				}
 				QString suffix;
@@ -434,8 +448,10 @@ void BasicMainWindow::updatePlaylist(MusicPlayerClient *mpc, QListWidget *listwi
 			QString id = mpcitem.map.get("Id");
 			QListWidgetItem *listitem = new QListWidgetItem();
 			listitem->setText(text);
+			listitem->setData(ITEM_PosRole, pos);
 			listitem->setData(ITEM_PathRole, path);
 			listitem->setData(ITEM_SongIdRole, id);
+			if (!range.isEmpty()) listitem->setData(ITEM_RangeRole, range);
 			listitem->setIcon(QIcon(":/image/notplaying.png"));
 			listwidget->addItem(listitem);
 		}
@@ -613,12 +629,39 @@ void BasicMainWindow::startStatusThread()
 	pv->status_thread.start();
 }
 
+int BasicMainWindow::currentPlaylistCount()
+{
+	QList<MusicPlayerClient::Item> items;
+	mpc()->do_playlist(&items);
+	return items.size();
+}
+
+QString BasicMainWindow::textForExport(const MusicPlayerClient::Item &item)
+{
+	QString text;
+	QString title = item.map.get("Title");
+	QString range = item.map.get("Range");
+	if (range.isEmpty()) {
+		if (title.isEmpty()) {
+			text = item.text;
+		} else {
+			text = title;
+		}
+	} else {
+		text = title + "/.../" + range;
+	}
+	return text;
+}
+
 void BasicMainWindow::addToPlaylist(const QString &path, int to, bool update)
 {
 	if (path.isEmpty()) return;
 
+	QString range; // not supported yet
+
 	using mpcitem_t = MusicPlayerClient::Item;
-	QList<mpcitem_t> mpcitems;
+	QList<mpcitem_t> fileitems;
+	QList<MusicPlayerClient::Item> playlist;
 	if (path.indexOf("://") > 0) {
 		if (to < 0) {
 			mpc()->do_add(path);
@@ -626,8 +669,8 @@ void BasicMainWindow::addToPlaylist(const QString &path, int to, bool update)
 			mpc()->do_addid(path, to);
 			to++;
 		}
-	} else if (mpc()->do_listall(path, &mpcitems)) {
-		for (mpcitem_t const &mpcitem : mpcitems) {
+	} else if (mpc()->do_listall(path, &fileitems)) {
+		for (mpcitem_t const &mpcitem : fileitems) {
 			if (mpcitem.kind == "file") {
 				if (to < 0) {
 					mpc()->do_add(mpcitem.text);
@@ -637,11 +680,24 @@ void BasicMainWindow::addToPlaylist(const QString &path, int to, bool update)
 				}
 			}
 		}
+	} else if (mpc()->do_listplaylistinfo(path, &playlist)) {
+		int before = mpc()->current_playlist_file_count();
+		mpc()->do_load(path);
+		int after = mpc()->current_playlist_file_count();
+		if (to >= 0 && to != before && before < after) {
+			int n = after - before;
+			for (int i = 0; i < n; i++) {
+				mpc()->do_move(after - 1, to);
+			}
+		}
 	}
+
 	if (update) {
 		updatePlaylist();
 	}
 }
+
+
 
 void BasicMainWindow::play()
 {
@@ -693,15 +749,47 @@ void BasicMainWindow::loadPlaylist(const QString &name, bool replace)
 	}
 }
 
+bool BasicMainWindow::validateForSavePlaylist()
+{
+	bool has_range = false;
+	QList<MusicPlayerClient::Item> vec;
+	mpc()->do_playlistinfo(QString(), &vec);
+	for (MusicPlayerClient::Item const &item : vec) {
+		QString range = item.map.get("Range");
+		// Range属性を持つアイテムは外部プレイリストを参照しているので、たぶん保存が失敗する。
+		if (!range.isEmpty()) {
+			has_range = true;
+		}
+	}
+
+	bool ok = true;
+	if (has_range) {
+		QString msg;
+		msg = tr("The playlist contains the unsupported playlist item.");
+		msg += '\n';
+		msg += tr("This operation probably does not work as expected.");
+		msg += '\n';
+		msg += tr("Do you want to continue ?");
+		ok = QMessageBox::warning(this, qApp->applicationName(), msg, QMessageBox::Ok, QMessageBox::Cancel) == QMessageBox::Ok;
+	}
+
+	return ok;
+}
+
 bool BasicMainWindow::savePlaylist(const QString &name)
 {
-	mpc()->do_rm(name);
-	if (mpc()->do_save(name)) {
-		return true;
-	} else {
-		showError(tr("Failed to save playlist.") + '(' + mpc()->message() + ')');
-		return false;
+	bool ok = validateForSavePlaylist();
+
+	if (ok) {
+		mpc()->do_rm(name);
+		if (mpc()->do_save(name)) {
+			return true;
+		} else {
+			showError(tr("Failed to save playlist.") + '(' + mpc()->message() + ')');
+			return false;
+		}
 	}
+	return false;
 }
 
 void BasicMainWindow::execAddLocationDialog()
@@ -750,6 +838,46 @@ bool BasicMainWindow::isTinyMode(QObject *hint)
 		return true;
 	}
 	return false;
+}
+
+void BasicMainWindow::unify()
+{
+	using mpcitem_t = MusicPlayerClient::Item;
+	QString text;
+	QList<mpcitem_t> vec;
+	std::vector<int> dup;
+	mpc()->do_playlistinfo(QString(), &vec);
+	{
+		std::for_each(vec.begin(), vec.end(), [](mpcitem_t &item){
+			item.text = textForExport(item);
+		});
+		std::set<QString> set;
+		for (int i = 0; i < (int)vec.size(); i++) {
+			QString item = textForExport(vec[i]);
+			if (set.find(item) == set.end()) {
+				set.insert(item);
+			} else {
+				dup.push_back(i);
+				text += item + '\n';
+			}
+		}
+	}
+	if (dup.empty()) {
+		showNotify(tr("Overlapped item was not found."));
+	} else {
+		AskRemoveDuplicatedFileDialog dlg(this, text);
+		if (dlg.exec() == QDialog::Accepted) {
+			std::sort(dup.begin(), dup.end());
+			int i = (int)dup.size();
+			while (i > 0) {
+				i--;
+				int row = dup[i];
+				int id = vec[row].map.get("Id").toInt();
+				mpc()->do_deleteid(id);
+			}
+			updatePlaylist();
+		}
+	}
 }
 
 void BasicMainWindow::onVolumeChanged()

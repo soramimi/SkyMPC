@@ -342,6 +342,11 @@ bool MusicPlayerClient::do_listall(QString const &path, QList<Item> *out)
 	return info_("listall", path, out);
 }
 
+bool MusicPlayerClient::do_listfiles(QString const &path, QList<Item> *out)
+{
+	return info_("listfiles", path, out);
+}
+
 bool MusicPlayerClient::do_listallinfo(QString const &path, std::vector<KeyValue> *out)
 {
 	return info_("listallinfo", path, out);
@@ -356,6 +361,11 @@ bool MusicPlayerClient::do_clear()
 {
 	QStringList lines;
 	return exec("clear", &lines);
+}
+
+bool MusicPlayerClient::do_playlist(QList<Item> *out)
+{
+	return info_("playlist", QString(), out);
 }
 
 bool MusicPlayerClient::do_playlistinfo(QString const &path, QList<Item> *out)
@@ -497,10 +507,15 @@ bool MusicPlayerClient::do_save(QString const &name)
 	return exec(QString("save \"") + name + "\"", &lines);
 }
 
-bool MusicPlayerClient::do_load(QString const &name)
+bool MusicPlayerClient::do_load(QString const &name, const QString &range)
 {
 	QStringList lines;
-	return exec(QString("load \"") + name + "\"", &lines);
+	QString cmd = QString("load \"") + name + "\"";
+	if (!range.isEmpty()) {
+		cmd += ' ';
+		cmd += range;
+	}
+	return exec(cmd, &lines);
 }
 
 bool MusicPlayerClient::do_listplaylistinfo(QString const &name, QList<Item> *out)
@@ -526,4 +541,11 @@ bool MusicPlayerClient::do_update()
 	return exec("update", &lines);
 }
 
-
+int MusicPlayerClient::current_playlist_file_count()
+{
+	QStringList lines;
+	if (exec("playlist", &lines)) {
+		return lines.size();
+	}
+	return 0;
+}

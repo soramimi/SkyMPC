@@ -168,9 +168,11 @@ public:
 	bool do_status(StringMap *out);
 	bool do_lsinfo(QString const &path, QList<Item> *out);
 	bool do_listall(QString const &path, QList<Item> *out);
+	bool do_listfiles(const QString &path, QList<Item> *out);
 	bool do_listallinfo(QString const &path, std::vector<KeyValue> *out);
 	bool do_listallinfo(QString const &path, QList<Item> *out);
 	bool do_clear();
+	bool do_playlist(QList<Item> *out);
 	bool do_playlistinfo(QString const &path, QList<Item> *out);
 	bool do_add(QString const &path);
 	bool do_deleteid(int id);
@@ -190,7 +192,7 @@ public:
 	bool do_setvol(int n);
 	bool do_seek(int song, int pos);
 	bool do_save(QString const &name);
-	bool do_load(QString const &name);
+	bool do_load(QString const &name, QString const &range = QString());
 	bool do_listplaylistinfo(QString const &name, QList<Item> *out);
 	bool do_rename(QString const &curname, QString const &newname);
 	bool do_rm(QString const &name);
@@ -199,6 +201,7 @@ public:
 
 	static void sort(QList<MusicPlayerClient::Item> *vec);
 	static QString timeText(const MusicPlayerClient::Item &item);
+	int current_playlist_file_count();
 };
 
 #endif // MUSICPLAYERCLIENT_H

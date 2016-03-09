@@ -1,43 +1,19 @@
 #include "MainWindow.h"
 #include "ui_MainWindow.h"
 #include "AboutDialog.h"
-#include "AskRemoveDuplicatedFileDialog.h"
+#include "BasicMainWindow.h"
 #include "Common.h"
 #include "ConnectionDialog.h"
 #include "EditLocationDialog.h"
 #include "EditPlaylistDialog.h"
-#include "KeyboardCustomizeDialog.h"
 #include "main.h"
 #include "MainWindowPrivate.h"
-#include "misc.h"
 #include "MySettings.h"
-#include "platform.h"
-#include "SelectLocationDialog.h"
-#include "ServersComboBox.h"
-#include "SleepTimerDialog.h"
+#include "Server.h"
 #include "SongPropertyDialog.h"
-#include "VolumeIndicatorPopup.h"
-#include "webclient.h"
-#include "TinyConnectionDialog.h"
-#include <list>
-#include <QBuffer>
 #include <QClipboard>
 #include <QKeyEvent>
-#include <QMenu>
 #include <QMessageBox>
-#include <QNetworkAccessManager>
-#include <QNetworkReply>
-#include <QNetworkRequest>
-#include <QTime>
-#include <QTimer>
-#include <QXmlStreamReader>
-#include <set>
-#include <string>
-
-#ifdef WIN32
-#include <windows.h>
-#pragma warning(disable:4996)
-#endif
 
 #define DISPLAY_TIME 0
 
@@ -92,6 +68,9 @@ MainWindow::MainWindow(QWidget *parent) :
 #else
 	pv->folder_icon = QIcon(":/image/macfolder.png");
 #endif
+
+	pv->song_icon = QIcon(":/image/song.png");
+	pv->playlist_icon = QIcon(":/image/playlist.png");
 
 #if 0
 	{
@@ -197,14 +176,32 @@ QString MainWindow::songPath(QTreeWidgetItem const *item) const
 	return item->data(0, ITEM_PathRole).toString();
 }
 
-QString MainWindow::songPath(QListWidgetItem const *item) const
+QString MainWindow::songPath(QListWidgetItem const *item, bool for_export) const
 {
-	return item->data(ITEM_PathRole).toString();
+	QString text = item->data(ITEM_PathRole).toString();
+	if (for_export) {
+		QString range = item->data(ITEM_RangeRole).toString();
+		if (!range.isEmpty()) {
+			text += "/.../";
+			text += "range=" + range;
+		}
+	}
+	return text;
 }
 
 QIcon MainWindow::folderIcon()
 {
 	return pv->folder_icon;
+}
+
+QIcon MainWindow::songIcon()
+{
+	return pv->song_icon;
+}
+
+QIcon MainWindow::playlistIcon()
+{
+	return pv->playlist_icon;
 }
 
 void MainWindow::closeEvent(QCloseEvent *event)
@@ -315,14 +312,24 @@ bool MainWindow::isFile(QTreeWidgetItem *item)
 	return item && item->data(0, ITEM_IsFile).toBool();
 }
 
+bool MainWindow::isPlaylist(QTreeWidgetItem *item)
+{
+	return item && item->data(0, ITEM_IsPlaylist).toBool();
+}
+
+int MainWindow::playlistFileCount() const
+{
+	return ui->listWidget_playlist->count();
+}
+
 void MainWindow::execPrimaryCommand(QTreeWidgetItem *item)
 {
-	if (item && isFile(item)) {
+	if (isFile(item)) {
 		QString path = songPath(item);
 		if (qApp->keyboardModifiers() & Qt::AltModifier) {
-			execSongProperty(path, true);
+			execSongProperty(path, -1, true);
 		} else {
-			int i = ui->listWidget_playlist->count();
+			int i = playlistFileCount();
 			if (i < 0) {
 				i = 0;
 			}
@@ -333,6 +340,23 @@ void MainWindow::execPrimaryCommand(QTreeWidgetItem *item)
 				updateCurrentSongInfo();
 			}
 		}
+	}
+}
+
+void MainWindow::loadPlaylistAndPlay(QString const &path)
+{
+	if (path.isEmpty()) return;
+
+	int index = playlistFileCount();
+	if (index < 0) index = 0;
+
+	if (mpc()->do_load(path)) {
+		if (!isPlaying()) {
+			mpc()->do_play(index);
+			invalidateCurrentSongIndicator();
+			updateCurrentSongInfo();
+		}
+		updatePlaylist();
 	}
 }
 
@@ -376,14 +400,24 @@ void MainWindow::keyPressEvent(QKeyEvent *event)
 			QTreeWidgetItem *item = ui->treeWidget->currentItem();
 			if (isFile(item)) {
 				execPrimaryCommand(item);
+			} else if (isPlaylist(item)) {
+				QString path = songPath(item);
+				if (event->modifiers() & Qt::AltModifier) {
+					execPlaylistPropertyDialog(path);
+				} else {
+					loadPlaylistAndPlay(path);
+				}
 			} else if (isFolder(item)) {
 				toggleExpandCollapse(item);
 			}
 		} else if (focus == ui->listWidget_playlist) {
 			if (event->modifiers() & Qt::AltModifier) {
 				QListWidgetItem *item = ui->listWidget_playlist->currentItem();
-				QString path = songPath(item);
-				execSongProperty(path, false);
+				QString path = songPath(item, false);
+				bool ok = false;
+				int pos = item->data(ITEM_PosRole).toInt(&ok);
+				if (!ok) pos = -1;
+				execSongProperty(path, pos, false);
 			} else {
 				int i = ui->listWidget_playlist->currentRow();
 				mpc()->do_play(i);
@@ -398,15 +432,10 @@ void MainWindow::keyPressEvent(QKeyEvent *event)
 				for (QTreeWidgetItem *item : items) {
 					QString path = songPath(item);
 					if (path.isEmpty()) continue;
-					using mpcitem_t = MusicPlayerClient::Item;
-					QList<mpcitem_t> mpcitems;
-					if (mpc()->do_listall(path, &mpcitems)) {
-						for (mpcitem_t const &mpcitem : mpcitems) {
-							if (mpcitem.kind == "file") {
-								QString path = mpcitem.text;
-								mpc()->do_add(path);
-							}
-						}
+					if (isFile(item)) {
+						addToPlaylist(path, -1, false);
+					} else if (isPlaylist(item)) {
+						mpc()->do_load(path);
 					}
 				}
 				updatePlaylist();
@@ -570,14 +599,13 @@ void MainWindow::updateWindowTitle()
 
 void MainWindow::updateCurrentSongInfo()
 {
-	int count = ui->listWidget_playlist->count();
+	int count = playlistFileCount();
 	if (count > 0) {
 		for (int i = 0; i < count; i++) {
 			QListWidgetItem *item = ui->listWidget_playlist->item(i);
 			Q_ASSERT(item);
 			char const *s = ":image/notplaying.png";
-			if (i == pv->status.current_song) {
-				pv->status.current_file = songPath(item);
+			if (i == pv->status.current_song_pos) {
 				if (pv->status.playing == PlayingStatus::Play) {
 					s = ":image/playing.svgz";
 				} else if (pv->status.playing == PlayingStatus::Pause) {
@@ -587,7 +615,7 @@ void MainWindow::updateCurrentSongInfo()
 			item->setIcon(QIcon(s));
 		}
 
-		pv->status.current_song_indicator = pv->status.current_song;
+		pv->status.current_song_indicator = pv->status.current_song_pos;
 
 		displayCurrentSongLabels(pv->status.current_title, pv->status.current_artist, pv->status.current_disc);
 
@@ -648,17 +676,25 @@ void MainWindow::updateTree(ResultItem *info)
 			ushort const *str = mpcitem.text.utf16();
 			ushort const *ptr = ucsrchr(str, '/');
 			if (ptr) {
+				int kind = -1;
 				if (mpcitem.kind == "directory") {
+					kind = ITEM_IsFolder;
+				} else if (mpcitem.kind == "file") {
+					kind = ITEM_IsFile;
+				} else if (mpcitem.kind == "playlist") {
+					kind = ITEM_IsPlaylist;
+				}
+				if (kind == ITEM_IsFolder) {
 					QTreeWidgetItem *child = new_QTreeWidgetItem(treeitem);
 					child->setText(0, QString::fromUtf16(ptr + 1));
 					child->setIcon(0, folderIcon());
-					child->setData(0, ITEM_IsFolder, true);
+					child->setData(0, kind, true);
 					child->setData(0, ITEM_PathRole, mpcitem.text);
 					QTreeWidgetItem *g = new_QTreeWidgetItem(child);
 					g->setText(0, "Reading...");
 					child->addChild(g);
 					treeitem->addChild(child);
-				} else if (mpcitem.kind == "file") {
+				} else if (kind == ITEM_IsFile || kind == ITEM_IsPlaylist) {
 					QString path = mpcitem.text;
 					QString text;
 					QList<MusicPlayerClient::Item> v;
@@ -695,10 +731,18 @@ void MainWindow::updateTree(ResultItem *info)
 							text = QString::fromUtf16(ptr + 1);
 						}
 					}
+
+					QIcon icon;
+					if (kind == ITEM_IsFile) {
+						icon = songIcon();
+					} else if (kind == ITEM_IsPlaylist) {
+						icon = playlistIcon();
+					}
+
 					QTreeWidgetItem *child = new_QTreeWidgetItem(treeitem);
 					child->setText(0, text);
-					child->setIcon(0, QIcon(":/image/song.png"));
-					child->setData(0, ITEM_IsFile, true);
+					child->setIcon(0, icon);
+					child->setData(0, kind, true);
 					child->setData(0, ITEM_PathRole, path);
 					treeitem->addChild(child);
 				}
@@ -766,7 +810,7 @@ void MainWindow::deleteSelectedSongs()
 	}
 	updatePlaylist();
 
-	int count = ui->listWidget_playlist->count();
+	int count = playlistFileCount();
 	if (count <= row) {
 		row = count - 1;
 	}
@@ -776,15 +820,41 @@ void MainWindow::deleteSelectedSongs()
 	}
 }
 
-void BasicMainWindow::execSongProperty(QString const &path, bool addplaylist)
+void BasicMainWindow::execSongProperty(QString const &path, int listrow, bool addplaylist)
 {
 	if (path.isEmpty()) {
 		return;
 	}
-	std::vector<MusicPlayerClient::KeyValue> vec;
+	using KeyValue = MusicPlayerClient::KeyValue;
+	std::vector<KeyValue> vec;
 	mpc()->do_listallinfo(path, &vec);
 	if (vec.size() > 0) {
 		if (vec[0].key == "file") {
+			{
+				std::map<QString, QString> map;
+				for (int i = 1; i < (int)vec.size(); i++) {
+					map[vec[i].key] = vec[i].value;
+				}
+				if (listrow >= 0){
+					QList<MusicPlayerClient::Item> items;
+					if (mpc()->do_playlistinfo(QString(), &items)) {
+						if (listrow < items.size()) {
+							std::map<QString, QString> const &m = items[listrow].map.map;
+							for (auto const &pair : m) {
+								map[pair.first] = pair.second;
+							}
+						}
+					}
+				}
+				vec.resize(1);
+				for (auto const &pair : map) {
+					vec.push_back(KeyValue(pair.first, pair.second));
+				}
+			}
+			std::sort(vec.begin() + 1, vec.end(), [](KeyValue const &l, KeyValue const &r){
+				return l.key < r.key;
+			});
+
 			SongPropertyDialog dlg(this, &vec, addplaylist);
 			if (dlg.exec() == QDialog::Accepted) {
 				if (addplaylist && dlg.addToPlaylistClicked()) {
@@ -794,6 +864,25 @@ void BasicMainWindow::execSongProperty(QString const &path, bool addplaylist)
 				}
 			}
 		}
+	}
+}
+
+void MainWindow::execPlaylistPropertyDialog(QString const &path)
+{
+	QList<MusicPlayerClient::Item> items;
+	mpc()->do_listplaylistinfo(path, &items);
+
+	std::vector<MusicPlayerClient::KeyValue> vec;
+	vec.push_back(MusicPlayerClient::KeyValue("playlist", path));
+
+	for (int i = 0; i < items.size(); i++) {
+		QString title = items[i].map.get("Title");
+		vec.push_back(MusicPlayerClient::KeyValue(QString::number(i + 1), title));
+	}
+
+	SongPropertyDialog dlg(this, &vec, true);
+	if (dlg.exec() == QDialog::Accepted) {
+		loadPlaylist(path, false);
 	}
 }
 
@@ -812,7 +901,11 @@ void MainWindow::onTreeViewContextMenuEvent(QContextMenuEvent *)
 	if (act == &a_AddToPlaylist) {
 		addToPlaylist(path, -1, true);
 	} else if (act == &a_Property) {
-		execSongProperty(path, true);
+		if (isFile(treeitem)) {
+			execSongProperty(path, -1, true);
+		} else if (isPlaylist(treeitem)) {
+			execPlaylistPropertyDialog(path);
+		}
 	}
 }
 
@@ -871,11 +964,11 @@ void MainWindow::onListViewContextMenuEvent(QContextMenuEvent *)
 	} else if (act == &a_Clear) {
 		clearPlaylist();
 	} else if (act == &a_Property) {
-		int i = ui->listWidget_playlist->currentIndex().row();
-		QListWidgetItem *listitem = ui->listWidget_playlist->item(i);
+		int row = ui->listWidget_playlist->currentIndex().row();
+		QListWidgetItem *listitem = ui->listWidget_playlist->item(row);
 		if (listitem) {
-			QString path = songPath(listitem);
-			execSongProperty(path, false);
+			QString path = songPath(listitem, false);
+			execSongProperty(path, row, false);
 		}
 	}
 }
@@ -890,22 +983,22 @@ void MainWindow::onDropEvent(bool done)
 {
 	if (!done) {
 		pv->drop_before.clear();
-		int n = ui->listWidget_playlist->count();
+		int n = playlistFileCount();
 		for (int i = 0; i < n; i++) {
 			QListWidgetItem *listitem = ui->listWidget_playlist->item(i);
 			listitem->setData(ITEM_RowRole, i);
-			QString path = songPath(listitem);
+			QString path = songPath(listitem, false);
 			pv->drop_before.push_back(SongItem(i, path));
 		}
 	} else {
 		std::vector<SongItem> drop_after;
-		int n = ui->listWidget_playlist->count();
+		int n = playlistFileCount();
 		for (int i = 0; i < n; i++) {
 			QListWidgetItem const *listitem = ui->listWidget_playlist->item(i);
 			bool ok = false;
 			int row = listitem->data(ITEM_RowRole).toInt(&ok);
 			if (!ok) row = -1;
-			QString path = songPath(listitem);
+			QString path = songPath(listitem, false);
 			if (path.isEmpty()) continue;
 			drop_after.push_back(SongItem(row, path));
 		}
@@ -943,11 +1036,11 @@ void MainWindow::onDropEvent(bool done)
 void MainWindow::on_listWidget_playlist_doubleClicked(const QModelIndex &index)
 {
 	if (qApp->keyboardModifiers() & Qt::AltModifier) {
-		int i = index.row();
-		QListWidgetItem *item = ui->listWidget_playlist->item(i);
+		int row = index.row();
+		QListWidgetItem *item = ui->listWidget_playlist->item(row);
 		if (item) {
-			QString path = songPath(item);
-			execSongProperty(path, false);
+			QString path = songPath(item, false);
+			execSongProperty(path, row, false);
 		}
 	} else {
 		int i = index.row();
@@ -971,6 +1064,19 @@ void MainWindow::on_toolButton_volume_clicked()
 	pv->volume_popup.show();
 }
 
+void MainWindow::updatePrimaryStatusLabel()
+{
+	QString text;
+	int selected = ui->listWidget_playlist->selectedItems().size();
+	if (selected < 2) {
+		int count = playlistFileCount();
+		text = tr("%1 songs in playlist").arg(count);
+	} else {
+		text = tr("%1 songs selected").arg(selected);
+	}
+	pv->status_label1->setText(text);
+}
+
 void MainWindow::updatePlaylist()
 {
 	QList<MusicPlayerClient::Item> vec;
@@ -979,15 +1085,11 @@ void MainWindow::updatePlaylist()
 		return;
 	}
 
-	BasicMainWindow::updatePlaylist(mpc(), ui->listWidget_playlist, &vec);
+	BasicMainWindow::updatePlaylist(ui->listWidget_playlist, &vec);
 
 	updateCurrentSongInfo();
 
-	{ // update status bar label 1
-		int count = ui->listWidget_playlist->count();
-		QString text1 = tr("%1 songs in playlist").arg(count);
-		pv->status_label1->setText(text1);
-	}
+	updatePrimaryStatusLabel();
 }
 
 void MainWindow::execConnectionDialog()
@@ -1021,7 +1123,7 @@ void MainWindow::onSliderReleased()
 {
 	int pos = ui->horizontalSlider->value() / 100;
 	{
-		mpc()->do_seek(pv->status.current_song, pos);
+		mpc()->do_seek(pv->status.current_song_pos, pos);
 		if (pv->status.playing == PlayingStatus::Play) {
 			mpc()->do_pause(false);
 		}
@@ -1172,7 +1274,7 @@ void MainWindow::on_edit_location()
 	int row = ui->listWidget_playlist->currentRow();
 	QListWidgetItem *item = ui->listWidget_playlist->item(row);
 	if (item) {
-		QString path = songPath(item);
+		QString path = songPath(item, false);
 		EditLocationDialog dlg(this);
 		dlg.setLocation(path);
 		if (dlg.exec() == QDialog::Accepted) {
@@ -1198,7 +1300,7 @@ void MainWindow::on_action_edit_copy_triggered()
 	} else if (focus == ui->listWidget_playlist) {
 		QList<QListWidgetItem *> items = ui->listWidget_playlist->selectedItems();
 		for (QListWidgetItem const *item : items) {
-			QString path = songPath(item);
+			QString path = songPath(item, true);
 			list.append(path);
 		}
 	}
@@ -1222,6 +1324,20 @@ void MainWindow::paste(int row)
 		QStringList list = text.split('\n');
 		for (QString const &str : list) {
 			QString path = str.trimmed();
+			int i = path.indexOf("/.../");
+			if (i >= 0) {
+				QString args = path.mid(i + 3);
+				path = path.mid(0, i);
+				QStringList argv = args.split('/');
+				for (QString const &line : argv) {
+					int i = line.indexOf('=');
+					if (i > 0) {
+//						QString key = line.mid(0, i);
+//						QString val = line.mid(i + 1);
+					}
+				}
+			}
+			if (path.isEmpty()) continue;
 			addToPlaylist(path, row, false);
 			if (row >= 0) row++;
 		}
@@ -1313,55 +1429,12 @@ void MainWindow::on_action_sleep_timer_triggered()
 	execSleepTimerDialog();
 }
 
-void MainWindow::unify()
+void MainWindow::on_listWidget_playlist_itemSelectionChanged()
 {
-	using mpcitem_t = MusicPlayerClient::Item;
-	QString text;
-	QList<mpcitem_t> vec;
-	std::set<mpcitem_t> set;
-	std::vector<int> dup;
-	mpc()->do_playlistinfo(QString(), &vec);
-	for (int i = 0; i < (int)vec.size(); i++) {
-		MusicPlayerClient::Item &item = vec[i];
-		if (set.find(item) == set.end()) {
-			set.insert(item);
-		} else {
-			dup.push_back(i);
-			text += item.text + '\n';
-		}
-	}
-	if (dup.empty()) {
-		//QMessageBox::information(this, qApp->applicationName(), tr("Overlapped item was not found."));
-		showNotify(tr("Overlapped item was not found."));
-	} else {
-		AskRemoveDuplicatedFileDialog dlg(this, text);
-		if (dlg.exec() == QDialog::Accepted) {
-			std::sort(dup.begin(), dup.end());
-			int i = (int)dup.size();
-			while (i > 0) {
-				i--;
-				int row = dup[i];
-				QListWidgetItem *item = ui->listWidget_playlist->item(row);
-				Q_ASSERT(item);
-				int id = item->data(ITEM_SongIdRole).toInt();
-				mpc()->do_deleteid(id);
-			}
-			updateCurrentSongInfo();
-		}
-	}
+	updatePrimaryStatusLabel();
 }
 
 void MainWindow::on_action_debug_triggered()
 {
-	TinyConnectionDialog dlg(this, pv->host);
-	if (dlg.exec() == QDialog::Accepted) {
-		Host host = dlg.host();
-		connectToMPD(host);
-	}
-	updateServersComboBox();
 }
-
-
-
-
 
