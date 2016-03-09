@@ -45,7 +45,7 @@ bool MusicPlayerClient::isValidPlaylistName(const QString &name)
 
 bool MusicPlayerClient::recv(QTcpSocket *sock, QStringList *lines)
 {
-	int timeout = 5000;
+	int timeout = 10000;
 	while (sock->waitForReadyRead(timeout)) {
 		while (sock->canReadLine()) {
 			QByteArray ba = sock->readLine();
@@ -76,7 +76,7 @@ bool MusicPlayerClient::recv(QTcpSocket *sock, QStringList *lines)
 				return false;
 			}
 		}
-		timeout = 100;
+		timeout = 1000;
 	}
 	return false;
 }
