@@ -6,30 +6,34 @@
 #include <QString>
 #include <QStandardPaths>
 
+#ifdef Q_OS_WIN32
+#include "win32.h"
+#else
+QString getAppDataLocation()
+{
+	QString dir;
+	char const *p = getenv("HOME");
+	if (p) {
+		dir = p;
+		dir = dir / ".local/share";
+	} else {
+		dir = "/tmp";
+	}
+	return dir;
+}
+#endif
+
 char const *KEY_AutoReconnect = "AutoReconnect";
 
 QString makeApplicationDataDir()
 {
 	QString dir = QStandardPaths::writableLocation(QStandardPaths::AppDataLocation);
-	// QStandardPaths::AppDataLocation was added in Qt 5.4
 	if (dir.isEmpty()) {
-#ifdef Q_OS_WIN32
-#else
-		QString d;
-		char const *p = getenv("HOME");
-		if (p) {
-			d = p;
-			d = d / ".local/share";
-		} else {
-			d = "/tmp";
-		}
-		d = d / qApp->organizationName();
-		d = d / qApp->applicationName();
-		dir = d;
-#endif
+		dir = getAppDataLocation();
+		dir = dir / qApp->organizationName();
+		dir = dir / qApp->applicationName();
 	}
 	QDir().mkpath(dir);
-	puts(dir.toStdString().c_str());
 	return dir;
 }
 

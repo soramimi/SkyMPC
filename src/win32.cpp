@@ -1,31 +1,35 @@
 #include <QtGlobal>
 #ifdef Q_OS_WIN
+
 #include "win32.h"
-#include <windows.h>
-#include <psapi.h>
-#include <vector>
-#include <algorithm>
-#include "version.h"
-#include <QString>
+#include <Windows.h>
+#include <ShlObj.h>
 
-#include "MainWindow.h"
-#include "DiagnosticDialog.h"
+QString getModuleFileName()
+{
+	wchar_t tmp[300];
+	DWORD n = GetModuleFileNameW(0, tmp, 300);
+	return QString::fromUtf16((ushort const *)tmp, n);
+}
 
+QString getModuleFileDir()
+{
+	QString path = getModuleFileName();
+	int i = path.lastIndexOf('\\');
+	int j = path.lastIndexOf('/');
+	if (i < j) i = j;
+	if (i > 0) path = path.mid(0, i);
+	return path;
+}
 
-struct Module {
-	DWORD base;
-	DWORD size;
-	std::string name;
-	bool operator < (Module const &r) const
-	{
-		return base < r.base;
+QString getAppDataLocation()
+{
+	wchar_t tmp[300];
+	if (SHGetSpecialFolderPathW(0, tmp, CSIDL_APPDATA, TRUE)) {
+		return QString::fromUtf16((ushort const *)tmp);
 	}
-};
-
-typedef BOOL (WINAPI *fn_EnumProcessModules_t)(HANDLE  hProcess, HMODULE *lphModule, DWORD cb, LPDWORD lpcbNeeded);
-typedef DWORD (WINAPI *fn_GetModuleBaseNameA_t)(HANDLE hProcess, HMODULE hModule, LPSTR lpBaseName, DWORD nSize);
-typedef BOOL (WINAPI *fn_GetModuleInformation_t)(HANDLE hProcess, HMODULE hModule, LPMODULEINFO lpmodinfo, DWORD cb);
-
+	return QString();
+}
 
 
 #endif
