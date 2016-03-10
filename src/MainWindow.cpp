@@ -1006,10 +1006,11 @@ void MainWindow::onDropEvent(bool done)
 		for (size_t i = 0; i < drop_after.size(); i++) {
 			SongItem const &a = drop_after[i];
 			if (a.index == -1) {
-				QList<MusicPlayerClient::Item> mpcitems;
-				if (mpc()->do_listall(a.path, &mpcitems)) {
+				QList<MusicPlayerClient::Item> fileitems;
+				QList<MusicPlayerClient::Item> playlist;
+				if (mpc()->do_listall(a.path, &fileitems)) {
 					size_t j = i;
-					for (MusicPlayerClient::Item const &item : mpcitems) {
+					for (MusicPlayerClient::Item const &item : fileitems) {
 						if (item.kind == "file") {
 							QString path = item.text;
 							mpc()->do_addid(path, (int)j);
@@ -1018,6 +1019,8 @@ void MainWindow::onDropEvent(bool done)
 							j++;
 						}
 					}
+				} else if (mpc()->do_listplaylistinfo(a.path, &playlist)) {
+					addPlaylsitToPlaylist(a.path, i);
 				}
 			} else if (i < drop_before.size() && a.index != drop_before[i].index) {
 				for (size_t j = i + 1; j < drop_before.size(); j++) {

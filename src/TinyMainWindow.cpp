@@ -434,14 +434,14 @@ void TinyMainWindow::on_action_playlist_update_triggered()
 
 void TinyMainWindow::on_action_playlist_quick_save_1_triggered()
 {
-	if (savePlaylist("_quick_save_1_")) {
+	if (savePlaylist("_quick_save_1_", true)) {
 		showNotify(tr("Quick Save 1 was completed"));
 	}
 }
 
 void TinyMainWindow::on_action_playlist_quick_save_2_triggered()
 {
-	if (savePlaylist("_quick_save_2_")) {
+	if (savePlaylist("_quick_save_2_", true)) {
 		showNotify(tr("Quick Save 2 was completed"));
 	}
 }

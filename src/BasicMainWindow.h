@@ -91,7 +91,7 @@ public:
 	void play(bool toggle);
 	void disconnectNetwork();
 	void loadPlaylist(const QString &name, bool replace);
-	bool savePlaylist(const QString &name);
+	bool savePlaylist(const QString &name, bool warning_if_needed);
 	void execAddLocationDialog();
 
 	static BasicMainWindow *findMainWindow(QObject *hint = nullptr);
@@ -99,6 +99,7 @@ public:
 
 	void unify();
 	bool validateForSavePlaylist();
+	void addPlaylsitToPlaylist(QString const &path, int to);
 private slots:
 	void onVolumeChanged();
 	void onUpdateStatus();

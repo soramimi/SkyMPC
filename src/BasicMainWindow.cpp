@@ -291,7 +291,7 @@ void BasicMainWindow::clearPlaylist()
 		}
 	}
 	if (count > 0) {
-		savePlaylist("_backup_before_clear_");
+		savePlaylist("_backup_before_clear_", false);
 	}
 	mpc()->do_clear();
 	updatePlaylist();
@@ -309,14 +309,14 @@ void BasicMainWindow::startSleepTimer(int mins)
 
 void BasicMainWindow::doQuickSave1()
 {
-	if (savePlaylist("_quick_save_1_")) {
+	if (savePlaylist("_quick_save_1_", true)) {
 		showNotify(tr("Quick Save 1 was completed"));
 	}
 }
 
 void BasicMainWindow::doQuickSave2()
 {
-	if (savePlaylist("_quick_save_2_")) {
+	if (savePlaylist("_quick_save_2_", true)) {
 		showNotify(tr("Quick Save 2 was completed"));
 	}
 }
@@ -653,11 +653,22 @@ QString BasicMainWindow::textForExport(const MusicPlayerClient::Item &item)
 	return text;
 }
 
+void BasicMainWindow::addPlaylsitToPlaylist(QString const &path, int to)
+{
+	int before = mpc()->current_playlist_file_count();
+	mpc()->do_load(path);
+	int after = mpc()->current_playlist_file_count();
+	if (to >= 0 && to != before && before < after) {
+		int n = after - before;
+		for (int i = 0; i < n; i++) {
+			mpc()->do_move(after - 1, to);
+		}
+	}
+}
+
 void BasicMainWindow::addToPlaylist(const QString &path, int to, bool update)
 {
 	if (path.isEmpty()) return;
-
-	QString range; // not supported yet
 
 	using mpcitem_t = MusicPlayerClient::Item;
 	QList<mpcitem_t> fileitems;
@@ -681,15 +692,7 @@ void BasicMainWindow::addToPlaylist(const QString &path, int to, bool update)
 			}
 		}
 	} else if (mpc()->do_listplaylistinfo(path, &playlist)) {
-		int before = mpc()->current_playlist_file_count();
-		mpc()->do_load(path);
-		int after = mpc()->current_playlist_file_count();
-		if (to >= 0 && to != before && before < after) {
-			int n = after - before;
-			for (int i = 0; i < n; i++) {
-				mpc()->do_move(after - 1, to);
-			}
-		}
+		addPlaylsitToPlaylist(path, to);
 	}
 
 	if (update) {
@@ -776,9 +779,12 @@ bool BasicMainWindow::validateForSavePlaylist()
 	return ok;
 }
 
-bool BasicMainWindow::savePlaylist(const QString &name)
+bool BasicMainWindow::savePlaylist(const QString &name, bool warning_if_needed)
 {
-	bool ok = validateForSavePlaylist();
+	bool ok = true;
+	if (warning_if_needed) {
+		ok = validateForSavePlaylist();
+	}
 
 	if (ok) {
 		mpc()->do_rm(name);
