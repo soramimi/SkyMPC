@@ -854,7 +854,7 @@ void BasicMainWindow::unify()
 	std::vector<int> dup;
 	mpc()->do_playlistinfo(QString(), &vec);
 	{
-		std::for_each(vec.begin(), vec.end(), [](mpcitem_t &item){
+		std::for_each(vec.begin(), vec.end(), [&](mpcitem_t &item){
 			item.text = textForExport(item);
 		});
 		std::set<QString> set;
