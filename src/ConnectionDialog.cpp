@@ -51,6 +51,8 @@ void ConnectionDialog::reject()
 	BasicConnectionDialog::reject();
 }
 
+
+
 bool ConnectionDialog::isAutoReconnect() const
 {
 	return ui->checkBox_auto_reconnect->isChecked();

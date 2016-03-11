@@ -37,10 +37,11 @@ protected:
 	std::vector<ServerItem> servers;
 	int table_row_height;
 	Host current_host;
+	QString new_connection;
 
 	void init();
 	void loadServers();
-	void updateList();
+	void updateList(bool addnewconnection = false, bool selectnewconnection = false);
 	ServerItem *selectedServer();
 	const ServerItem *selectedServer() const;
 	void selectServer(const ServerItem *server);

@@ -77,12 +77,14 @@ bool loadPresetServers(std::vector<ServerItem> *out)
 						int port = atts.value("port").toString().toInt();
 						QString password = atts.value("password").toString();
 						QString desc = atts.value("description").toString();
-						ServerItem item;
-						item.name = name;
-						item.host = Host(address, port);
-						item.host.setPassword(decodePassword(password));
-						item.description = desc;
-						out->push_back(item);
+						if (!address.isEmpty()) {
+							ServerItem item;
+							item.name = name;
+							item.host = Host(address, port);
+							item.host.setPassword(decodePassword(password));
+							item.description = desc;
+							out->push_back(item);
+						}
 					}
 				}
 				state_stack.push_back(state);
@@ -112,6 +114,7 @@ bool savePresetServers(std::vector<ServerItem> const *servers)
 		writer.writeStartDocument();
 		writer.writeStartElement("servers");
         for (ServerItem const &server : *servers) {
+			if (server.host.address().isEmpty()) continue;
 			writer.writeStartElement("item");
 			writer.writeAttribute("name", server.name);
 			writer.writeAttribute("address", server.host.address());

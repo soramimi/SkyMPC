@@ -1,6 +1,7 @@
 #include "BasicConnectionDialog.h"
 #include "TestConnectResultDialog.h"
 #include "TestConnectionThread.h"
+#include "MusicPlayerClient.h"
 #include <QApplication>
 #include <QPushButton>
 #include <QHeaderView>
@@ -33,6 +34,7 @@ Host BasicConnectionDialog::host() const
 
 void BasicConnectionDialog::init()
 {
+	new_connection = tr("New connection");
 
 	if (ctrls.tableWidget) connect(ctrls.tableWidget, SIGNAL(currentItemChanged(QTableWidgetItem*,QTableWidgetItem*)), this, SLOT(on_tableWidget_currentItemChanged_(QTableWidgetItem*,QTableWidgetItem*)));
 	if (ctrls.tableWidget) connect(ctrls.tableWidget, SIGNAL(itemDoubleClicked(QTableWidgetItem*)), SLOT(on_tableWidget_itemDoubleClicked_(QTableWidgetItem*)));
@@ -64,6 +66,7 @@ void BasicConnectionDialog::init()
 
 	loadServers();
 
+#if 0
 	if (servers.empty()) {
 		ServerItem item;
 		item.name = "New";
@@ -88,19 +91,39 @@ void BasicConnectionDialog::init()
 			ctrls.tableWidget->selectRow(row);
 		}
 	}
+#endif
 }
 
 void BasicConnectionDialog::loadServers()
 {
 	loadPresetServers(&servers);
-	updateList();
+	updateList(true);
 }
 
-void BasicConnectionDialog::updateList()
+void BasicConnectionDialog::updateList(bool addnewconnection, bool selectnewconnection)
 {
-	int row = ctrls.tableWidget->currentRow();
+	int current_row = ctrls.tableWidget->currentRow();
+
+	if (addnewconnection) {
+		int i = (int)servers.size();
+		while (i > 0) {
+			i--;
+			ServerItem &item = servers[i];
+			if (item.name == new_connection && item.host.address().isEmpty()) {
+				servers.erase(servers.begin() + i);
+			}
+		}
+		ServerItem newitem;
+		newitem.name = new_connection;
+		newitem.host.setPort(DEFAULT_MPD_PORT);
+		if (selectnewconnection) {
+			current_row = servers.size();
+		}
+		servers.push_back(newitem);
+	}
+
 	int rowcount = (int)servers.size();
-	if (row < 0) row = 0;
+	if (current_row < 0) current_row = 0;
 	ctrls.tableWidget->clearContents();
 
 	ctrls.tableWidget->setColumnCount(4);
@@ -118,7 +141,7 @@ void BasicConnectionDialog::updateList()
 
 		item = new QTableWidgetItem(server.name);
 		ctrls.tableWidget->setItem(i, C_NAME, item);
-		if (i == row) sel = item;
+		if (i == current_row) sel = item;
 
 		item = new QTableWidgetItem(server.host.address());
 		ctrls.tableWidget->setItem(i, C_ADDR, item);
@@ -129,8 +152,8 @@ void BasicConnectionDialog::updateList()
 		item = new QTableWidgetItem(server.description);
 		ctrls.tableWidget->setItem(i, C_DESC, item);
 	}
-	if (row >= rowcount) {
-		row = rowcount - 1;
+	if (current_row >= rowcount) {
+		current_row = rowcount - 1;
 	}
 	ctrls.tableWidget->resizeColumnsToContents();
 	ctrls.tableWidget->horizontalHeader()->setStretchLastSection(true);
@@ -216,17 +239,19 @@ void BasicConnectionDialog::testConnection()
 	}
 }
 
+
+
 void BasicConnectionDialog::addNewConnection()
 {
-	ServerItem item;
-	item.host = current_host;
-	if (item.host.port() < 1 || item.host.port() > 65535) {
-		item.host.setPort(DEFAULT_MPD_PORT);
-	}
-	int row = (int)servers.size();
-	servers.push_back(item);
-	updateList();
-	ctrls.tableWidget->selectRow(row);
+//	ServerItem item;
+//	item.host = current_host;
+//	if (item.host.port() < 1 || item.host.port() > 65535) {
+//		item.host.setPort(DEFAULT_MPD_PORT);
+//	}
+//	int row = (int)servers.size();
+//	servers.push_back(item);
+	updateList(true, true);
+//	ctrls.tableWidget->selectRow(row);
 	ctrls.lineEdit_name->setFocus();
 	ctrls.lineEdit_name->selectAll();
 }
@@ -236,14 +261,18 @@ void BasicConnectionDialog::deleteConnection()
 	int row = ctrls.tableWidget->currentRow();
 	if (row >= 0 && row < (int)servers.size()) {
 		ServerItem const &server = servers[row];
-		if (QMessageBox::warning(this, qApp->applicationName(), tr("Are you sure you want to delete '%1' ?").arg(server.name), QMessageBox::Ok, QMessageBox::Cancel) == QMessageBox::Ok) {
-			servers.erase(servers.begin() + row);
-			updateList();
-			if (row >= (int)servers.size()) {
-				row = servers.size() - 1;
-			}
-			if (row >= 0) {
-				ctrls.tableWidget->selectRow(row);
+		if (server.name == new_connection && server.host.address().isEmpty()) {
+			// cancel
+		} else {
+			if (QMessageBox::warning(this, qApp->applicationName(), tr("Are you sure you want to delete '%1' ?").arg(server.name), QMessageBox::Ok, QMessageBox::Cancel) == QMessageBox::Ok) {
+				servers.erase(servers.begin() + row);
+				updateList(true);
+				if (row >= (int)servers.size()) {
+					row = servers.size() - 1;
+				}
+				if (row >= 0) {
+					ctrls.tableWidget->selectRow(row);
+				}
 			}
 		}
 	}
@@ -326,7 +355,17 @@ void BasicConnectionDialog::on_tableWidget_currentItemChanged_(QTableWidgetItem 
 
 void BasicConnectionDialog::on_tableWidget_itemDoubleClicked_(QTableWidgetItem *)
 {
-	accept();
+	if (current_host.address().isEmpty()) {
+		QLineEdit *p = ctrls.lineEdit_name;
+		if (p->text() != new_connection) {
+			p = ctrls.lineEdit_address;
+		}
+		p->setFocus();
+		p->home(false);
+		p->end(true);
+	} else {
+		accept();
+	}
 }
 
 void BasicConnectionDialog::on_pushButton_up_clicked_()
