@@ -41,7 +41,7 @@ protected:
 
 	void init();
 	void loadServers();
-	void updateList(bool addnewconnection = false, bool selectnewconnection = false);
+	void updateList(bool add_new_connection = false);
 	ServerItem *selectedServer();
 	const ServerItem *selectedServer() const;
 	void selectServer(const ServerItem *server);

@@ -36,10 +36,30 @@
     <item>
      <layout class="QHBoxLayout" name="horizontalLayout_2">
       <property name="spacing">
-       <number>8</number>
+       <number>3</number>
       </property>
       <item>
-       <widget class="ServersComboBox" name="comboBox_servers"/>
+       <widget class="ServersComboBox" name="comboBox_servers">
+        <property name="sizePolicy">
+         <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+          <horstretch>0</horstretch>
+          <verstretch>0</verstretch>
+         </sizepolicy>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QLabel" name="label_clock">
+        <property name="font">
+         <font>
+          <weight>75</weight>
+          <bold>true</bold>
+         </font>
+        </property>
+        <property name="text">
+         <string>00:00</string>
+        </property>
+       </widget>
       </item>
       <item>
        <widget class="QToolButton" name="toolButton_close">

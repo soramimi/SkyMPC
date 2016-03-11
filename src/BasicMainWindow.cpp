@@ -40,29 +40,33 @@ MusicPlayerClient *BasicMainWindow::mpc()
 QString BasicMainWindow::makeStyleSheetText()
 {
 	auto font = [](QString const &name, int pt){
-		return QString("font: %1pt \"%2\";").arg(pt).arg(name);
+		return QString("font: %1pt \"%2\"").arg(pt).arg(name);
 	};
 
 #ifdef Q_OS_WIN
 	QString default_font = font("Meiryo", 10);
 	QString progress_font = font("Arial", 10);
+	QString clock_font = font("Arial", 15);
 #endif
 
 #ifdef Q_OS_MAC
 	QString default_font = font("Lucida Grande", 14);
 	QString progress_font = font("Lucida Grande", 14);
+	QString clock_font = font("Lucida Grande", 20);
 #endif
 
 #ifdef Q_OS_LINUX
 	QString default_font = font("VL PGothic", 10);
 	QString progress_font = font("VL PGothic", 10);
+	QString clock_font = font("VL PGothic", 15);
 #endif
 
 	QString s;
-	s += "* {%1}";
+	s += "* {%1;}";
 	s += "#label_title, #label_artist, #label_disc {font-weight: bold;}";
-	s += "#label_progress {%2}";
-	return s.arg(default_font).arg(progress_font);
+	s += "#label_progress {%2;}";
+	s += "#label_clock {%3; font-weight: bold;}";
+	return s.arg(default_font).arg(progress_font).arg(clock_font);
 }
 
 void BasicMainWindow::releaseMouseIfGrabbed()
@@ -380,6 +384,14 @@ void BasicMainWindow::timerEvent(QTimerEvent *)
 				pause();
 			}
 		}
+	}
+
+	{
+		QTime t = QTime::currentTime();
+		char tmp[100];
+		sprintf(tmp, "%02u:%02u", t.hour(), t.minute());
+		QString text = tmp;
+		updateClock(text);
 	}
 
 	displayExtraInformation(text2, text3);
@@ -896,5 +908,6 @@ void BasicMainWindow::onUpdateStatus()
 {
 	doUpdateStatus();
 }
+
 
 

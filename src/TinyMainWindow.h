@@ -41,6 +41,12 @@ protected:
 	void displayProgress(const QString &text);
 	void updatePlayIcon();
 	void displayExtraInformation(const QString &text2, const QString &text3);
+
+	void updateServersComboBox();
+	void updateCurrentSongInfo();
+	void execConnectionDialog();
+
+	void updateClock(const QString &text);
 private slots:
 	void on_toolButton_play_clicked();
 	void onVolumeChanged();
@@ -75,14 +81,8 @@ private slots:
 	void on_toolButton_consume_clicked();
 	void on_action_sleep_timer_triggered();
 	void on_toolButton_close_clicked();
-
-	// BasicMainWindow interface
 	void on_comboBox_servers_currentIndexChanged(int index);
 
-protected:
-	void updateServersComboBox();
-	void updateCurrentSongInfo();
-	void execConnectionDialog();
 };
 
 #endif // TINYMAINWINDOW_H

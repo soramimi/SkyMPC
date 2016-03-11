@@ -65,46 +65,19 @@ void BasicConnectionDialog::init()
 	table_row_height = size + 8;
 
 	loadServers();
-
-#if 0
-	if (servers.empty()) {
-		ServerItem item;
-		item.name = "New";
-		item.host = current_host;
-		if (item.host.port() < 1 || item.host.port() > 65535) {
-			item.host.setPort(DEFAULT_MPD_PORT);
-		}
-		int row = (int)servers.size();
-		servers.push_back(item);
-		updateList();
-		ctrls.tableWidget->selectRow(row);
-		ctrls.lineEdit_name->setFocus();
-		ctrls.lineEdit_name->selectAll();
-	} else {
-		int row;
-		for (row = 0; row < (int)servers.size(); row++) {
-			if (current_host == servers[row].host) {
-				break;
-			}
-		}
-		if (row < (int)servers.size()) {
-			ctrls.tableWidget->selectRow(row);
-		}
-	}
-#endif
 }
 
 void BasicConnectionDialog::loadServers()
 {
 	loadPresetServers(&servers);
-	updateList(true);
+	updateList();
 }
 
-void BasicConnectionDialog::updateList(bool addnewconnection, bool selectnewconnection)
+void BasicConnectionDialog::updateList(bool add_new_connection)
 {
 	int current_row = ctrls.tableWidget->currentRow();
 
-	if (addnewconnection) {
+	if (add_new_connection) {
 		int i = (int)servers.size();
 		while (i > 0) {
 			i--;
@@ -116,9 +89,7 @@ void BasicConnectionDialog::updateList(bool addnewconnection, bool selectnewconn
 		ServerItem newitem;
 		newitem.name = new_connection;
 		newitem.host.setPort(DEFAULT_MPD_PORT);
-		if (selectnewconnection) {
-			current_row = servers.size();
-		}
+		current_row = servers.size(); // select this
 		servers.push_back(newitem);
 	}
 
@@ -243,15 +214,7 @@ void BasicConnectionDialog::testConnection()
 
 void BasicConnectionDialog::addNewConnection()
 {
-//	ServerItem item;
-//	item.host = current_host;
-//	if (item.host.port() < 1 || item.host.port() > 65535) {
-//		item.host.setPort(DEFAULT_MPD_PORT);
-//	}
-//	int row = (int)servers.size();
-//	servers.push_back(item);
-	updateList(true, true);
-//	ctrls.tableWidget->selectRow(row);
+	updateList(true);
 	ctrls.lineEdit_name->setFocus();
 	ctrls.lineEdit_name->selectAll();
 }
@@ -261,19 +224,20 @@ void BasicConnectionDialog::deleteConnection()
 	int row = ctrls.tableWidget->currentRow();
 	if (row >= 0 && row < (int)servers.size()) {
 		ServerItem const &server = servers[row];
-		if (server.name == new_connection && server.host.address().isEmpty()) {
-			// cancel
-		} else {
-			if (QMessageBox::warning(this, qApp->applicationName(), tr("Are you sure you want to delete '%1' ?").arg(server.name), QMessageBox::Ok, QMessageBox::Cancel) == QMessageBox::Ok) {
-				servers.erase(servers.begin() + row);
-				updateList(true);
-				if (row >= (int)servers.size()) {
-					row = servers.size() - 1;
-				}
-				if (row >= 0) {
-					ctrls.tableWidget->selectRow(row);
-				}
+		auto DO = [&](){
+			servers.erase(servers.begin() + row);
+			updateList();
+			if (row >= (int)servers.size()) {
+				row = servers.size() - 1;
 			}
+			if (row >= 0) {
+				ctrls.tableWidget->selectRow(row);
+			}
+		};
+		if (server.name == new_connection && server.host.address().isEmpty()) {
+			DO();
+		} else if (QMessageBox::warning(this, qApp->applicationName(), tr("Are you sure you want to delete '%1' ?").arg(server.name), QMessageBox::Ok, QMessageBox::Cancel) == QMessageBox::Ok) {
+			DO();
 		}
 	}
 }

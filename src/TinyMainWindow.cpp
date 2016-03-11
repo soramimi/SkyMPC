@@ -65,29 +65,10 @@ TinyMainWindow::TinyMainWindow(QWidget *parent) :
 	pv->folder_icon = QIcon(":/image/macfolder.png");
 #endif
 
-#if 0
-	{
-#ifdef Q_OS_WIN
-		QFile file(":/TinyMainWindow_win.ss");
-#endif
-#ifdef Q_OS_MAC
-		QFile file(":/TinyMainWindow_osx.ss");
-#endif
-#ifdef Q_OS_LINUX
-		QFile file(":/TinyMainWindow_lin.ss");
-#endif
-		file.open(QFile::ReadOnly);
-		QByteArray ba = file.readAll();
-		file.close();
-		QString ss = QString::fromUtf8(ba.data(), ba.size());
-		setStyleSheet(ss);
-	}
-#else
 	{
 		QString ss = makeStyleSheetText();
 		setStyleSheet(ss);
 	}
-#endif
 
 #ifdef Q_OS_MAC
 #else
@@ -264,6 +245,11 @@ void TinyMainWindow::execConnectionDialog()
 		connectToMPD(host);
 	}
 	updateServersComboBox();
+}
+
+void TinyMainWindow::updateClock(const QString &text)
+{
+	ui->label_clock->setText(text);
 }
 
 void TinyMainWindow::updateCurrentSongInfo()

@@ -14,11 +14,8 @@
         <file>image/song.png</file>
         <file>image/qt.png</file>
         <file>image/silence.svgz</file>
-        <file>MainWindow_win.ss</file>
-        <file>MainWindow_osx.ss</file>
         <file>image/notplaying.png</file>
         <file>image/pause.png</file>
-        <file>MainWindow_lin.ss</file>
         <file>image/consume.svgz</file>
         <file>image/macfolder.png</file>
         <file>image/winfolder.png</file>

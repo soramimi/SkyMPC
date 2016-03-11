@@ -75,6 +75,7 @@ protected:
 	static void makeServersComboBox(QComboBox *cbox, const QString &firstitem, const Host &current_host);
 	void onServersComboBoxIndexChanged(QComboBox *cbox, int index);
 	virtual void execConnectionDialog() = 0;
+	virtual void updateClock(QString const & /*text*/) {}
 public:
 	BasicMainWindow(QWidget *parent);
 	~BasicMainWindow();
