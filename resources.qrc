@@ -24,5 +24,6 @@
         <file>image/timer.svgz</file>
         <file>image/close.svgz</file>
         <file>image/playlist.png</file>
+        <file>image/minimize.svgz</file>
     </qresource>
 </RCC>

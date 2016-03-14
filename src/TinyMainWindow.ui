@@ -89,7 +89,7 @@
         </property>
         <property name="icon">
          <iconset resource="../resources.qrc">
-          <normaloff>:/image/close.svgz</normaloff>:/image/close.svgz</iconset>
+          <normaloff>:/image/minimize.svgz</normaloff>:/image/minimize.svgz</iconset>
         </property>
         <property name="iconSize">
          <size>
