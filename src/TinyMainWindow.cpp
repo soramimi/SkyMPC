@@ -232,6 +232,11 @@ void TinyMainWindow::changeEvent(QEvent *e)
 	case QEvent::LanguageChange:
 		ui->retranslateUi(this);
 		break;
+	case QEvent::ActivationChange:
+		if (!isMinimized() && !isFullScreen()) {
+			setWindowState(Qt::WindowFullScreen);
+		}
+		break;
 	default:
 		break;
 	}
@@ -470,3 +475,12 @@ void TinyMainWindow::on_comboBox_servers_currentIndexChanged(int index)
 {
 	onServersComboBoxIndexChanged(ui->comboBox_servers, index);
 }
+
+void TinyMainWindow::on_toolButton_minimize_clicked()
+{
+	setWindowState(Qt::WindowMinimized);
+}
+
+
+
+

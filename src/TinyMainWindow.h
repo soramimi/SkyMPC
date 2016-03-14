@@ -82,7 +82,7 @@ private slots:
 	void on_action_sleep_timer_triggered();
 	void on_toolButton_close_clicked();
 	void on_comboBox_servers_currentIndexChanged(int index);
-
+	void on_toolButton_minimize_clicked();
 };
 
 #endif // TINYMAINWINDOW_H
