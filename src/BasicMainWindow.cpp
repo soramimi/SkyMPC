@@ -136,11 +136,11 @@ void BasicMainWindow::updatePlayingStatus()
 
 		if (status == PlayingStatus::Stop) {
 			pv->total_seconds = 0;
-			pv->status.current_song_pos = -1;
+			pv->status.now.index = -1;
 			displayCurrentSongLabels(QString(), QString(), QString());
 			displayStopStatus();
 		} else {
-			pv->status.current_song_pos = info.status.get("song").toInt();
+			pv->status.now.index = info.status.get("song").toInt();
 
 			pv->volume = info.status.get("volume").toInt();
 
@@ -193,8 +193,8 @@ void BasicMainWindow::updatePlayingStatus()
 		}
 	}
 
-	if (status != pv->status.playing) {
-		pv->status.playing = status;
+	if (status != pv->status.now.status) {
+		pv->status.now.status = status;
 		updatePlayIcon();
 		invalidateCurrentSongIndicator();
 	}
@@ -241,7 +241,7 @@ void BasicMainWindow::setRandomEnabled(bool f)
 
 void BasicMainWindow::invalidateCurrentSongIndicator()
 {
-	pv->status.current_song_indicator = -1;
+	pv->status.ago.index = -1;
 }
 
 QString BasicMainWindow::serverName() const
@@ -338,7 +338,8 @@ void BasicMainWindow::doQuickLoad2()
 void BasicMainWindow::doUpdateStatus()
 {
 	updatePlayingStatus();
-	if (pv->status.current_song_pos != pv->status.current_song_indicator) {
+	if (pv->status.ago != pv->status.now) {
+		pv->status.ago = pv->status.now;
 		updatePlaylist();
 		updateCurrentSongInfo();
 	}
@@ -526,6 +527,14 @@ void BasicMainWindow::onServersComboBoxIndexChanged(QComboBox *cbox, int index)
 	}
 }
 
+QString BasicMainWindow::currentSongTitle() const
+{
+	if (pv->status.now.status == PlayingStatus::Play || pv->status.now.status == PlayingStatus::Pause) {
+		return pv->status.current_title;
+	}
+	return QString();
+}
+
 //void BasicMainWindow::execConnectionDialog()
 //{
 //	ConnectionDialog dlg(this, pv->host);
@@ -627,12 +636,14 @@ void BasicMainWindow::connectToMPD(const Host &host)
 
 	qApp->restoreOverrideCursor();
 
+	invalidateCurrentSongIndicator();
+
 	startStatusThread();
 }
 
 bool BasicMainWindow::isPlaying() const
 {
-	return pv->status.playing == PlayingStatus::Play;
+	return pv->status.now.status == PlayingStatus::Play;
 }
 
 void BasicMainWindow::startStatusThread()
@@ -727,19 +738,18 @@ void BasicMainWindow::pause()
 void BasicMainWindow::stop()
 {
 	mpc()->do_stop();
-	invalidateCurrentSongIndicator();
 }
 
 void BasicMainWindow::play(bool toggle)
 {
 	if (toggle) {
-		if (pv->status.playing == PlayingStatus::Play) {
+		if (pv->status.now.status == PlayingStatus::Play) {
 			pause();
 		} else {
 			play();
 		}
 	} else {
-		if (pv->status.playing != PlayingStatus::Play) {
+		if (pv->status.now.status != PlayingStatus::Play) {
 			play();
 		}
 	}

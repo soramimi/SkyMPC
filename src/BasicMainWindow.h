@@ -12,6 +12,7 @@ class QListWidget;
 class QComboBox;
 
 enum class PlayingStatus {
+	Unknown,
 	Stop,
 	Play,
 	Pause,
@@ -76,6 +77,7 @@ protected:
 	void onServersComboBoxIndexChanged(QComboBox *cbox, int index);
 	virtual void execConnectionDialog() = 0;
 	virtual void updateClock(QString const & /*text*/) {}
+	QString currentSongTitle() const;
 public:
 	BasicMainWindow(QWidget *parent);
 	~BasicMainWindow();

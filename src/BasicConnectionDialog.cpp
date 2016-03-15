@@ -6,6 +6,7 @@
 #include <QPushButton>
 #include <QHeaderView>
 #include <QMessageBox>
+#include <QPainter>
 
 BasicConnectionDialog::BasicConnectionDialog(QWidget *parent, Host const &host)
 	: QDialog(parent)
@@ -58,11 +59,18 @@ void BasicConnectionDialog::init()
 		ctrls.tableWidget->horizontalHeader()->setStretchLastSection(true);
 	}
 
-	int size = ctrls.tableWidget->font().pointSize();
-#if defined(Q_OS_WIN)
-	size = size * 96 / 72;
-#endif
-	table_row_height = size + 8;
+//	int size;// = ctrls.tableWidget->font().pointSize();
+	{
+		QPixmap pm(1, 1);
+		QPainter pr(&pm);
+		pr.setFont(ctrls.tableWidget->font());
+		QFontMetrics fm = pr.fontMetrics();
+		table_row_height = fm.ascent() + fm.descent() + 4;
+	}
+//#if defined(Q_OS_WIN)
+//	size = size * 96 / 72;
+//#endif
+//	table_row_height = size + 4;
 
 	loadServers();
 }
@@ -70,16 +78,12 @@ void BasicConnectionDialog::init()
 void BasicConnectionDialog::loadServers()
 {
 	loadPresetServers(&servers);
-	updateList();
+	updateList(servers.empty());
 }
 
 void BasicConnectionDialog::updateList(bool add_new_connection)
 {
 	int current_row = ctrls.tableWidget->currentRow();
-
-    if (servers.empty()) {
-        add_new_connection = true;
-    }
 
 	if (add_new_connection) {
 		int i = (int)servers.size();
@@ -133,6 +137,13 @@ void BasicConnectionDialog::updateList(bool add_new_connection)
 	ctrls.tableWidget->resizeColumnsToContents();
 	ctrls.tableWidget->horizontalHeader()->setStretchLastSection(true);
 	ctrls.tableWidget->setCurrentItem(sel);
+
+	if (add_new_connection) {
+		QLineEdit *p = ctrls.lineEdit_name;
+		p->setFocus();
+		p->home(false);
+		p->end(true);
+	}
 }
 
 ServerItem *BasicConnectionDialog::selectedServer()

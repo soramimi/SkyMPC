@@ -38,9 +38,18 @@ struct BasicMainWindow::Private {
 	Host host;
 	std::vector<SongItem> drop_before;
 	struct Playing {
-		PlayingStatus playing;
-		int current_song_pos = 0;
-		int current_song_indicator = -1;
+		struct Status {
+			PlayingStatus status = PlayingStatus::Unknown;
+			int index = -1;
+			bool operator == (Status const &r) const
+			{
+				return status == r.status && index == r.index;
+			}
+			bool operator != (Status const &r) const
+			{
+				return !operator == (r);
+			}
+		} now, ago;
 		double total = 0;
 		QString current_title;
 		QString current_artist;

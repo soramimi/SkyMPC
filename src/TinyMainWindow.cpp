@@ -185,7 +185,7 @@ void TinyMainWindow::displayCurrentSongLabels(const QString &title, const QStrin
 
 void TinyMainWindow::updatePlayIcon()
 {
-	BasicMainWindow::updatePlayIcon(pv->status.playing, ui->toolButton_play, ui->action_play);
+	BasicMainWindow::updatePlayIcon(pv->status.now.status, ui->toolButton_play, ui->action_play);
 }
 
 void TinyMainWindow::displayProgress(const QString &text)
@@ -294,7 +294,7 @@ void TinyMainWindow::onVolumeChanged()
 
 void TinyMainWindow::onSliderPressed()
 {
-	if (pv->status.playing == PlayingStatus::Play) {
+	if (pv->status.now.status == PlayingStatus::Play) {
 		mpc()->do_pause(true);
 	}
 }

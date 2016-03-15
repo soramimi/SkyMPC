@@ -588,12 +588,19 @@ void BasicMainWindow::updatePlayIcon(PlayingStatus status, QToolButton *button, 
 
 void MainWindow::updatePlayIcon()
 {
-	BasicMainWindow::updatePlayIcon(pv->status.playing, ui->toolButton_play, ui->action_play);
+	BasicMainWindow::updatePlayIcon(pv->status.now.status, ui->toolButton_play, ui->action_play);
 }
+
+
 
 void MainWindow::updateWindowTitle()
 {
-	QString text = pv->status.current_title + " - " + qApp->applicationName();
+	QString text = currentSongTitle();
+	if (text.isEmpty()) {
+		text = qApp->applicationName();
+	} else {
+		text = text + " - " + qApp->applicationName();
+	}
 	setWindowTitle(text);
 }
 
@@ -605,17 +612,15 @@ void MainWindow::updateCurrentSongInfo()
 			QListWidgetItem *item = ui->listWidget_playlist->item(i);
 			Q_ASSERT(item);
 			char const *s = ":image/notplaying.png";
-			if (i == pv->status.current_song_pos) {
-				if (pv->status.playing == PlayingStatus::Play) {
+			if (i == pv->status.now.index) {
+				if (pv->status.now.status == PlayingStatus::Play) {
 					s = ":image/playing.svgz";
-				} else if (pv->status.playing == PlayingStatus::Pause) {
+				} else if (pv->status.now.status == PlayingStatus::Pause) {
 					s = ":image/pause.png";
 				}
 			}
 			item->setIcon(QIcon(s));
 		}
-
-		pv->status.current_song_indicator = pv->status.current_song_pos;
 
 		displayCurrentSongLabels(pv->status.current_title, pv->status.current_artist, pv->status.current_disc);
 
@@ -1117,7 +1122,7 @@ void MainWindow::on_toolButton_sleep_timer_clicked()
 
 void MainWindow::onSliderPressed()
 {
-	if (pv->status.playing == PlayingStatus::Play) {
+	if (pv->status.now.status == PlayingStatus::Play) {
 		mpc()->do_pause(true);
 	}
 }
@@ -1126,8 +1131,8 @@ void MainWindow::onSliderReleased()
 {
 	int pos = ui->horizontalSlider->value() / 100;
 	{
-		mpc()->do_seek(pv->status.current_song_pos, pos);
-		if (pv->status.playing == PlayingStatus::Play) {
+		mpc()->do_seek(pv->status.now.index, pos);
+		if (pv->status.now.status == PlayingStatus::Play) {
 			mpc()->do_pause(false);
 		}
 	}
