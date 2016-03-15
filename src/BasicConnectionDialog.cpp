@@ -77,6 +77,10 @@ void BasicConnectionDialog::updateList(bool add_new_connection)
 {
 	int current_row = ctrls.tableWidget->currentRow();
 
+    if (servers.empty()) {
+        add_new_connection = true;
+    }
+
 	if (add_new_connection) {
 		int i = (int)servers.size();
 		while (i > 0) {
