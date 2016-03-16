@@ -565,26 +565,7 @@ void MainWindow::displayCurrentSongLabels(QString const &title, QString const &a
 	ui->label_disc->setText(disc);
 }
 
-void BasicMainWindow::updatePlayIcon(PlayingStatus status, QToolButton *button, QAction *action)
-{
-	if (status == PlayingStatus::Play) {
-		QString text = tr("Pause");
-		QIcon icon(":/image/pause.svgz");
-		button->setText(text);
-		button->setToolTip(text);
-		button->setIcon(icon);
-		action->setText(tr("&Pause"));
-		action->setIcon(icon);
-	} else {
-		QString text = tr("Play");
-		QIcon icon(":/image/play.svgz");
-		button->setText(text);
-		button->setToolTip(text);
-		button->setIcon(icon);
-		action->setText(tr("&Play"));
-		action->setIcon(icon);
-	}
-}
+
 
 void MainWindow::updatePlayIcon()
 {
@@ -678,9 +659,9 @@ void MainWindow::updateTree(ResultItem *info)
 		MusicPlayerClient::sort(&info->vec);
 		using mpcitem_t = MusicPlayerClient::Item;
 		for (mpcitem_t const &mpcitem : info->vec) {
-			ushort const *str = mpcitem.text.utf16();
-			ushort const *ptr = ucsrchr(str, '/');
-			if (ptr) {
+			int i = mpcitem.text.lastIndexOf('/');
+			if (i >= 0) {
+				QString name = mpcitem.text.mid(i + 1);
 				int kind = -1;
 				if (mpcitem.kind == "directory") {
 					kind = ITEM_IsFolder;
@@ -691,7 +672,7 @@ void MainWindow::updateTree(ResultItem *info)
 				}
 				if (kind == ITEM_IsFolder) {
 					QTreeWidgetItem *child = new_QTreeWidgetItem(treeitem);
-					child->setText(0, QString::fromUtf16(ptr + 1));
+					child->setText(0, name);
 					child->setIcon(0, folderIcon());
 					child->setData(0, kind, true);
 					child->setData(0, ITEM_PathRole, mpcitem.text);
@@ -730,10 +711,9 @@ void MainWindow::updateTree(ResultItem *info)
 						}
 					}
 					if (text.isEmpty()) {
-						ushort const *str = path.utf16();
-						ushort const *ptr = ucsrchr(str, '/');
-						if (ptr) {
-							text = QString::fromUtf16(ptr + 1);
+						int i = path.lastIndexOf('/');
+						if (i >= 0) {
+							text = path.mid(i + 1);
 						}
 					}
 

@@ -5,9 +5,7 @@
 #include <string>
 
 std::string pathcat(char const *left, char const *right);
-std::wstring pathcat(wchar_t const *left, wchar_t const *right);
 std::string pathcat(std::string const &left, std::string const &right);
-std::wstring pathcat(std::wstring const &left, std::wstring const &right);
 
 #include <QString>
 QString qpathcat(ushort const *left, ushort const *right);

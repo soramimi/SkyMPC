@@ -15,6 +15,7 @@
 #include <QComboBox>
 #include <QListWidget>
 #include <QMessageBox>
+#include <QToolButton>
 #include <set>
 
 BasicMainWindow::BasicMainWindow(QWidget *parent)
@@ -163,13 +164,13 @@ void BasicMainWindow::updatePlayingStatus()
 					pv->status.current_disc += album;
 				}
 				if (pv->status.current_title.isEmpty()) {
-					std::wstring file = info.property.get("file").toStdWString();
-					wchar_t const *p = wcsrchr(file.c_str(), L'/');
-					if (p) {
-						pv->status.current_title = QString::fromUtf16((ushort const *)p + 1);
-					}
+					QString file = info.property.get("file");
+					int i = file.lastIndexOf('/');
+					if (i >= 0) file = file.mid(i + 1);
+					pv->status.current_title = file;
 				}
 
+				pv->total_seconds = 0;
 				double elapsed = 0;
 				{
 					std::string s;
@@ -342,6 +343,27 @@ void BasicMainWindow::doUpdateStatus()
 		pv->status.ago = pv->status.now;
 		updatePlaylist();
 		updateCurrentSongInfo();
+	}
+}
+
+void BasicMainWindow::updatePlayIcon(PlayingStatus status, QToolButton *button, QAction *action)
+{
+	if (status == PlayingStatus::Play) {
+		QString text = tr("Pause");
+		QIcon icon(":/image/pause.svgz");
+		button->setText(text);
+		button->setToolTip(text);
+		button->setIcon(icon);
+		action->setText(tr("&Pause"));
+		action->setIcon(icon);
+	} else {
+		QString text = tr("Play");
+		QIcon icon(":/image/play.svgz");
+		button->setText(text);
+		button->setToolTip(text);
+		button->setIcon(icon);
+		action->setText(tr("&Play"));
+		action->setIcon(icon);
 	}
 }
 
@@ -534,16 +556,6 @@ QString BasicMainWindow::currentSongTitle() const
 	}
 	return QString();
 }
-
-//void BasicMainWindow::execConnectionDialog()
-//{
-//	ConnectionDialog dlg(this, pv->host);
-//	if (dlg.exec() == QDialog::Accepted) {
-//		Host host = dlg.host();
-//		connectToMPD(host);
-//	}
-//	updateServersComboBox();
-//}
 
 bool BasicMainWindow::isAutoReconnectAtStartup()
 {

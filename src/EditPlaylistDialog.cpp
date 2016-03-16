@@ -141,11 +141,10 @@ void EditPlaylistDialog::on_listWidget_list_itemSelectionChanged()
 		QString album = song.map.get("Album");
 		QString dir;
 		if (text.isEmpty()) {
-			ushort const *str = path.utf16();
-			ushort const *ptr = ucsrchr(str, '/');
-			if (ptr) {
-				dir = QString::fromUtf16(str, ptr - str);
-				text = QString::fromUtf16(ptr + 1);
+			int i = path.lastIndexOf('/');
+			if (i >= 0) {
+				dir = path.mid(0, i);
+				text = path.mid(i + 1);
 			}
 		}
 		QString suffix;

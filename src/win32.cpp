@@ -31,5 +31,4 @@ QString getAppDataLocation()
 	return QString();
 }
 
-
 #endif

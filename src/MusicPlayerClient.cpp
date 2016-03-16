@@ -5,13 +5,12 @@
 void Host::set(const QString &hostname, int port)
 {
 	QString address;
-	ushort const *str = hostname.utf16();
-	ushort const *ptr = ucschr(str, ':');
-	if (ptr) {
-		address = QString::fromUtf16(str, ptr - str);
-		port = QString ::fromUtf16(ptr + 1).toInt();
-	} else {
+	int i = hostname.indexOf(':');
+	if (i < 0) {
 		address = hostname;
+	} else {
+		address = hostname.mid(0, i);
+		port = hostname.mid(i + 1).toInt();
 	}
 	if (port < 1 || port > 65535) {
 		port = 0;
@@ -65,13 +64,13 @@ bool MusicPlayerClient::recv(QTcpSocket *sock, QStringList *lines)
 			}
 			lines->push_back(s);
 			if (s.startsWith("ACK")) {
-				ushort const *p = s.utf16();
-				p = ucschr(p, '}');
-				if (p) {
+				int i = s.indexOf('}');
+				if (i > 0) {
+					ushort const *p = s.utf16();
 					do {
-						p++;
-					} while (*p && iswspace(*p));
-					exception = QString::fromUtf16((ushort const *)p);
+						i++;
+					} while (QChar(p[i]).isSpace());
+					exception = s.mid(i);
 				}
 				return false;
 			}
@@ -204,11 +203,10 @@ void MusicPlayerClient::parse_result(QStringList const &lines, QList<Item> *out)
 			end = true;
 		} else {
 			QString line = *it;
-			ushort const *str = line.utf16();
-			ushort const *ptr = ucschr(str, ':');
-			if (ptr) {
-				key = QString::fromUtf16(str, ptr - str);
-				value = QString::fromUtf16(ptr + 1).trimmed();
+			int i = line.indexOf(':');
+			if (i > 0) {
+				key = line.mid(0, i);
+				value = line.mid(i + 1).trimmed();
 			}
 			it++;
 		}
@@ -244,11 +242,10 @@ void MusicPlayerClient::parse_result(QStringList const &lines, std::vector<KeyVa
 			return;
 		}
 		QString line = *it;
-		ushort const *str = line.utf16();
-		ushort const *ptr = ucschr(str, ':');
-		if (ptr) {
-			key = QString::fromUtf16(str, ptr - str);
-			value = QString::fromUtf16(ptr + 1).trimmed();
+		int i = line.indexOf(':');
+		if (i > 0) {
+			key = line.mid(0, i);
+			value = line.mid(i + 1).trimmed();
 		}
 		it++;
 		if (!key.isEmpty()) {

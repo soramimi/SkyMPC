@@ -22,29 +22,6 @@ void drawBox(QPainter *painter, int x, int y, int w, int h, QColor const &color)
 	}
 }
 
-ushort *ucschr(ushort const *ptr, ushort c)
-{
-	while (*ptr) {
-		if (*ptr == c) {
-			return (ushort *)ptr;
-		}
-		ptr++;
-	}
-	return 0;
-}
-
-ushort *ucsrchr(ushort const *ptr, ushort c)
-{
-	ushort *r = 0;
-	while (*ptr) {
-		if (*ptr == c) {
-			r = (ushort *)ptr;
-		}
-		ptr++;
-	}
-	return r;
-}
-
 void pseudo_crypto_encode(char *ptr, int len)
 {
 	if (len > 1) {
