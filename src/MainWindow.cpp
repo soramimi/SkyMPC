@@ -324,9 +324,12 @@ int MainWindow::playlistFileCount() const
 
 void MainWindow::execPrimaryCommand(QTreeWidgetItem *item)
 {
+	bool altmod = (qApp->keyboardModifiers() & Qt::AltModifier) != 0;
+
+	QString path = songPath(item);
+
 	if (isFile(item)) {
-		QString path = songPath(item);
-		if (qApp->keyboardModifiers() & Qt::AltModifier) {
+		if (altmod) {
 			execSongProperty(path, -1, true);
 		} else {
 			int i = playlistFileCount();
@@ -339,6 +342,12 @@ void MainWindow::execPrimaryCommand(QTreeWidgetItem *item)
 				invalidateCurrentSongIndicator();
 				updateCurrentSongInfo();
 			}
+		}
+	} else if (isPlaylist(item)) {
+		if (altmod) {
+			execPlaylistPropertyDialog(path);
+		} else {
+			loadPlaylistAndPlay(path);
 		}
 	}
 }
@@ -398,15 +407,8 @@ void MainWindow::keyPressEvent(QKeyEvent *event)
 	case Qt::Key_Enter:
 		if (focus == ui->treeWidget) {
 			QTreeWidgetItem *item = ui->treeWidget->currentItem();
-			if (isFile(item)) {
+			if (isFile(item) || isPlaylist(item)) {
 				execPrimaryCommand(item);
-			} else if (isPlaylist(item)) {
-				QString path = songPath(item);
-				if (event->modifiers() & Qt::AltModifier) {
-					execPlaylistPropertyDialog(path);
-				} else {
-					loadPlaylistAndPlay(path);
-				}
 			} else if (isFolder(item)) {
 				toggleExpandCollapse(item);
 			}
@@ -767,7 +769,7 @@ void MainWindow::on_treeWidget_itemExpanded(QTreeWidgetItem *item)
 
 void MainWindow::on_treeWidget_itemDoubleClicked(QTreeWidgetItem *item, int /*column*/)
 {
-	if (isFile(item)) {
+	if (isFile(item) || isPlaylist(item)) {
 		execPrimaryCommand(item);
 	} else if (isFolder(item)) {
 		toggleExpandCollapse(item);
