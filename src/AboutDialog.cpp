@@ -14,16 +14,26 @@ AboutDialog::AboutDialog(QWidget *parent) :
 	auto flags = windowFlags();
 	flags &= ~Qt::WindowContextHelpButtonHint;
 	setWindowFlags(flags);
-	setFixedSize(width(), height());
+
+	pixmap.load(":/image/about.png");
+	setFixedSize(pixmap.width(), pixmap.height());
 
 	setWindowTitle(tr("About SkyMPC"));
 
-	ui->label_title->setText(QString("SkyMPC, v") + SkyMPC_Version + " (" + QString(source_revision) + ")");
-	ui->label_copyright->setText(QString("Copyright (C) ") + QString::number(SkyMPC_Year) + " S.Fuchita");
+	ui->label_title->setText(QString("SkyMPC, v%1 (%2)").arg(SkyMPC_Version).arg(source_revision));
+	ui->label_copyright->setText(QString("Copyright (C) %1 S.Fuchita").arg(SkyMPC_Year));
 	ui->label_twitter->setText("(@soramimi_jp)");
-//	ui->label_qt->setText(QString("Powered by Qt, v") + qVersion());
-
-	pixmap.load(":/image/about.png");
+	QString t = QString("Powered by Qt %1").arg(qVersion());
+#ifdef _MSC_VER
+	t += QString(", msc=%1").arg(_MSC_VER);
+#endif
+#ifdef __GNUC__
+	t += QString(", gcc=%1.%2.%3").arg(__GNUC__).arg(__GNUC_MINOR__).arg(__GNUC_PATCHLEVEL__);
+#endif
+#ifdef __clang__
+	t += QString(", clang=%1.%2").arg(__clang_major__).arg(__clang_minor__);
+#endif
+	ui->label_qt->setText(t);
 }
 
 AboutDialog::~AboutDialog()

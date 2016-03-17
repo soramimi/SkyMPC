@@ -48,7 +48,7 @@
      <property name="sizeHint" stdset="0">
       <size>
        <width>20</width>
-       <height>253</height>
+       <height>40</height>
       </size>
      </property>
     </spacer>
@@ -77,6 +77,16 @@
     <widget class="QLabel" name="label_twitter">
      <property name="text">
       <string>Twitter</string>
+     </property>
+     <property name="alignment">
+      <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+     </property>
+    </widget>
+   </item>
+   <item>
+    <widget class="QLabel" name="label_qt">
+     <property name="text">
+      <string>Qt</string>
      </property>
      <property name="alignment">
       <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
