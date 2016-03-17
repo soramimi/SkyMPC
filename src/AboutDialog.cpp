@@ -23,7 +23,7 @@ AboutDialog::AboutDialog(QWidget *parent) :
 	ui->label_title->setText(QString("SkyMPC, v%1 (%2)").arg(SkyMPC_Version).arg(source_revision));
 	ui->label_copyright->setText(QString("Copyright (C) %1 S.Fuchita").arg(SkyMPC_Year));
 	ui->label_twitter->setText("(@soramimi_jp)");
-	QString t = QString("Powered by Qt %1").arg(qVersion());
+	QString t = QString("Qt %1").arg(qVersion());
 #ifdef _MSC_VER
 	t += QString(", msc=%1").arg(_MSC_VER);
 #endif
