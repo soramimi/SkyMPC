@@ -84,7 +84,7 @@ void BasicMainWindow::stopStatusThread()
 	pv->status_thread.wait(1000);
 }
 
-void BasicMainWindow::BasicMainWindow::execSleepTimerDialog()
+void BasicMainWindow::execSleepTimerDialog()
 {
 	MySettings settings;
 	settings.beginGroup("Playback");
