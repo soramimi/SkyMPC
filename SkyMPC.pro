@@ -36,7 +36,6 @@ SOURCES += source_revision.c \
 	src/KeyScanWidget.cpp \
 	src/Server.cpp \
 	src/ConnectionDialog.cpp \
-	src/AskRemoveDuplicatedFileDialog.cpp \
 	src/version.cpp \
 	src/LegacyWindowsStyleTreeControl.cpp \
 	src/win32.cpp \
@@ -56,7 +55,8 @@ SOURCES += source_revision.c \
 	src/BasicMainWindow.cpp \
 	src/ServersComboBox.cpp \
     src/TinyConnectionDialog.cpp \
-    src/BasicConnectionDialog.cpp
+    src/BasicConnectionDialog.cpp \
+    src/AskRemoveOverlappedFileDialog.cpp
 
 HEADERS  += src/MainWindow.h \
 	src/MusicPlayerClient.h \
@@ -80,7 +80,6 @@ HEADERS  += src/MainWindow.h \
 	src/KeyScanWidget.h \
 	src/Server.h \
 	src/ConnectionDialog.h \
-	src/AskRemoveDuplicatedFileDialog.h \
 	src/version.h \
 	src/LegacyWindowsStyleTreeControl.h \
 	src/win32.h \
@@ -101,7 +100,8 @@ HEADERS  += src/MainWindow.h \
 	src/BasicMainWindow.h \
 	src/ServersComboBox.h \
     src/TinyConnectionDialog.h \
-    src/BasicConnectionDialog.h
+    src/BasicConnectionDialog.h \
+    src/AskRemoveOverlappedFileDialog.h
 
 FORMS    += src/MainWindow.ui \
 	src/VerticalVolumePopup.ui \
@@ -114,12 +114,12 @@ FORMS    += src/MainWindow.ui \
 	src/VolumeIndicatorPopup.ui \
 	src/KeyboardCustomizeDialog.ui \
 	src/ConnectionDialog.ui \
-	src/AskRemoveDuplicatedFileDialog.ui \
 	src/EditLocationDialog.ui \
 	src/SelectLocationDialog.ui \
 	src/SleepTimerDialog.ui \
 	src/TinyMainWindow.ui \
-    src/TinyConnectionDialog.ui
+    src/TinyConnectionDialog.ui \
+    src/AskRemoveOverlappedFileDialog.ui
 
 RESOURCES += \
 	resources.qrc

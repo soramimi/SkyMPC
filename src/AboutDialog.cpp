@@ -25,7 +25,7 @@ AboutDialog::AboutDialog(QWidget *parent) :
 	ui->label_twitter->setText("(@soramimi_jp)");
 	QString t = QString("Qt %1").arg(qVersion());
 #ifdef _MSC_VER
-	t += QString(", msc=%1").arg(_MSC_VER);
+	t += QString(", msvc=%1").arg(_MSC_VER);
 #endif
 #ifdef __GNUC__
 	t += QString(", gcc=%1.%2.%3").arg(__GNUC__).arg(__GNUC_MINOR__).arg(__GNUC_PATCHLEVEL__);

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <class>AskRemoveDuplicatedFileDialog</class>
- <widget class="QDialog" name="AskRemoveDuplicatedFileDialog">
+ <class>AskRemoveOverlappedFileDialog</class>
+ <widget class="QDialog" name="AskRemoveOverlappedFileDialog">
   <property name="geometry">
    <rect>
     <x>0</x>
@@ -17,7 +17,7 @@
    <item>
     <widget class="QLabel" name="label">
      <property name="text">
-      <string>The following items are duplicated.</string>
+      <string>The following items are overlapped.</string>
      </property>
     </widget>
    </item>
@@ -84,7 +84,7 @@
   <connection>
    <sender>pushButton</sender>
    <signal>clicked()</signal>
-   <receiver>AskRemoveDuplicatedFileDialog</receiver>
+   <receiver>AskRemoveOverlappedFileDialog</receiver>
    <slot>accept()</slot>
    <hints>
     <hint type="sourcelabel">
@@ -100,7 +100,7 @@
   <connection>
    <sender>pushButton_2</sender>
    <signal>clicked()</signal>
-   <receiver>AskRemoveDuplicatedFileDialog</receiver>
+   <receiver>AskRemoveOverlappedFileDialog</receiver>
    <slot>reject()</slot>
    <hints>
     <hint type="sourcelabel">

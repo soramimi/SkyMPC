@@ -1,7 +1,7 @@
 #include "TinyMainWindow.h"
 #include "ui_TinyMainWindow.h"
 #include "AboutDialog.h"
-#include "AskRemoveDuplicatedFileDialog.h"
+#include "AskRemoveOverlappedFileDialog.h"
 #include "ConnectionDialog.h"
 #include "EditLocationDialog.h"
 #include "EditPlaylistDialog.h"
