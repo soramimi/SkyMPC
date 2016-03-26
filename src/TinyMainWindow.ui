@@ -82,7 +82,7 @@
          </size>
         </property>
         <property name="toolTip">
-         <string>Sleep Timer</string>
+         <string>Minimize</string>
         </property>
         <property name="text">
          <string/>
@@ -120,7 +120,7 @@
          </size>
         </property>
         <property name="toolTip">
-         <string>Sleep Timer</string>
+         <string>Close</string>
         </property>
         <property name="text">
          <string/>
