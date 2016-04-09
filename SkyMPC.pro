@@ -11,6 +11,8 @@ CONFIG += c++11
 TARGET = SkyMPC
 TEMPLATE = app
 
+QTPLUGIN += ibusplatforminputcontextplugin
+
 TRANSLATIONS = SkyMPC_ja.ts
 
 SOURCES += source_revision.c \
@@ -139,3 +141,4 @@ macx {
 	QMAKE_BUNDLE_DATA += t
 }
 
+LIBS += -Libusplatforminputcontextplugin
