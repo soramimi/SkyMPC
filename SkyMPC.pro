@@ -56,9 +56,9 @@ SOURCES += source_revision.c \
 	src/TinyMainWindowPrivate.cpp \
 	src/BasicMainWindow.cpp \
 	src/ServersComboBox.cpp \
-    src/TinyConnectionDialog.cpp \
-    src/BasicConnectionDialog.cpp \
-    src/AskRemoveOverlappedFileDialog.cpp
+	src/TinyConnectionDialog.cpp \
+	src/BasicConnectionDialog.cpp \
+	src/AskRemoveOverlappedFileDialog.cpp
 
 HEADERS  += src/MainWindow.h \
 	src/MusicPlayerClient.h \
@@ -101,9 +101,9 @@ HEADERS  += src/MainWindow.h \
 	src/Common.h \
 	src/BasicMainWindow.h \
 	src/ServersComboBox.h \
-    src/TinyConnectionDialog.h \
-    src/BasicConnectionDialog.h \
-    src/AskRemoveOverlappedFileDialog.h
+	src/TinyConnectionDialog.h \
+	src/BasicConnectionDialog.h \
+	src/AskRemoveOverlappedFileDialog.h
 
 FORMS    += src/MainWindow.ui \
 	src/VerticalVolumePopup.ui \
@@ -120,8 +120,8 @@ FORMS    += src/MainWindow.ui \
 	src/SelectLocationDialog.ui \
 	src/SleepTimerDialog.ui \
 	src/TinyMainWindow.ui \
-    src/TinyConnectionDialog.ui \
-    src/AskRemoveOverlappedFileDialog.ui
+	src/TinyConnectionDialog.ui \
+	src/AskRemoveOverlappedFileDialog.ui
 
 RESOURCES += \
 	resources.qrc
@@ -141,4 +141,3 @@ macx {
 	QMAKE_BUNDLE_DATA += t
 }
 
-LIBS += -Libusplatforminputcontextplugin
