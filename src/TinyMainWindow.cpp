@@ -93,8 +93,6 @@ TinyMainWindow::TinyMainWindow(QWidget *parent) :
 		pv->host.setPassword(password);
 	}
 
-	qApp->installEventFilter(this);
-
 #if 0
 	pv->command_action_map["random"] = ui->action_random;
 	pv->command_action_map["repeat"] = ui->action_repeat;
@@ -151,18 +149,9 @@ void TinyMainWindow::closeEvent(QCloseEvent *event)
 	QMainWindow::closeEvent(event);
 }
 
-bool TinyMainWindow::eventFilter(QObject *obj, QEvent *event)
-{
-	if (event->type() == QEvent::FocusIn) {
-		QApplication::postEvent(this, new QEvent((QEvent::Type)EVENT_FocusChanged));
-	}
-	return QMainWindow::eventFilter(obj, event);
-}
 
-bool TinyMainWindow::event(QEvent *event)
-{
-	return QMainWindow::event(event);
-}
+
+
 
 void TinyMainWindow::displayExtraInformation(QString const &text2, QString const &text3)
 {

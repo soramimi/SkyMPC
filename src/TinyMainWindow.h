@@ -32,8 +32,6 @@ public:
 	void setConsumeEnabled(bool f);
 	void setRandomEnabled(bool f);
 protected:
-	virtual bool event(QEvent *event);
-	virtual bool eventFilter(QObject *, QEvent *);
 	virtual void closeEvent(QCloseEvent *);
 	virtual void mouseReleaseEvent(QMouseEvent *);
 	void changeEvent(QEvent *e);
