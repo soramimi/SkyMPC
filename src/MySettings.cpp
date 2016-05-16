@@ -36,7 +36,7 @@ QString makeApplicationDataDir()
 #if QT_VERSION >= 0x050400
 	dir = QStandardPaths::writableLocation(QStandardPaths::AppDataLocation);
 #endif
-	if (dir.isEmpty()) {
+    if (dir.isEmpty()) {
 		dir = getAppDataLocation();
 		dir = dir / qApp->organizationName();
 		dir = dir / qApp->applicationName();

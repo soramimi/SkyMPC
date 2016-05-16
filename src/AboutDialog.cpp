@@ -24,14 +24,12 @@ AboutDialog::AboutDialog(QWidget *parent) :
 	ui->label_copyright->setText(QString("Copyright (C) %1 S.Fuchita").arg(SkyMPC_Year));
 	ui->label_twitter->setText("(@soramimi_jp)");
 	QString t = QString("Qt %1").arg(qVersion());
-#ifdef _MSC_VER
-	t += QString(", msc=%1").arg(_MSC_VER);
-#endif
-#ifdef __GNUC__
+#if defined(_MSC_VER)
+	t += QString(", msvc=%1").arg(_MSC_VER);
+#elif defined(__clang__)
+    t += QString(", clang=%1.%2").arg(__clang_major__).arg(__clang_minor__);
+#elif defined(__GNUC__)
 	t += QString(", gcc=%1.%2.%3").arg(__GNUC__).arg(__GNUC_MINOR__).arg(__GNUC_PATCHLEVEL__);
-#endif
-#ifdef __clang__
-	t += QString(", clang=%1.%2").arg(__clang_major__).arg(__clang_minor__);
 #endif
 	ui->label_qt->setText(t);
 }

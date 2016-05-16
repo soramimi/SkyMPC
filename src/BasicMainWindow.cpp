@@ -1,5 +1,5 @@
 #include "BasicMainWindow.h"
-#include "AskRemoveDuplicatedFileDialog.h"
+#include "AskRemoveOverlappedFileDialog.h"
 #include "ConnectionDialog.h"
 #include "EditLocationDialog.h"
 #include "main.h"
@@ -905,7 +905,7 @@ void BasicMainWindow::unify()
 	if (dup.empty()) {
 		showNotify(tr("Overlapped item was not found."));
 	} else {
-		AskRemoveDuplicatedFileDialog dlg(this, text);
+		AskRemoveOverlappedFileDialog dlg(this, text);
 		if (dlg.exec() == QDialog::Accepted) {
 			std::sort(dup.begin(), dup.end());
 			int i = (int)dup.size();

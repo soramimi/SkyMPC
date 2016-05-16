@@ -1,12 +1,15 @@
 
 #include "version.h"
 
-char const *SkyMPC_Version = "1.6.0";
+char const *SkyMPC_Version = "1.6.1";
 int const SkyMPC_Year = 2016;
 
 /*
 
-1.6.0 (2015-01-09)
+1.6.1 (2016-04-10)
+	・Linux:日本語入力対応
+
+1.6.0 (2016-03-28)
 	・ステータス更新のための通信をマルチスレッド非同期化
 	・消去コマンドのキー割り当てを Shift+F5 から Shift+F6 に変更
 	・再接続コマンドを追加（Shift+F6）

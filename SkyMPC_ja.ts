@@ -30,29 +30,29 @@
     </message>
 </context>
 <context>
-    <name>AskRemoveDuplicatedFileDialog</name>
+    <name>AskRemoveOverlappedFileDialog</name>
     <message>
-        <location filename="src/AskRemoveDuplicatedFileDialog.ui" line="14"/>
+        <location filename="src/AskRemoveOverlappedFileDialog.ui" line="14"/>
         <source>Unify</source>
         <translation>重複の削除</translation>
     </message>
     <message>
-        <location filename="src/AskRemoveDuplicatedFileDialog.ui" line="20"/>
-        <source>The following items are duplicated.</source>
+        <location filename="src/AskRemoveOverlappedFileDialog.ui" line="20"/>
+        <source>The following items are overlapped.</source>
         <translation>重複しているアイテムが見つかりました。</translation>
     </message>
     <message>
-        <location filename="src/AskRemoveDuplicatedFileDialog.ui" line="27"/>
+        <location filename="src/AskRemoveOverlappedFileDialog.ui" line="27"/>
         <source>Are you sure you want to remove them ?</source>
         <translation>これらを削除してもよろしいですか？</translation>
     </message>
     <message>
-        <location filename="src/AskRemoveDuplicatedFileDialog.ui" line="62"/>
+        <location filename="src/AskRemoveOverlappedFileDialog.ui" line="62"/>
         <source>OK</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="src/AskRemoveDuplicatedFileDialog.ui" line="69"/>
+        <location filename="src/AskRemoveOverlappedFileDialog.ui" line="69"/>
         <source>Cancel</source>
         <translation>キャンセル</translation>
     </message>
