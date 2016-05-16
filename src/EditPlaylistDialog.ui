@@ -66,7 +66,7 @@
        <item>
         <widget class="QRadioButton" name="radioButton_replace">
          <property name="text">
-          <string>&amp;Replace with current playlist</string>
+          <string>Load it instead of the current playlist</string>
          </property>
          <property name="checked">
           <bool>true</bool>
@@ -76,7 +76,7 @@
        <item>
         <widget class="QRadioButton" name="radioButton_append">
          <property name="text">
-          <string>&amp;Append to current playlist</string>
+          <string>Append it to the current playlist</string>
          </property>
         </widget>
        </item>

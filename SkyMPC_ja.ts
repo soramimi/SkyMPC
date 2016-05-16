@@ -299,13 +299,15 @@
     </message>
     <message>
         <location filename="src/EditPlaylistDialog.ui" line="69"/>
-        <source>&amp;Replace with current playlist</source>
-        <translation>現在のプレイリストを置き換える(&amp;R)</translation>
+        <source>Load it instead of the current playlist</source>
+        <oldsource>&amp;Replace with current playlist</oldsource>
+        <translation>現在のプレイリストを置き換える</translation>
     </message>
     <message>
         <location filename="src/EditPlaylistDialog.ui" line="79"/>
-        <source>&amp;Append to current playlist</source>
-        <translation>現在のプレイリストに追加する(&amp;A)</translation>
+        <source>Append it to the current playlist</source>
+        <oldsource>&amp;Append to current playlist</oldsource>
+        <translation>現在のプレイリストに追加する</translation>
     </message>
     <message>
         <location filename="src/EditPlaylistDialog.ui" line="92"/>
@@ -1139,8 +1141,6 @@
         <translation>タイトル</translation>
     </message>
     <message>
-        <location filename="src/TinyMainWindow.ui" line="85"/>
-        <location filename="src/TinyMainWindow.ui" line="123"/>
         <location filename="src/TinyMainWindow.ui" line="304"/>
         <source>Sleep Timer</source>
         <translation>スリープタイマー</translation>
@@ -1149,6 +1149,11 @@
         <location filename="src/TinyMainWindow.ui" line="60"/>
         <source>00:00</source>
         <translation></translation>
+    </message>
+    <message>
+        <location filename="src/TinyMainWindow.ui" line="85"/>
+        <source>Minimize</source>
+        <translation>最小化</translation>
     </message>
     <message>
         <location filename="src/TinyMainWindow.ui" line="171"/>
@@ -1392,6 +1397,7 @@
         <translation></translation>
     </message>
     <message>
+        <location filename="src/TinyMainWindow.ui" line="123"/>
         <location filename="src/TinyMainWindow.ui" line="583"/>
         <source>Close</source>
         <translation>閉じる</translation>
@@ -1487,37 +1493,37 @@
         <translation>SkyMPCについて(&amp;A)</translation>
     </message>
     <message>
-        <location filename="src/TinyMainWindow.cpp" line="134"/>
+        <location filename="src/TinyMainWindow.cpp" line="132"/>
         <source>Now sleep timer is working.</source>
         <translation>スリープタイマーが動作中です。</translation>
     </message>
     <message>
-        <location filename="src/TinyMainWindow.cpp" line="135"/>
+        <location filename="src/TinyMainWindow.cpp" line="133"/>
         <source>If this program is closed, the sleep timer will be canceled.</source>
         <translation>プログラムを終了した場合、スリープタイマーはキャンセルされます。</translation>
     </message>
     <message>
-        <location filename="src/TinyMainWindow.cpp" line="136"/>
+        <location filename="src/TinyMainWindow.cpp" line="134"/>
         <source>Are you sure you want to close ?</source>
         <translation>終了してよろしいですか？</translation>
     </message>
     <message>
-        <location filename="src/TinyMainWindow.cpp" line="368"/>
+        <location filename="src/TinyMainWindow.cpp" line="357"/>
         <source>Reconnected</source>
         <translation>再接続しました</translation>
     </message>
     <message>
-        <location filename="src/TinyMainWindow.cpp" line="408"/>
+        <location filename="src/TinyMainWindow.cpp" line="397"/>
         <source>The name is invalid.</source>
         <translation>名前が不正です。</translation>
     </message>
     <message>
-        <location filename="src/TinyMainWindow.cpp" line="429"/>
+        <location filename="src/TinyMainWindow.cpp" line="418"/>
         <source>Quick Save 1 was completed</source>
         <translation>クイックセーブ1が完了しました</translation>
     </message>
     <message>
-        <location filename="src/TinyMainWindow.cpp" line="436"/>
+        <location filename="src/TinyMainWindow.cpp" line="425"/>
         <source>Quick Save 2 was completed</source>
         <translation>クイックセーブ2が完了しました</translation>
     </message>

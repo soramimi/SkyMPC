@@ -11,7 +11,7 @@ CONFIG += c++11
 TARGET = SkyMPC
 TEMPLATE = app
 
-QTPLUGIN += ibusplatforminputcontextplugin
+linux:QTPLUGIN += ibusplatforminputcontextplugin
 
 TRANSLATIONS = SkyMPC_ja.ts
 
