@@ -13,6 +13,8 @@ TEMPLATE = app
 
 linux:QTPLUGIN += ibusplatforminputcontextplugin
 
+INCLUDEPATH += $$PWD/src
+
 TRANSLATIONS = SkyMPC_ja.ts
 
 SOURCES += source_revision.c \
