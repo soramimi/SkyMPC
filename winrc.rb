@@ -3,9 +3,9 @@
 Product = "SkyMPC"
 CompanyName = "S.Fuchita"
 Description = "a MPD client"
-LegalCopyright = "Copyright (C) 2016 S.Fuchita (@soramimi_jp)"
+LegalCopyright = "Copyright (C) 2017 S.Fuchita (@soramimi_jp)"
 OriginalFilename = "SkyMPC.exe"
-Version = "1.6.1.0"
+Version = "1.6.2.0"
 
 $version1 = "0"
 $version2 = "0"

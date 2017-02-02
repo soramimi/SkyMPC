@@ -134,10 +134,13 @@ bool PlaylistFile::parse_xspf(char const *begin, char const *end, std::vector<Pl
 			if (!state_stack.empty()) {
 				laststate = state_stack.back();
 			}
+			auto CompareName = [&](QString const &name){
+				return reader.name().compare(name, Qt::CaseInsensitive) == 0;
+			};
 			switch (reader.readNext()) {
 			case QXmlStreamReader::StartElement:
 				if (state_stack.empty()) {
-					if (reader.name().compare("playlist", Qt::CaseInsensitive) == 0) {
+					if (CompareName("playlist")) {
 						QStringRef data;
 //						QXmlStreamAttributes atts = reader.attributes();
 						data = reader.namespaceUri();
@@ -147,21 +150,21 @@ bool PlaylistFile::parse_xspf(char const *begin, char const *end, std::vector<Pl
 						state = STATE_PLAYLIST;
 					}
 				} else if (laststate == STATE_PLAYLIST) {
-					if (reader.name().compare("title", Qt::CaseInsensitive) == 0) {
+					if (CompareName("title")) {
 						state = STATE_PLAYLIST_TITLE;
-					} else if (reader.name().compare("tracklist", Qt::CaseInsensitive) == 0) {
+					} else if (CompareName("tracklist")) {
 						state = STATE_PLAYLIST_TRACKLIST;
 					}
 				} else if (laststate == STATE_PLAYLIST_TITLE) {
 				} else if (laststate == STATE_PLAYLIST_TRACKLIST) {
-					if (reader.name().compare("track", Qt::CaseInsensitive) == 0) {
+					if (CompareName("track")) {
 						song = Item();
 						state = STATE_PLAYLIST_TRACKLIST_TRACK;
 					}
 				} else if (laststate == STATE_PLAYLIST_TRACKLIST_TRACK) {
-					if (reader.name().compare("location", Qt::CaseInsensitive) == 0) {
+					if (CompareName("location")) {
 						state = STATE_PLAYLIST_TRACKLIST_TRACK_LOCATION;
-					} else if (reader.name().compare("title", Qt::CaseInsensitive) == 0) {
+					} else if (CompareName("title")) {
 						state = STATE_PLAYLIST_TRACKLIST_TRACK_TITLE;
 					}
 				}

@@ -1,5 +1,5 @@
 SkyMPC, The MPD Client
-Copyright (C) 2016 S.Fuchita
+Copyright (C) 2017 S.Fuchita
 web: http://www.soramimi.jp/
 mail: fi7s-fct@asahi-net.or.jp
 twitter: @soramimi_jp

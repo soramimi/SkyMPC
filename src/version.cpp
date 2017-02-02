@@ -1,10 +1,13 @@
 
 #include "version.h"
 
-char const *SkyMPC_Version = "1.6.1";
-int const SkyMPC_Year = 2016;
+char const *SkyMPC_Version = "1.6.2";
+int const SkyMPC_Year = 2017;
 
 /*
+
+1.6.2 (2017-02-02)
+	・Qt 5.8 でコンパイルできなくなっていたのを修正
 
 1.6.1 (2016-04-10)
 	・Linux:日本語入力対応
