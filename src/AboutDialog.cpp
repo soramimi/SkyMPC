@@ -2,8 +2,9 @@
 #include "ui_AboutDialog.h"
 #include "main.h"
 #include <QPainter>
-#include "version.h"
 
+extern "C" int copyright_year;
+extern "C" char const product_version[];
 extern "C" char const source_revision[];
 
 AboutDialog::AboutDialog(QWidget *parent) :
@@ -20,8 +21,8 @@ AboutDialog::AboutDialog(QWidget *parent) :
 
 	setWindowTitle(tr("About SkyMPC"));
 
-	ui->label_title->setText(QString("SkyMPC, v%1 (%2)").arg(SkyMPC_Version).arg(source_revision));
-	ui->label_copyright->setText(QString("Copyright (C) %1 S.Fuchita").arg(SkyMPC_Year));
+	ui->label_title->setText(QString("SkyMPC, v%1 (%2)").arg(product_version).arg(source_revision));
+	ui->label_copyright->setText(QString("Copyright (C) %1 S.Fuchita").arg(copyright_year));
 	ui->label_twitter->setText("(@soramimi_jp)");
 	QString t = QString("Qt %1").arg(qVersion());
 #if defined(_MSC_VER)

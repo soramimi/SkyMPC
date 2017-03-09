@@ -1,5 +1,7 @@
-build/*
+_release
 SkyMPC.pro.user
 SkyMPC.rc
-source_revision.c
+version.c
+win.rc
+Info.plist
 

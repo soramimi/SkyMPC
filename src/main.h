@@ -3,9 +3,6 @@
 
 #include <QString>
 
-extern char const *SkyMPC_Version;
-extern int const SkyMPC_Year;
-
 enum {
 	ITEM_RowRole = Qt::UserRole,
 	ITEM_IsRoot,

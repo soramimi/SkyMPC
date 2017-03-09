@@ -17,8 +17,7 @@ INCLUDEPATH += $$PWD/src
 
 TRANSLATIONS = SkyMPC_ja.ts
 
-SOURCES += source_revision.c \
-	src/main.cpp \
+SOURCES += src/main.cpp \
 	src/MainWindow.cpp \
 	src/MusicPlayerClient.cpp \
 	src/MyTreeWidget.cpp \
@@ -40,7 +39,6 @@ SOURCES += source_revision.c \
 	src/KeyScanWidget.cpp \
 	src/Server.cpp \
 	src/ConnectionDialog.cpp \
-	src/version.cpp \
 	src/LegacyWindowsStyleTreeControl.cpp \
 	src/win32.cpp \
 	src/platform.cpp \
@@ -60,7 +58,8 @@ SOURCES += source_revision.c \
 	src/ServersComboBox.cpp \
 	src/TinyConnectionDialog.cpp \
 	src/BasicConnectionDialog.cpp \
-	src/AskRemoveOverlappedFileDialog.cpp
+	src/AskRemoveOverlappedFileDialog.cpp \
+    version.c
 
 HEADERS  += src/MainWindow.h \
 	src/MusicPlayerClient.h \
@@ -84,7 +83,6 @@ HEADERS  += src/MainWindow.h \
 	src/KeyScanWidget.h \
 	src/Server.h \
 	src/ConnectionDialog.h \
-	src/version.h \
 	src/LegacyWindowsStyleTreeControl.h \
 	src/win32.h \
 	src/platform.h \
@@ -131,7 +129,7 @@ RESOURCES += \
 win32 {
 	LIBS += user32.lib
 	LIBS += shell32.lib
-	RC_FILE = SkyMPC.rc
+	RC_FILE = win.rc
 	QMAKE_SUBSYSTEM_SUFFIX=,5.01
 }
 
