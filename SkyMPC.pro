@@ -6,10 +6,13 @@
 
 QT       += core gui xml network svg widgets
 
-CONFIG += c++11
-
 TARGET = SkyMPC
 TEMPLATE = app
+
+CONFIG += c++11
+
+unix:QMAKE_CXXFLAGS += -Wall -Wextra -Werror=return-type -Werror=trigraphs -Wno-switch
+unix:QMAKE_RPATHDIR += $ORIGIN
 
 linux:QTPLUGIN += ibusplatforminputcontextplugin
 

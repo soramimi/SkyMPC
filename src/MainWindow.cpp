@@ -164,6 +164,8 @@ MainWindow::MainWindow(QWidget *parent) :
 	//	priv->key_command_map[Qt::Key_P] = "play";
 	//	priv->key_command_map[Qt::Key_S] = "stop";
 #endif
+
+	ui->treeWidget->setFocus();
 }
 
 MainWindow::~MainWindow()
