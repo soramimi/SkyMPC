@@ -17,6 +17,14 @@ INCLUDEPATH += $$PWD/src
 
 TRANSLATIONS = SkyMPC_ja.ts
 
+# execute 'ruby prepare.rb' automatically
+
+prepare.target = prepare
+prepare.commands = cd $$PWD && ruby -W0 prepare.rb
+QMAKE_EXTRA_TARGETS += prepare
+PRE_TARGETDEPS += prepare
+
+
 SOURCES += src/main.cpp \
 	src/MainWindow.cpp \
 	src/MusicPlayerClient.cpp \
