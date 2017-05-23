@@ -1,14 +1,16 @@
 #!/dev/null
 
 $product_name = "SkyMPC"
+$description = "MPD Client"
 $copyright_year = 2017
 $version_a = 1
 $version_b = 6
 $version_c = 1
 $version_d = 0
 
-# v1.6.1 (2017-03-10)
+# v1.6.1 (2017-05-23)
 #	* Qt 5.8.0 でリビルド
+#	* Linux:日本語入力対応
 
 # v1.6.0 (2016-03-23)
 #	* スリープタイマー機能追加
@@ -22,11 +24,6 @@ $version_d = 0
 #	* （Linux）設定ファイルの保存先を、 ~/.soramimi.jp/SkyMPC から ~/.local/share/soramimi.jp/SkyMPC に変更
 #	* （OS X）設定ファイルの保存先を、 ~/.soramimi.jp/SkyMPC から ~/Library/Application Support/soramimi.jp/SkyMPC に変更
 
-# v1.6.2 (2017-02-02)
-#	* Qt 5.8 でコンパイルできなくなっていたのを修正
-
-# v1.6.1 (2016-04-10)
-#	* Linux:日本語入力対応
 
 # v1.6.0 (2016-03-28)
 #	* ステータス更新のための通信をマルチスレッド非同期化
@@ -38,7 +35,6 @@ $version_d = 0
 
 # v1.5.3.1 (2015-10-14)
 #	* ソースコードの一部にC++11の文法を使用
-#	* Windows版はMSVC2015を採用
 
 # v1.5.3 (2015-07-11)
 #	* Qt5.5.0を採用。
