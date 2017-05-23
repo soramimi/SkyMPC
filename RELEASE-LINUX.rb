@@ -14,6 +14,16 @@ $dstdir_imageformats = $dstdir + "/imageformats"
 $dstdir_platforms = $dstdir + "/platforms"
 $dstdir_platforminputcontexts = $dstdir + "/platforminputcontexts"
 
+$arch = "x86-32bit"
+$libicu = "/usr/lib/i386-linux-gnu"
+if `uname -a` =~ /(x86_64)|(amd64)/
+	$arch = "x86-64bit"
+	$libicu = "/usr/lib/x86_64-linux-gnu"
+elsif `uname -a` =~ /armv7l/
+	$arch = "raspberrypi"
+	$libicu = "/usr/lib/arm-linux-gnueabihf"
+end
+
 FileUtils.rm_rf($workdir)
 FileUtils.mkpath($dstdir)
 FileUtils.mkpath($dstdir_iconengines)
@@ -37,6 +47,9 @@ cp_qt_lib("Qt5Gui")
 cp_qt_lib("Qt5Svg")
 cp_qt_lib("Qt5Widgets")
 cp_qt_lib("Qt5Xml")
+cp_qt_lib("Qt5Network")
+cp_qt_lib("Qt5DBus")
+cp_qt_lib("Qt5XcbQpa")
 
 def cp_qt_imageformat(name)
 	libname = "lib" + name + ".so"
@@ -62,13 +75,14 @@ cp_qt_iconengine("qsvgicon")
 
 src = $qt + "/plugins/platforminputcontexts/libibusplatforminputcontextplugin.so"
 FileUtils.cp(src, $dstdir_platforminputcontexts)
-
-$arch = "x86-32bit"
-if `uname -a` =~ /(x86_64)|(amd64)/
-	$arch = "x86-64bit"
-elsif `uname -a` =~ /armv7l/
-	$arch = "raspi"
+def cp_libicu(name)
+	src = $libicu + "/libicu" + name + ".so.52"
+	FileUtils.cp(src, $dstdir)
 end
+
+cp_libicu("data")
+cp_libicu("i18n")
+cp_libicu("uc")
 
 Dir.chdir($workdir) {
 	`tar zcvf #{$product_name}-#{$version_a}.#{$version_b}.#{$version_c}-linux-#{$arch}.tar.gz #{$product_name}`
