@@ -45,13 +45,11 @@ void ConnectionDialog::accept()
 	BasicConnectionDialog::accept();
 }
 
-void ConnectionDialog::reject()
+void ConnectionDialog::on_pushButton_close_clicked()
 {
 	saveAutoReconnect();
-	BasicConnectionDialog::reject();
+	BasicConnectionDialog::close();
 }
-
-
 
 bool ConnectionDialog::isAutoReconnect() const
 {

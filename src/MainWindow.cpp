@@ -63,6 +63,9 @@ MainWindow::MainWindow(QWidget *parent) :
 	ui->statusBar->addWidget(pv->status_label2, 0);
 	ui->statusBar->addWidget(pv->status_label3, 0);
 
+	QFormLayout *layout = static_cast<QFormLayout *>(ui->widget_information_area->layout());
+	layout->setLabelAlignment(Qt::AlignLeft | Qt::AlignVCenter);
+
 #if 0 //def Q_OS_WIN
 	priv->folder_icon = QIcon(":/image/winfolder.png");
 #else

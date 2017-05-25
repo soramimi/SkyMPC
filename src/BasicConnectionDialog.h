@@ -57,7 +57,7 @@ public:
 	explicit BasicConnectionDialog(QWidget *parent, Host const &host);
 
 	virtual void accept();
-	virtual void reject();
+	virtual void close();
 	Host host() const;
 signals:
 

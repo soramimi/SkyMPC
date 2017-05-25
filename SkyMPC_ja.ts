@@ -24,7 +24,7 @@
         <translation></translation>
     </message>
     <message>
-        <location filename="src/AboutDialog.cpp" line="21"/>
+        <location filename="src/AboutDialog.cpp" line="22"/>
         <source>About SkyMPC</source>
         <translation>SkyMPCについて</translation>
     </message>
@@ -65,32 +65,32 @@
         <translation>新しい接続</translation>
     </message>
     <message>
-        <location filename="src/BasicConnectionDialog.cpp" line="109"/>
+        <location filename="src/BasicConnectionDialog.cpp" line="104"/>
         <source>Name</source>
         <translation>名前</translation>
     </message>
     <message>
-        <location filename="src/BasicConnectionDialog.cpp" line="110"/>
+        <location filename="src/BasicConnectionDialog.cpp" line="105"/>
         <source>Address</source>
         <translation>アドレス</translation>
     </message>
     <message>
-        <location filename="src/BasicConnectionDialog.cpp" line="111"/>
+        <location filename="src/BasicConnectionDialog.cpp" line="106"/>
         <source>Port</source>
         <translation>ポート</translation>
     </message>
     <message>
-        <location filename="src/BasicConnectionDialog.cpp" line="112"/>
+        <location filename="src/BasicConnectionDialog.cpp" line="107"/>
         <source>Description</source>
         <translation>説明</translation>
     </message>
     <message>
-        <location filename="src/BasicConnectionDialog.cpp" line="211"/>
+        <location filename="src/BasicConnectionDialog.cpp" line="206"/>
         <source>Could not create the file.</source>
         <translation>ファイルを作成できませんでした。</translation>
     </message>
     <message>
-        <location filename="src/BasicConnectionDialog.cpp" line="254"/>
+        <location filename="src/BasicConnectionDialog.cpp" line="249"/>
         <source>Are you sure you want to delete &apos;%1&apos; ?</source>
         <translation>&apos;%1&apos; を削除します。よろしいですか？</translation>
     </message>
@@ -221,14 +221,19 @@
         <translation>新規(&amp;N)</translation>
     </message>
     <message>
-        <location filename="src/ConnectionDialog.ui" line="268"/>
+        <location filename="src/ConnectionDialog.ui" line="255"/>
         <source>C&amp;lose</source>
         <translation>閉じる(&amp;L)</translation>
     </message>
     <message>
-        <location filename="src/ConnectionDialog.ui" line="285"/>
+        <location filename="src/ConnectionDialog.ui" line="272"/>
         <source>Automatically &amp;reconnect at startup</source>
         <translation>開始時に自動的に再接続(&amp;R)</translation>
+    </message>
+    <message>
+        <location filename="src/ConnectionDialog.ui" line="294"/>
+        <source>Cancel</source>
+        <translation>キャンセル</translation>
     </message>
     <message>
         <location filename="src/ConnectionDialog.ui" line="241"/>
@@ -241,7 +246,7 @@
         <translation>削除(&amp;E)</translation>
     </message>
     <message>
-        <location filename="src/ConnectionDialog.ui" line="275"/>
+        <location filename="src/ConnectionDialog.ui" line="262"/>
         <source>&amp;Connect</source>
         <oldsource>Connect</oldsource>
         <translation>接続(&amp;C)</translation>
@@ -437,7 +442,7 @@
     </message>
     <message>
         <location filename="src/MainWindow.ui" line="502"/>
-        <location filename="src/MainWindow.cpp" line="489"/>
+        <location filename="src/MainWindow.cpp" line="491"/>
         <source>Volume</source>
         <translation>ボリューム</translation>
     </message>
@@ -729,7 +734,7 @@
     </message>
     <message>
         <location filename="src/MainWindow.ui" line="1026"/>
-        <location filename="src/MainWindow.cpp" line="903"/>
+        <location filename="src/MainWindow.cpp" line="905"/>
         <source>Edit</source>
         <translation>編集</translation>
     </message>
@@ -740,7 +745,7 @@
     </message>
     <message>
         <location filename="src/MainWindow.ui" line="1037"/>
-        <location filename="src/MainWindow.cpp" line="906"/>
+        <location filename="src/MainWindow.cpp" line="908"/>
         <source>Paste (Insert)</source>
         <translation>ここに貼り付け</translation>
     </message>
@@ -756,7 +761,7 @@
     </message>
     <message>
         <location filename="src/MainWindow.ui" line="1048"/>
-        <location filename="src/MainWindow.cpp" line="911"/>
+        <location filename="src/MainWindow.cpp" line="913"/>
         <source>Add location</source>
         <translation>場所を追加</translation>
     </message>
@@ -781,90 +786,90 @@
         <translation>SkyMPCについて(&amp;A)</translation>
     </message>
     <message>
-        <location filename="src/MainWindow.cpp" line="1063"/>
+        <location filename="src/MainWindow.cpp" line="1065"/>
         <source>%1 songs in playlist</source>
         <translation>プレイリストに%1曲あります</translation>
     </message>
     <message>
-        <location filename="src/MainWindow.cpp" line="211"/>
+        <location filename="src/MainWindow.cpp" line="213"/>
         <source>Now sleep timer is working.</source>
         <translation>スリープタイマーが動作中です。</translation>
     </message>
     <message>
-        <location filename="src/MainWindow.cpp" line="212"/>
+        <location filename="src/MainWindow.cpp" line="214"/>
         <source>If this program is closed, the sleep timer will be canceled.</source>
         <oldsource>If this application is closed, the sleep timer will be canceled.</oldsource>
         <translation>プログラムを終了した場合、スリープタイマーはキャンセルされます。</translation>
     </message>
     <message>
-        <location filename="src/MainWindow.cpp" line="213"/>
+        <location filename="src/MainWindow.cpp" line="215"/>
         <source>Are you sure you want to close ?</source>
         <translation>終了してよろしいですか？</translation>
     </message>
     <message>
-        <location filename="src/MainWindow.cpp" line="882"/>
+        <location filename="src/MainWindow.cpp" line="884"/>
         <source>Add to play list</source>
         <translation>プレイリストに追加</translation>
     </message>
     <message>
-        <location filename="src/MainWindow.cpp" line="902"/>
+        <location filename="src/MainWindow.cpp" line="904"/>
         <source>Play from here</source>
         <translation>ここから再生</translation>
     </message>
     <message>
-        <location filename="src/MainWindow.cpp" line="904"/>
+        <location filename="src/MainWindow.cpp" line="906"/>
         <source>Cut</source>
         <translation>切り取り</translation>
     </message>
     <message>
-        <location filename="src/MainWindow.cpp" line="905"/>
+        <location filename="src/MainWindow.cpp" line="907"/>
         <source>Copy</source>
         <translation>コピー</translation>
     </message>
     <message>
-        <location filename="src/MainWindow.cpp" line="907"/>
+        <location filename="src/MainWindow.cpp" line="909"/>
         <source>Paste (Append)</source>
         <translation>最後に貼り付け</translation>
     </message>
     <message>
-        <location filename="src/MainWindow.cpp" line="908"/>
+        <location filename="src/MainWindow.cpp" line="910"/>
         <source>Delete</source>
         <translation>削除</translation>
     </message>
     <message>
-        <location filename="src/MainWindow.cpp" line="909"/>
+        <location filename="src/MainWindow.cpp" line="911"/>
         <source>Clear play list</source>
         <translation>プレイリストを消去</translation>
     </message>
     <message>
-        <location filename="src/MainWindow.cpp" line="1065"/>
+        <location filename="src/MainWindow.cpp" line="1067"/>
         <source>%1 songs selected</source>
         <translation>%1曲が選択されています</translation>
     </message>
     <message>
-        <location filename="src/MainWindow.cpp" line="1276"/>
+        <location filename="src/MainWindow.cpp" line="1278"/>
         <source>Please select only one item before use this command.</source>
         <oldsource>Please select only one item before run this item.</oldsource>
         <translation>アイテムと一つ洗濯してから実行してください。</translation>
     </message>
     <message>
-        <location filename="src/MainWindow.cpp" line="883"/>
-        <location filename="src/MainWindow.cpp" line="910"/>
+        <location filename="src/MainWindow.cpp" line="885"/>
+        <location filename="src/MainWindow.cpp" line="912"/>
         <source>Property</source>
         <translation>プロパティ</translation>
     </message>
     <message>
-        <location filename="src/MainWindow.cpp" line="492"/>
+        <location filename="src/MainWindow.cpp" line="494"/>
         <source>Volume change is not supported</source>
         <translation>ボリュームの変更はサポートされていません</translation>
     </message>
     <message>
-        <location filename="src/MainWindow.cpp" line="1196"/>
+        <location filename="src/MainWindow.cpp" line="1198"/>
         <source>Reconnected</source>
         <translation>再接続しました</translation>
     </message>
     <message>
-        <location filename="src/MainWindow.cpp" line="1247"/>
+        <location filename="src/MainWindow.cpp" line="1249"/>
         <source>The name is invalid.</source>
         <translation>名前が不正です。</translation>
     </message>

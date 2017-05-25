@@ -5,8 +5,12 @@ $description = "MPD Client"
 $copyright_year = 2017
 $version_a = 1
 $version_b = 6
-$version_c = 1
+$version_c = 2
 $version_d = 0
+
+# v1.6.2 (2017-05-25)
+#	* Qt 5.8.0 の不具合のため、Qt 5.7.1 にダウングレード
+#	* 接続ダイアログボックスにキャンセルボタンを追加
 
 # v1.6.1 (2017-05-23)
 #	* Qt 5.8.0 でリビルド

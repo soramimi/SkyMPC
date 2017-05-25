@@ -17,13 +17,13 @@ BasicConnectionDialog::BasicConnectionDialog(QWidget *parent, Host const &host)
 void BasicConnectionDialog::accept()
 {
 	savePresetServers(&servers);
-	QDialog::accept();
+	done(QDialog::Accepted);
 }
 
-void BasicConnectionDialog::reject()
+void BasicConnectionDialog::close()
 {
 	savePresetServers(&servers);
-	QDialog::reject();
+	done(QDialog::Rejected);
 }
 
 Host BasicConnectionDialog::host() const
@@ -59,7 +59,6 @@ void BasicConnectionDialog::init()
 		ctrls.tableWidget->horizontalHeader()->setStretchLastSection(true);
 	}
 
-//	int size;// = ctrls.tableWidget->font().pointSize();
 	{
 		QPixmap pm(1, 1);
 		QPainter pr(&pm);
@@ -67,10 +66,6 @@ void BasicConnectionDialog::init()
 		QFontMetrics fm = pr.fontMetrics();
 		table_row_height = fm.ascent() + fm.descent() + 4;
 	}
-//#if defined(Q_OS_WIN)
-//	size = size * 96 / 72;
-//#endif
-//	table_row_height = size + 4;
 
 	loadServers();
 }

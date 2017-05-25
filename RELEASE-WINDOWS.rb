@@ -1,6 +1,6 @@
 #!/usr/bin/ruby
 
-$qt = "C:/Qt/Qt5.8.0/5.8/msvc2013"
+$qt = "C:/Qt/5.7/msvc2013"
 #$qt = "" # スタティックリンク
 
 require 'fileutils'
