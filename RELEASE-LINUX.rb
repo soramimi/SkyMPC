@@ -84,6 +84,8 @@ cp_libicu("data")
 cp_libicu("i18n")
 cp_libicu("uc")
 
+FileUtils.cp_r("LinuxDesktop", $dstdir)
+
 Dir.chdir($workdir) {
 	`tar zcvf #{$product_name}-#{$version_a}.#{$version_b}.#{$version_c}-linux-#{$arch}.tar.gz #{$product_name}`
 }
