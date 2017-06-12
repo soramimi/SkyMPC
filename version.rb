@@ -5,8 +5,12 @@ $description = "MPD Client"
 $copyright_year = 2017
 $version_a = 1
 $version_b = 6
-$version_c = 2
+$version_c = 3
 $version_d = 0
+
+# v1.6.3 (2017-06-12)
+#	* ステータスバーが長くなりすぎた時、MainWindowのサイズが変わらないようにした
+#	* 不足ファイルを追加（Linux版のみ）
 
 # v1.6.2 (2017-05-25)
 #	* Qt 5.8.0 の不具合のため、Qt 5.7.1 にダウングレード

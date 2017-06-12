@@ -56,9 +56,9 @@ MainWindow::MainWindow(QWidget *parent) :
 
 	pv->release_mouse_event = false;
 
-	pv->status_label1 = new QLabel();
-	pv->status_label2 = new QLabel();
-	pv->status_label3 = new QLabel();
+    pv->status_label1 = new StatusLabel();
+    pv->status_label2 = new StatusLabel();
+    pv->status_label3 = new StatusLabel();
 	ui->statusBar->addWidget(pv->status_label1, 1);
 	ui->statusBar->addWidget(pv->status_label2, 0);
 	ui->statusBar->addWidget(pv->status_label3, 0);

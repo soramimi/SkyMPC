@@ -5,6 +5,7 @@
 #include "VerticalVolumePopup.h"
 #include "VolumeIndicatorPopup.h"
 #include "StatusThread.h"
+#include "StatusLabel.h"
 #include <QTimer>
 #include <QWaitCondition>
 #include <QMenu>
@@ -29,9 +30,9 @@ struct SongItem {
 };
 
 struct BasicMainWindow::Private {
-	QLabel *status_label1;
-	QLabel *status_label2;
-	QLabel *status_label3;
+    StatusLabel *status_label1;
+    StatusLabel *status_label2;
+    StatusLabel *status_label3;
 	bool connected = false;
 	MusicPlayerClient mpc;
 	StatusThread status_thread;

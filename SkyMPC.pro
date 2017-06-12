@@ -70,7 +70,8 @@ SOURCES += src/main.cpp \
 	src/TinyConnectionDialog.cpp \
 	src/BasicConnectionDialog.cpp \
 	src/AskRemoveOverlappedFileDialog.cpp \
-    version.c
+    version.c \
+    src/StatusLabel.cpp
 
 HEADERS  += src/MainWindow.h \
 	src/MusicPlayerClient.h \
@@ -114,7 +115,8 @@ HEADERS  += src/MainWindow.h \
 	src/ServersComboBox.h \
 	src/TinyConnectionDialog.h \
 	src/BasicConnectionDialog.h \
-	src/AskRemoveOverlappedFileDialog.h
+	src/AskRemoveOverlappedFileDialog.h \
+    src/StatusLabel.h
 
 FORMS    += src/MainWindow.ui \
 	src/VerticalVolumePopup.ui \

@@ -73,6 +73,9 @@ end
 
 cp_qt_iconengine("qsvgicon")
 
+src = $qt + "/plugins/platforms/libqxcb.so"
+FileUtils.cp(src, $dstdir_platforms)
+
 src = $qt + "/plugins/platforminputcontexts/libibusplatforminputcontextplugin.so"
 FileUtils.cp(src, $dstdir_platforminputcontexts)
 def cp_libicu(name)
