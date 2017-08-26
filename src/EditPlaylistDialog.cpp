@@ -6,15 +6,17 @@
 #include "MySettings.h"
 #include "SavePlaylistDialog.h"
 
-EditPlaylistDialog::EditPlaylistDialog(QWidget *parent, MusicPlayerClient *mpc) :
+EditPlaylistDialog::EditPlaylistDialog(BasicMainWindow *parent/*, MusicPlayerClient *mpc*/) :
 	QDialog(parent),
-	ui(new Ui::EditPlaylistDialog),
-	mpc(mpc)
+	ui(new Ui::EditPlaylistDialog)
+//	mpc(mpc)
 {
 	ui->setupUi(this);
 	auto flags = windowFlags();
 	flags &= ~Qt::WindowContextHelpButtonHint;
 	setWindowFlags(flags);
+
+	mainwindow = parent;
 
 	{
 		MySettings s;
@@ -50,6 +52,11 @@ bool EditPlaylistDialog::isTemporaryItem(QString const &name)
 	return name.startsWith('_') && name.endsWith('_');
 }
 
+MusicPlayerClient *EditPlaylistDialog::mpc()
+{
+	return mainwindow->mpc();
+}
+
 void EditPlaylistDialog::updatePlaylistList()
 {
 	bool showtemp = ui->checkBox_show_temporary->isChecked();
@@ -57,7 +64,7 @@ void EditPlaylistDialog::updatePlaylistList()
 	ui->listWidget_list->clear();
 	ui->listWidget_songs->clear();
 	QList<MusicPlayerClient::Item> items;
-	mpc->do_lsinfo(QString(), &items);
+	mpc()->do_lsinfo(QString(), &items);
 	std::sort(items.begin(), items.end());
 	for (MusicPlayerClient::Item const &item : items) {
 		if (item.kind == "playlist") {
@@ -133,7 +140,7 @@ void EditPlaylistDialog::on_listWidget_list_itemSelectionChanged()
 	ui->listWidget_songs->clear();
 	using mpcitem_t = MusicPlayerClient::Item;
 	QList<mpcitem_t> songs;
-	mpc->do_listplaylistinfo(name, &songs);
+	mpc()->do_listplaylistinfo(name, &songs);
 	for (mpcitem_t const &song : songs) {
 		QString path = song.text;
 		QString text = song.map.get("Title");
@@ -177,7 +184,7 @@ void EditPlaylistDialog::on_pushButton_rename_clicked()
 	RenameDialog dlg(this, curname, curname);
 	if (dlg.exec() == QDialog::Accepted) {
 		QString newname = dlg.name();
-		mpc->do_rename(curname, newname);
+		mpc()->do_rename(curname, newname);
 		updatePlaylistList();
 	}
 }
@@ -188,7 +195,7 @@ void EditPlaylistDialog::on_pushButton_delete_clicked()
 	if (!listitem) return;
 	QString name = listitem->text();
 	if (QMessageBox::warning(this, QApplication::applicationName(), tr("Delete the playlist:") + " \"" + name + "\"\n" + tr("Are you sure ?"), QMessageBox::Ok | QMessageBox::Cancel) == QMessageBox::Ok) {
-		mpc->do_rm(name);
+		mpc()->do_rm(name);
 		updatePlaylistList();
 	}
 }
@@ -214,7 +221,7 @@ void EditPlaylistDialog::on_pushButton_save_clicked()
 		QMessageBox::warning(this, qApp->applicationName(), tr("The name is invalid."));
 		return;
 	}
-	mpc->do_save(name);
+	mainwindow->savePlaylist(name, true);
 	updatePlaylistList();
 	selectItem(name);
 }

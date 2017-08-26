@@ -1244,7 +1244,7 @@ void MainWindow::on_toolButton_consume_clicked()
 
 void MainWindow::on_action_playlist_edit_triggered()
 {
-	EditPlaylistDialog dlg(this, mpc());
+	EditPlaylistDialog dlg(this);
 	if (dlg.exec() != QDialog::Accepted) return;
 	QString name = dlg.name();
 	if (name.isEmpty()) return;
