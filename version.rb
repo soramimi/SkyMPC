@@ -5,8 +5,12 @@ $description = "MPD Client"
 $copyright_year = 2017
 $version_a = 1
 $version_b = 6
-$version_c = 3
+$version_c = 4
 $version_d = 0
+
+# v1.6.4 (2017-08-26)
+#   * プレイリストの保存で、上書き保存できるようにした
+#   * Linuxでシステムフォントを使用するようにした
 
 # v1.6.3 (2017-06-12)
 #	* ステータスバーが長くなりすぎた時、MainWindowのサイズが変わらないようにした
