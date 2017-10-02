@@ -101,7 +101,7 @@ MainWindow::MainWindow(QWidget *parent) :
 
 #ifdef Q_OS_MAC
 #else
-	ui->action_help_about->setText(tr("&About SkyMPC"));
+	ui->action_help_about->setText(tr("&About %1").arg(qApp->applicationName()));
 #endif
 
 #ifdef QT_NO_DEBUG

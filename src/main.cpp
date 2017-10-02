@@ -11,6 +11,8 @@
 #include <QTranslator>
 #include <QSplashScreen>
 #include <QProxyStyle>
+#include <QStandardPaths>
+
 
 #define USE_SPLASH 0
 
@@ -35,8 +37,6 @@ public:
         QProxyStyle::drawPrimitive(element, option, painter, widget);
     }
 };
-
-#include <QStandardPaths>
 
 int main(int argc, char *argv[])
 {
