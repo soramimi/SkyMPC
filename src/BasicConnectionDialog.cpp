@@ -68,6 +68,7 @@ void BasicConnectionDialog::init()
 	}
 
 	loadServers();
+	addNewConnection();
 }
 
 void BasicConnectionDialog::loadServers()

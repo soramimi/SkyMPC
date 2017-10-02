@@ -9,18 +9,22 @@ class EditPlaylistDialog;
 }
 class QModelIndex;
 
+class BasicMainWindow;
+
 class EditPlaylistDialog : public QDialog
 {
 	Q_OBJECT
 private:
 	Ui::EditPlaylistDialog *ui;
-	MusicPlayerClient *mpc;
+	BasicMainWindow *mainwindow;
+	MusicPlayerClient *mpc();
+
 	void updatePlaylistList();
 	void saveSettings();
 	bool selectItem(const QString &name);
 	bool isTemporaryItem(const QString &name);
 public:
-	explicit EditPlaylistDialog(QWidget *parent, MusicPlayerClient *mpc);
+	explicit EditPlaylistDialog(BasicMainWindow *parent/*, MusicPlayerClient *mpc*/);
 	~EditPlaylistDialog();
 	QString name() const;
 	bool forReplace() const;

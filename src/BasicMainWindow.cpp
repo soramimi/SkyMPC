@@ -57,17 +57,19 @@ QString BasicMainWindow::makeStyleSheetText()
 #endif
 
 #ifdef Q_OS_LINUX
-	QString default_font = font("VL PGothic", 10);
-	QString progress_font = font("VL PGothic", 10);
-	QString clock_font = font("VL PGothic", 15);
-#endif
-
+	QString clock_font = font("Sans Serif", 15);
+	QString s;
+	s += "#label_title, #label_artist, #label_disc {font-weight: bold;}";
+	s += "#label_clock {%1; font-weight: bold;}";
+	return s.arg(clock_font);
+#else
 	QString s;
 	s += "* {%1;}";
 	s += "#label_title, #label_artist, #label_disc {font-weight: bold;}";
 	s += "#label_progress {%2;}";
 	s += "#label_clock {%3; font-weight: bold;}";
 	return s.arg(default_font).arg(progress_font).arg(clock_font);
+#endif
 }
 
 void BasicMainWindow::releaseMouseIfGrabbed()

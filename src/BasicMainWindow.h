@@ -20,6 +20,7 @@ enum class PlayingStatus {
 
 class BasicMainWindow : public QMainWindow {
 	Q_OBJECT
+	friend class EditPlaylistDialog;
 protected:
 	struct Private;
 	Private *pv;
