@@ -154,3 +154,7 @@ macx {
 	QMAKE_BUNDLE_DATA += t
 }
 
+haiku {
+	LIBS += -lnetwork
+}
+

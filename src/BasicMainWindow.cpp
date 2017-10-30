@@ -56,6 +56,12 @@ QString BasicMainWindow::makeStyleSheetText()
 	QString clock_font = font("Lucida Grande", 20);
 #endif
 
+#ifdef Q_OS_HAIKU
+	QString default_font = font("Noto Sans", 10);
+	QString progress_font = font("Noto Sans", 10);
+	QString clock_font = font("Noto Sans", 14);
+#endif
+
 #ifdef Q_OS_LINUX
 	QString clock_font = font("Sans Serif", 15);
 	QString s;
