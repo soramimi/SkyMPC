@@ -54,14 +54,14 @@ MainWindow::MainWindow(QWidget *parent) :
 {
 	ui->setupUi(this);
 
-	pv->release_mouse_event = false;
+	m->release_mouse_event = false;
 
-    pv->status_label1 = new StatusLabel();
-    pv->status_label2 = new StatusLabel();
-    pv->status_label3 = new StatusLabel();
-	ui->statusBar->addWidget(pv->status_label1, 1);
-	ui->statusBar->addWidget(pv->status_label2, 0);
-	ui->statusBar->addWidget(pv->status_label3, 0);
+	m->status_label1 = new StatusLabel();
+	m->status_label2 = new StatusLabel();
+	m->status_label3 = new StatusLabel();
+	ui->statusBar->addWidget(m->status_label1, 1);
+	ui->statusBar->addWidget(m->status_label2, 0);
+	ui->statusBar->addWidget(m->status_label3, 0);
 
 	QFormLayout *layout = static_cast<QFormLayout *>(ui->widget_information_area->layout());
 	layout->setLabelAlignment(Qt::AlignLeft | Qt::AlignVCenter);
@@ -69,11 +69,11 @@ MainWindow::MainWindow(QWidget *parent) :
 #if 0 //def Q_OS_WIN
 	priv->folder_icon = QIcon(":/image/winfolder.png");
 #else
-	pv->folder_icon = QIcon(":/image/macfolder.png");
+	m->folder_icon = QIcon(":/image/macfolder.png");
 #endif
 
-	pv->song_icon = QIcon(":/image/song.png");
-	pv->playlist_icon = QIcon(":/image/playlist.png");
+	m->song_icon = QIcon(":/image/song.png");
+	m->playlist_icon = QIcon(":/image/playlist.png");
 
 #if 0
 	{
@@ -108,9 +108,9 @@ MainWindow::MainWindow(QWidget *parent) :
 	ui->toolButton_menu->hide();
 #else
 #endif
-	pv->menu.addAction(ui->action_help_about);
-	pv->menu.addAction(ui->action_debug);
-	ui->toolButton_menu->setMenu(&pv->menu);
+	m->menu.addAction(ui->action_help_about);
+	m->menu.addAction(ui->action_debug);
+	ui->toolButton_menu->setMenu(&m->menu);
 	ui->toolButton_menu->setPopupMode(QToolButton::InstantPopup);
 
 	connect(ui->menu_playlist_load, &QMenu::aboutToShow, [&](){
@@ -148,8 +148,8 @@ MainWindow::MainWindow(QWidget *parent) :
 		int port = settings.value("Port").toInt();
 		QString password = settings.value("Password").toString();
 		settings.endGroup();
-		pv->host = Host(addr, port);
-		pv->host.setPassword(password);
+		m->host = Host(addr, port);
+		m->host.setPassword(password);
 	}
 
 	qApp->installEventFilter(this);
@@ -203,22 +203,22 @@ QString MainWindow::songPath(QListWidgetItem const *item, bool for_export) const
 
 QIcon MainWindow::folderIcon()
 {
-	return pv->folder_icon;
+	return m->folder_icon;
 }
 
 QIcon MainWindow::songIcon()
 {
-	return pv->song_icon;
+	return m->song_icon;
 }
 
 QIcon MainWindow::playlistIcon()
 {
-	return pv->playlist_icon;
+	return m->playlist_icon;
 }
 
 void MainWindow::closeEvent(QCloseEvent *event)
 {
-	if (pv->sleep_time.isValid()) {
+	if (m->sleep_time.isValid()) {
 		QString text;
 		text += tr("Now sleep timer is working.") + '\n';
 		text += tr("If this program is closed, the sleep timer will be canceled.") + '\n';
@@ -246,9 +246,9 @@ void MainWindow::closeEvent(QCloseEvent *event)
 		settings.endGroup();
 
 		settings.beginGroup("Connection");
-		settings.setValue("Address", pv->host.address());
-		settings.setValue("Port", pv->host.port());
-		settings.setValue("Password", pv->host.password());
+		settings.setValue("Address", m->host.address());
+		settings.setValue("Port", m->host.port());
+		settings.setValue("Password", m->host.password());
 		settings.endGroup();
 	}
 	QMainWindow::closeEvent(event);
@@ -264,8 +264,8 @@ QComboBox *MainWindow::serversComboBox()
 
 void MainWindow::updateServersComboBox()
 {
-	ui->comboBox_servers1->resetContents(pv->host, false, true);
-	ui->comboBox_servers2->resetContents(pv->host, true, true);
+	ui->comboBox_servers1->resetContents(m->host, false, true);
+	ui->comboBox_servers2->resetContents(m->host, true, true);
 }
 
 bool MainWindow::eventFilter(QObject *obj, QEvent *event)
@@ -469,13 +469,13 @@ void MainWindow::keyPressEvent(QKeyEvent *event)
 void MainWindow::displayExtraInformation(QString const &text2, QString const &text3)
 {
 	if (text2.isEmpty()) {
-		pv->status_label2->setVisible(false);
+		m->status_label2->setVisible(false);
 	} else {
-		pv->status_label2->setText(text2);
-		pv->status_label2->setVisible(true);
+		m->status_label2->setText(text2);
+		m->status_label2->setVisible(true);
 	}
 
-	pv->status_label3->setText(text3);
+	m->status_label3->setText(text3);
 }
 
 void MainWindow::setPageConnected()
@@ -508,7 +508,7 @@ void MainWindow::clearTreeAndList()
 
 void MainWindow::setRepeatEnabled(bool f)
 {
-	if (pv->repeat_enabled != f) {
+	if (m->repeat_enabled != f) {
 		ui->action_repeat->setChecked(f);
 		ui->toolButton_repeat->setChecked(f);
 	}
@@ -517,7 +517,7 @@ void MainWindow::setRepeatEnabled(bool f)
 
 void MainWindow::setSingleEnabled(bool f)
 {
-	if (pv->single_enabled != f) {
+	if (m->single_enabled != f) {
 		ui->action_single->setChecked(f);
 		ui->toolButton_single->setChecked(f);
 	}
@@ -526,7 +526,7 @@ void MainWindow::setSingleEnabled(bool f)
 
 void MainWindow::setConsumeEnabled(bool f)
 {
-	if (pv->consume_enabled != f) {
+	if (m->consume_enabled != f) {
 		ui->action_consume->setChecked(f);
 		ui->toolButton_consume->setChecked(f);
 	}
@@ -535,7 +535,7 @@ void MainWindow::setConsumeEnabled(bool f)
 
 void MainWindow::setRandomEnabled(bool f)
 {
-	if (pv->random_enabled != f) {
+	if (m->random_enabled != f) {
 		ui->action_random->setChecked(f);
 		ui->toolButton_random->setChecked(f);
 	}
@@ -576,7 +576,7 @@ void MainWindow::displayCurrentSongLabels(QString const &title, QString const &a
 
 void MainWindow::updatePlayIcon()
 {
-	BasicMainWindow::updatePlayIcon(pv->status.now.status, ui->toolButton_play, ui->action_play);
+	BasicMainWindow::updatePlayIcon(m->status.now.status, ui->toolButton_play, ui->action_play);
 }
 
 void MainWindow::updateWindowTitle()
@@ -598,17 +598,17 @@ void MainWindow::updateCurrentSongInfo()
 			QListWidgetItem *item = ui->listWidget_playlist->item(i);
 			Q_ASSERT(item);
 			char const *s = ":image/notplaying.png";
-			if (i == pv->status.now.index) {
-				if (pv->status.now.status == PlayingStatus::Play) {
+			if (i == m->status.now.index) {
+				if (m->status.now.status == PlayingStatus::Play) {
 					s = ":image/playing.svgz";
-				} else if (pv->status.now.status == PlayingStatus::Pause) {
+				} else if (m->status.now.status == PlayingStatus::Pause) {
 					s = ":image/pause.png";
 				}
 			}
 			item->setIcon(QIcon(s));
 		}
 
-		displayCurrentSongLabels(pv->status.now.title, pv->status.now.artist, pv->status.now.disc);
+		displayCurrentSongLabels(m->status.now.title, m->status.now.artist, m->status.now.disc);
 
 		updateWindowTitle();
 	} else {
@@ -972,13 +972,13 @@ void MainWindow::mouseReleaseEvent(QMouseEvent *e)
 void MainWindow::onDropEvent(bool done)
 {
 	if (!done) {
-		pv->drop_before.clear();
+		m->drop_before.clear();
 		int n = playlistFileCount();
 		for (int i = 0; i < n; i++) {
 			QListWidgetItem *listitem = ui->listWidget_playlist->item(i);
 			listitem->setData(ITEM_RowRole, i);
 			QString path = songPath(listitem, false);
-			pv->drop_before.push_back(SongItem(i, path));
+			m->drop_before.push_back(SongItem(i, path));
 		}
 	} else {
 		std::vector<SongItem> drop_after;
@@ -992,7 +992,7 @@ void MainWindow::onDropEvent(bool done)
 			if (path.isEmpty()) continue;
 			drop_after.push_back(SongItem(row, path));
 		}
-		std::vector<SongItem> drop_before = pv->drop_before;
+		std::vector<SongItem> drop_before = m->drop_before;
 		for (size_t i = 0; i < drop_after.size(); i++) {
 			SongItem const &a = drop_after[i];
 			if (a.index == -1) {
@@ -1046,15 +1046,15 @@ void MainWindow::on_listWidget_playlist_doubleClicked(const QModelIndex &index)
 
 void MainWindow::on_toolButton_volume_clicked()
 {
-	if (pv->volume < 0) {
+	if (m->volume < 0) {
 		return; // setvol not supported
 	}
 	QRect rc = ui->toolButton_volume->frameGeometry();
 	QPoint pt = ((QWidget *)ui->toolButton_volume->parent())->mapToGlobal(rc.bottomRight());
-	pt.rx() -= pv->volume_popup.width();
-	pv->volume_popup.setValue(pv->volume);
-	pv->volume_popup.move(pt);
-	pv->volume_popup.show();
+	pt.rx() -= m->volume_popup.width();
+	m->volume_popup.setValue(m->volume);
+	m->volume_popup.move(pt);
+	m->volume_popup.show();
 }
 
 void MainWindow::updatePrimaryStatusLabel()
@@ -1067,7 +1067,7 @@ void MainWindow::updatePrimaryStatusLabel()
 	} else {
 		text = tr("%1 songs selected").arg(selected);
 	}
-	pv->status_label1->setText(text);
+	m->status_label1->setText(text);
 }
 
 void MainWindow::updatePlaylist()
@@ -1087,7 +1087,7 @@ void MainWindow::updatePlaylist()
 
 void MainWindow::execConnectionDialog()
 {
-	ConnectionDialog dlg(this, pv->host);
+	ConnectionDialog dlg(this, m->host);
 	if (dlg.exec() == QDialog::Accepted) {
 		Host host = dlg.host();
 		connectToMPD(host);
@@ -1132,11 +1132,6 @@ void MainWindow::updatePlaylistMenu()
 	}
 }
 
-void MainWindow::actionEvent(QActionEvent *event)
-{
-	qDebug() << Q_FUNC_INFO;
-}
-
 void MainWindow::on_toolButton_sleep_timer_clicked()
 {
 	execSleepTimerDialog();
@@ -1144,7 +1139,7 @@ void MainWindow::on_toolButton_sleep_timer_clicked()
 
 void MainWindow::onSliderPressed()
 {
-	if (pv->status.now.status == PlayingStatus::Play) {
+	if (m->status.now.status == PlayingStatus::Play) {
 		mpc()->do_pause(true);
 	}
 }
@@ -1153,8 +1148,8 @@ void MainWindow::onSliderReleased()
 {
 	int pos = ui->horizontalSlider->value() / 100;
 	{
-		mpc()->do_seek(pv->status.now.index, pos);
-		if (pv->status.now.status == PlayingStatus::Play) {
+		mpc()->do_seek(m->status.now.index, pos);
+		if (m->status.now.status == PlayingStatus::Play) {
 			mpc()->do_pause(false);
 		}
 	}
@@ -1198,22 +1193,22 @@ void MainWindow::on_action_next_triggered()
 
 void MainWindow::on_action_repeat_triggered()
 {
-	mpc()->do_repeat(!pv->repeat_enabled);
+	mpc()->do_repeat(!m->repeat_enabled);
 }
 
 void MainWindow::on_action_random_triggered()
 {
-	mpc()->do_random(!pv->random_enabled);
+	mpc()->do_random(!m->random_enabled);
 }
 
 void MainWindow::on_action_single_triggered()
 {
-	mpc()->do_single(!pv->single_enabled);
+	mpc()->do_single(!m->single_enabled);
 }
 
 void MainWindow::on_action_consume_triggered()
 {
-	mpc()->do_consume(!pv->consume_enabled);
+	mpc()->do_consume(!m->consume_enabled);
 }
 
 void MainWindow::on_action_network_connect_triggered()
@@ -1228,7 +1223,7 @@ void MainWindow::on_action_network_disconnect_triggered()
 
 void MainWindow::on_action_network_reconnect_triggered()
 {
-	connectToMPD(pv->host);
+	connectToMPD(m->host);
 	update(false);
 
 	showNotify(tr("Reconnected"));

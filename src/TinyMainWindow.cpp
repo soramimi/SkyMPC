@@ -50,19 +50,19 @@ TinyMainWindow::TinyMainWindow(QWidget *parent) :
 
 	setWindowState(windowState() | Qt::WindowFullScreen);
 
-	pv->release_mouse_event = false;
+	m->release_mouse_event = false;
 
-    pv->status_label1 = new StatusLabel();
-	ui->statusBar->addWidget(pv->status_label1, 1);
-    pv->status_label2 = new StatusLabel();
-	ui->statusBar->addWidget(pv->status_label2, 0);
-    pv->status_label3 = new StatusLabel();
-	ui->statusBar->addWidget(pv->status_label3, 0);
+	m->status_label1 = new StatusLabel();
+	ui->statusBar->addWidget(m->status_label1, 1);
+	m->status_label2 = new StatusLabel();
+	ui->statusBar->addWidget(m->status_label2, 0);
+	m->status_label3 = new StatusLabel();
+	ui->statusBar->addWidget(m->status_label3, 0);
 
 #if 0 //def Q_OS_WIN
 	priv->folder_icon = QIcon(":/image/winfolder.png");
 #else
-	pv->folder_icon = QIcon(":/image/macfolder.png");
+	m->folder_icon = QIcon(":/image/macfolder.png");
 #endif
 
 	{
@@ -75,8 +75,8 @@ TinyMainWindow::TinyMainWindow(QWidget *parent) :
 	ui->action_help_about->setText(tr("&About SkyMPC"));
 #endif
 
-	pv->menu.addAction(ui->action_help_about);
-	pv->menu.addAction(ui->action_debug);
+	m->menu.addAction(ui->action_help_about);
+	m->menu.addAction(ui->action_debug);
 
 	setRepeatEnabled(false);
 	setRandomEnabled(false);
@@ -89,8 +89,8 @@ TinyMainWindow::TinyMainWindow(QWidget *parent) :
 		int port = settings.value("Port").toInt();
 		QString password = settings.value("Password").toString();
 		settings.endGroup();
-		pv->host = Host(addr, port);
-		pv->host.setPassword(password);
+		m->host = Host(addr, port);
+		m->host.setPassword(password);
 	}
 
 #if 0
@@ -122,12 +122,12 @@ TinyMainWindow::~TinyMainWindow()
 
 QIcon TinyMainWindow::folderIcon()
 {
-	return pv->folder_icon;
+	return m->folder_icon;
 }
 
 void TinyMainWindow::closeEvent(QCloseEvent *event)
 {
-	if (pv->sleep_time.isValid()) {
+	if (m->sleep_time.isValid()) {
 		QString text;
 		text += tr("Now sleep timer is working.") + '\n';
 		text += tr("If this program is closed, the sleep timer will be canceled.") + '\n';
@@ -141,9 +141,9 @@ void TinyMainWindow::closeEvent(QCloseEvent *event)
 	{
 		MySettings settings;
 		settings.beginGroup("Connection");
-		settings.setValue("Address", pv->host.address());
-		settings.setValue("Port", pv->host.port());
-		settings.setValue("Password", pv->host.password());
+		settings.setValue("Address", m->host.address());
+		settings.setValue("Port", m->host.port());
+		settings.setValue("Password", m->host.password());
 		settings.endGroup();
 	}
 	QMainWindow::closeEvent(event);
@@ -156,14 +156,14 @@ void TinyMainWindow::closeEvent(QCloseEvent *event)
 void TinyMainWindow::displayExtraInformation(QString const &text2, QString const &text3)
 {
 	if (text2.isEmpty()) {
-		pv->status_label2->setVisible(false);
+		m->status_label2->setVisible(false);
 	} else {
-		pv->status_label2->setText(text2);
-		pv->status_label2->setVisible(true);
+		m->status_label2->setText(text2);
+		m->status_label2->setVisible(true);
 	}
 
-	pv->status_label3->setText(text3);
-	pv->status_label3->setVisible(true);
+	m->status_label3->setText(text3);
+	m->status_label3->setVisible(true);
 }
 
 void TinyMainWindow::displayCurrentSongLabels(const QString &title, const QString &artist, const QString & /*disc*/)
@@ -174,17 +174,17 @@ void TinyMainWindow::displayCurrentSongLabels(const QString &title, const QStrin
 
 void TinyMainWindow::updatePlayIcon()
 {
-	BasicMainWindow::updatePlayIcon(pv->status.now.status, ui->toolButton_play, ui->action_play);
+	BasicMainWindow::updatePlayIcon(m->status.now.status, ui->toolButton_play, ui->action_play);
 }
 
 void TinyMainWindow::displayProgress(const QString &text)
 {
-	pv->status_label1->setText(text);
+	m->status_label1->setText(text);
 }
 
 void TinyMainWindow::setRepeatEnabled(bool f)
 {
-	if (pv->repeat_enabled != f) {
+	if (m->repeat_enabled != f) {
 		ui->action_repeat->setChecked(f);
 	}
 	BasicMainWindow::setRepeatEnabled(f);
@@ -192,7 +192,7 @@ void TinyMainWindow::setRepeatEnabled(bool f)
 
 void TinyMainWindow::setSingleEnabled(bool f)
 {
-	if (pv->single_enabled != f) {
+	if (m->single_enabled != f) {
 		ui->action_single->setChecked(f);
 	}
 	BasicMainWindow::setSingleEnabled(f);
@@ -200,7 +200,7 @@ void TinyMainWindow::setSingleEnabled(bool f)
 
 void TinyMainWindow::setConsumeEnabled(bool f)
 {
-	if (pv->consume_enabled != f) {
+	if (m->consume_enabled != f) {
 		ui->action_consume->setChecked(f);
 	}
 	BasicMainWindow::setConsumeEnabled(f);
@@ -208,7 +208,7 @@ void TinyMainWindow::setConsumeEnabled(bool f)
 
 void TinyMainWindow::setRandomEnabled(bool f)
 {
-	if (pv->random_enabled != f) {
+	if (m->random_enabled != f) {
 		ui->action_random->setChecked(f);
 	}
 	BasicMainWindow::setRandomEnabled(f);
@@ -233,7 +233,7 @@ void TinyMainWindow::changeEvent(QEvent *e)
 
 void TinyMainWindow::execConnectionDialog()
 {
-	TinyConnectionDialog dlg(this, pv->host);
+	TinyConnectionDialog dlg(this, m->host);
 	if (dlg.exec() == QDialog::Accepted) {
 		Host host = dlg.host();
 		connectToMPD(host);
@@ -248,7 +248,7 @@ void TinyMainWindow::updateClock(const QString &text)
 
 void TinyMainWindow::updateCurrentSongInfo()
 {
-	displayCurrentSongLabels(pv->status.now.title, pv->status.now.artist, pv->status.now.disc);
+	displayCurrentSongLabels(m->status.now.title, m->status.now.artist, m->status.now.disc);
 }
 
 QString TinyMainWindow::timeText(MusicPlayerClient::Item const &item)
@@ -277,13 +277,13 @@ void TinyMainWindow::on_toolButton_sleep_timer_clicked()
 
 void TinyMainWindow::onVolumeChanged()
 {
-	int v = pv->volume_popup.value();
+	int v = m->volume_popup.value();
 	mpc()->do_setvol(v);
 }
 
 void TinyMainWindow::onSliderPressed()
 {
-	if (pv->status.now.status == PlayingStatus::Play) {
+	if (m->status.now.status == PlayingStatus::Play) {
 		mpc()->do_pause(true);
 	}
 }
@@ -321,22 +321,22 @@ void TinyMainWindow::on_action_next_triggered()
 
 void TinyMainWindow::on_action_repeat_triggered()
 {
-	mpc()->do_repeat(!pv->repeat_enabled);
+	mpc()->do_repeat(!m->repeat_enabled);
 }
 
 void TinyMainWindow::on_action_random_triggered()
 {
-	mpc()->do_random(!pv->random_enabled);
+	mpc()->do_random(!m->random_enabled);
 }
 
 void TinyMainWindow::on_action_single_triggered()
 {
-	mpc()->do_single(!pv->single_enabled);
+	mpc()->do_single(!m->single_enabled);
 }
 
 void TinyMainWindow::on_action_consume_triggered()
 {
-	mpc()->do_consume(!pv->consume_enabled);
+	mpc()->do_consume(!m->consume_enabled);
 }
 
 void TinyMainWindow::on_action_network_connect_triggered()
@@ -351,7 +351,7 @@ void TinyMainWindow::on_action_network_disconnect_triggered()
 
 void TinyMainWindow::on_action_network_reconnect_triggered()
 {
-	connectToMPD(pv->host);
+	connectToMPD(m->host);
 	update(false);
 
 	showNotify(tr("Reconnected"));
@@ -457,7 +457,7 @@ void TinyMainWindow::on_toolButton_close_clicked()
 
 void TinyMainWindow::updateServersComboBox()
 {
-	ui->comboBox_servers->resetContents(pv->host, false, true);
+	ui->comboBox_servers->resetContents(m->host, false, true);
 }
 
 void TinyMainWindow::on_comboBox_servers_currentIndexChanged(int index)

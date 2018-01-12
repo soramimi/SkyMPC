@@ -23,7 +23,7 @@ class BasicMainWindow : public QMainWindow {
 	friend class EditPlaylistDialog;
 protected:
 	struct Private;
-	Private *pv;
+	Private *m;
 	MusicPlayerClient *mpc();
 	static QString makeStyleSheetText();
 	void releaseMouseIfGrabbed();

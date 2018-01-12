@@ -132,10 +132,6 @@ private slots:
 	void on_comboBox_servers1_currentIndexChanged(int index);
 	void on_comboBox_servers2_currentIndexChanged(int index);
 	void on_listWidget_playlist_itemSelectionChanged();
-
-	// QWidget interface
-protected:
-	void actionEvent(QActionEvent *event);
 };
 
 #endif // MAINWINDOW_H
