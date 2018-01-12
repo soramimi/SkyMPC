@@ -42,20 +42,26 @@ struct BasicMainWindow::Private {
 		struct Status {
 			PlayingStatus status = PlayingStatus::Unknown;
 			int index = -1;
+			QString title;
+			QString artist;
+			QString disc;
+			int track = 0;
 			bool operator == (Status const &r) const
 			{
-				return status == r.status && index == r.index;
+				return
+						status == r.status &&
+						index == r.index &&
+						title == r.title &&
+						artist == r.artist &&
+						disc == r.disc &&
+						track == r.track
+						;
 			}
 			bool operator != (Status const &r) const
 			{
 				return !operator == (r);
 			}
 		} now, ago;
-		double total = 0;
-		QString current_title;
-		QString current_artist;
-		QString current_disc;
-		int current_track = 0;
 	} status;
 	double total_seconds = 0;
 	bool repeat_enabled = false;

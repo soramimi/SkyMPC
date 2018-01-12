@@ -824,10 +824,17 @@
     <addaction name="separator"/>
     <addaction name="action_network_reconnect"/>
    </widget>
-   <widget class="QMenu" name="menuPlay_list">
+   <widget class="QMenu" name="menu_Playlist">
     <property name="title">
      <string>Play&amp;list</string>
     </property>
+    <widget class="QMenu" name="menu_playlist_load">
+     <property name="title">
+      <string>&amp;Load</string>
+     </property>
+    </widget>
+    <addaction name="menu_playlist_load"/>
+    <addaction name="separator"/>
     <addaction name="action_playlist_update"/>
     <addaction name="separator"/>
     <addaction name="action_playlist_edit"/>
@@ -844,7 +851,7 @@
    <addaction name="menu_File"/>
    <addaction name="menu_Edit"/>
    <addaction name="menu_Network"/>
-   <addaction name="menuPlay_list"/>
+   <addaction name="menu_Playlist"/>
    <addaction name="menu_Playback"/>
    <addaction name="menu_Help"/>
   </widget>

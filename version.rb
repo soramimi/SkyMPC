@@ -2,15 +2,16 @@
 
 $product_name = "SkyMPC"
 $description = "MPD Client"
-$copyright_year = 2017
+$copyright_year = 2018
 $version_a = 1
 $version_b = 6
 $version_c = 4
 $version_d = 0
 
-# v1.6.4 (2017-08-26)
+# v1.6.4 (2018-01-12)
 #   * プレイリストの保存で、上書き保存できるようにした
 #   * Linuxでシステムフォントを使用するようにした
+#	* 自動削除モード時、曲が変わったとき、プレイリストを更新するようにした
 
 # v1.6.3 (2017-06-12)
 #	* ステータスバーが長くなりすぎた時、MainWindowのサイズが変わらないようにした

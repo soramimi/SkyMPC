@@ -113,6 +113,13 @@ MainWindow::MainWindow(QWidget *parent) :
 	ui->toolButton_menu->setMenu(&pv->menu);
 	ui->toolButton_menu->setPopupMode(QToolButton::InstantPopup);
 
+	connect(ui->menu_playlist_load, &QMenu::aboutToShow, [&](){
+		updatePlaylistMenu();
+	});
+	connect(ui->menu_playlist_load, &QMenu::triggered, [&](QAction *action){
+		loadPlaylist(action->text(), true);
+	});
+
 	connect(ui->treeWidget, SIGNAL(onContextMenuEvent(QContextMenuEvent*)), this, SLOT(onTreeViewContextMenuEvent(QContextMenuEvent*)));
 	connect(ui->listWidget_playlist, SIGNAL(onContextMenu(QContextMenuEvent*)), this, SLOT(onListViewContextMenuEvent(QContextMenuEvent*)));
 	connect(ui->listWidget_playlist, SIGNAL(onDropEvent(bool)), this, SLOT(onDropEvent(bool)));
@@ -254,11 +261,6 @@ QComboBox *MainWindow::serversComboBox()
 	}
 	return ui->comboBox_servers2;
 }
-
-
-
-
-
 
 void MainWindow::updateServersComboBox()
 {
@@ -572,14 +574,10 @@ void MainWindow::displayCurrentSongLabels(QString const &title, QString const &a
 	ui->label_disc->setText(disc);
 }
 
-
-
 void MainWindow::updatePlayIcon()
 {
 	BasicMainWindow::updatePlayIcon(pv->status.now.status, ui->toolButton_play, ui->action_play);
 }
-
-
 
 void MainWindow::updateWindowTitle()
 {
@@ -610,7 +608,7 @@ void MainWindow::updateCurrentSongInfo()
 			item->setIcon(QIcon(s));
 		}
 
-		displayCurrentSongLabels(pv->status.current_title, pv->status.current_artist, pv->status.current_disc);
+		displayCurrentSongLabels(pv->status.now.title, pv->status.now.artist, pv->status.now.disc);
 
 		updateWindowTitle();
 	} else {
@@ -1102,6 +1100,43 @@ void BasicMainWindow::stopSleepTimer()
 	startSleepTimer(0);
 }
 
+void MainWindow::updatePlaylistMenu()
+{
+	const bool showtemp = false;
+
+	QStringList list;
+	{
+		QList<MusicPlayerClient::Item> items;
+		mpc()->do_lsinfo(QString(), &items);
+		std::sort(items.begin(), items.end());
+		for (MusicPlayerClient::Item const &item : items) {
+			if (item.kind == "playlist") {
+				QString name = item.text;
+				if (!showtemp && name.size() > 1 && EditPlaylistDialog::isTemporaryItem(name)) {
+					// nop
+				} else {
+					list.push_back(name);
+				}
+			}
+		}
+	}
+
+	std::sort(list.begin(), list.end(), [](QString const &l, QString const &r){
+		int i = l.compare(r, Qt::CaseInsensitive);
+		return i < 0;
+	});
+
+	ui->menu_playlist_load->clear();
+	for (QString const &name : list) {
+		ui->menu_playlist_load->addAction(name);
+	}
+}
+
+void MainWindow::actionEvent(QActionEvent *event)
+{
+	qDebug() << Q_FUNC_INFO;
+}
+
 void MainWindow::on_toolButton_sleep_timer_clicked()
 {
 	execSleepTimerDialog();
@@ -1180,8 +1215,6 @@ void MainWindow::on_action_consume_triggered()
 {
 	mpc()->do_consume(!pv->consume_enabled);
 }
-
-
 
 void MainWindow::on_action_network_connect_triggered()
 {
@@ -1359,10 +1392,6 @@ void MainWindow::on_action_edit_delete_triggered()
 		deleteSelectedSongs();
 	}
 }
-
-
-
-
 
 void MainWindow::comboboxIndexChanged(QComboBox *cbox, int index)
 {

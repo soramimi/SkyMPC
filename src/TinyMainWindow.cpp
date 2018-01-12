@@ -248,7 +248,7 @@ void TinyMainWindow::updateClock(const QString &text)
 
 void TinyMainWindow::updateCurrentSongInfo()
 {
-	displayCurrentSongLabels(pv->status.current_title, pv->status.current_artist, pv->status.current_disc);
+	displayCurrentSongLabels(pv->status.now.title, pv->status.now.artist, pv->status.now.disc);
 }
 
 QString TinyMainWindow::timeText(MusicPlayerClient::Item const &item)

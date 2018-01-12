@@ -22,7 +22,8 @@ private:
 	void updatePlaylistList();
 	void saveSettings();
 	bool selectItem(const QString &name);
-	bool isTemporaryItem(const QString &name);
+public:
+	static bool isTemporaryItem(const QString &name);
 public:
 	explicit EditPlaylistDialog(BasicMainWindow *parent/*, MusicPlayerClient *mpc*/);
 	~EditPlaylistDialog();

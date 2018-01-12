@@ -150,7 +150,6 @@ void BasicMainWindow::updatePlayingStatus()
 			displayStopStatus();
 		} else {
 			pv->status.now.index = info.status.get("song").toInt();
-
 			pv->volume = info.status.get("volume").toInt();
 
 			setRepeatEnabled(info.status.get("repeat").toInt() != 0);
@@ -158,24 +157,30 @@ void BasicMainWindow::updatePlayingStatus()
 			setConsumeEnabled(info.status.get("consume").toInt() != 0);
 			setRandomEnabled(info.status.get("random").toInt() != 0);
 
-			if (info.status.get("songid") == info.property.get("Id")) {
-				pv->status.current_title = info.property.get("Title");
-				pv->status.current_artist = info.property.get("Artist");
-				pv->status.current_track = info.property.get("Track").toInt();
-				pv->status.current_disc.clear();
+			QString prop_id = info.property.get("Id");
+			QString prop_artist = info.property.get("Artist");
+			QString prop_album = info.property.get("Album");
+			QString prop_track = info.property.get("Track");
+			QString prop_title = info.property.get("Title");
+			QString prop_file = info.property.get("file");
 
-				QString album = info.property.get("Album");
-				if (!album.isEmpty()) {
-					if (pv->status.current_track > 0) {
-						pv->status.current_disc = QString("Tr.") + QString::number(pv->status.current_track) + ", ";
+			if (info.status.get("songid") == prop_id) {
+				pv->status.now.title = prop_title;
+				pv->status.now.artist = prop_artist;
+				pv->status.now.track = prop_track.toInt();
+				pv->status.now.disc.clear();
+
+				if (!prop_album.isEmpty()) {
+					if (pv->status.now.track > 0) {
+						pv->status.now.disc = QString("Tr.") + QString::number(pv->status.now.track) + ", ";
 					}
-					pv->status.current_disc += album;
+					pv->status.now.disc += prop_album;
 				}
-				if (pv->status.current_title.isEmpty()) {
-					QString file = info.property.get("file");
+				if (pv->status.now.title.isEmpty()) {
+					QString file = prop_file;
 					int i = file.lastIndexOf('/');
 					if (i >= 0) file = file.mid(i + 1);
-					pv->status.current_title = file;
+					pv->status.now.title = file;
 				}
 
 				pv->total_seconds = 0;
@@ -347,10 +352,9 @@ void BasicMainWindow::doQuickLoad2()
 void BasicMainWindow::doUpdateStatus()
 {
 	updatePlayingStatus();
-	if (pv->status.ago != pv->status.now) {
+	if (pv->status.ago != pv->status.now) { // 再生中の曲が変わった？
 		pv->status.ago = pv->status.now;
 		updatePlaylist();
-		updateCurrentSongInfo();
 	}
 }
 
@@ -560,7 +564,7 @@ void BasicMainWindow::onServersComboBoxIndexChanged(QComboBox *cbox, int index)
 QString BasicMainWindow::currentSongTitle() const
 {
 	if (pv->status.now.status == PlayingStatus::Play || pv->status.now.status == PlayingStatus::Pause) {
-		return pv->status.current_title;
+		return pv->status.now.title;
 	}
 	return QString();
 }
