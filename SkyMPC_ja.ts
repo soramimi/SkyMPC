@@ -65,32 +65,32 @@
         <translation>新しい接続</translation>
     </message>
     <message>
-        <location filename="src/BasicConnectionDialog.cpp" line="104"/>
+        <location filename="src/BasicConnectionDialog.cpp" line="105"/>
         <source>Name</source>
         <translation>名前</translation>
     </message>
     <message>
-        <location filename="src/BasicConnectionDialog.cpp" line="105"/>
+        <location filename="src/BasicConnectionDialog.cpp" line="106"/>
         <source>Address</source>
         <translation>アドレス</translation>
     </message>
     <message>
-        <location filename="src/BasicConnectionDialog.cpp" line="106"/>
+        <location filename="src/BasicConnectionDialog.cpp" line="107"/>
         <source>Port</source>
         <translation>ポート</translation>
     </message>
     <message>
-        <location filename="src/BasicConnectionDialog.cpp" line="107"/>
+        <location filename="src/BasicConnectionDialog.cpp" line="108"/>
         <source>Description</source>
         <translation>説明</translation>
     </message>
     <message>
-        <location filename="src/BasicConnectionDialog.cpp" line="206"/>
+        <location filename="src/BasicConnectionDialog.cpp" line="207"/>
         <source>Could not create the file.</source>
         <translation>ファイルを作成できませんでした。</translation>
     </message>
     <message>
-        <location filename="src/BasicConnectionDialog.cpp" line="249"/>
+        <location filename="src/BasicConnectionDialog.cpp" line="250"/>
         <source>Are you sure you want to delete &apos;%1&apos; ?</source>
         <translation>&apos;%1&apos; を削除します。よろしいですか？</translation>
     </message>
@@ -98,72 +98,72 @@
 <context>
     <name>BasicMainWindow</name>
     <message>
-        <location filename="src/BasicMainWindow.cpp" line="318"/>
+        <location filename="src/BasicMainWindow.cpp" line="331"/>
         <source>Quick Save 1 was completed</source>
         <translation>クイックセーブ1が完了しました</translation>
     </message>
     <message>
-        <location filename="src/BasicMainWindow.cpp" line="325"/>
+        <location filename="src/BasicMainWindow.cpp" line="338"/>
         <source>Quick Save 2 was completed</source>
         <translation>クイックセーブ2が完了しました</translation>
     </message>
     <message>
-        <location filename="src/BasicMainWindow.cpp" line="389"/>
+        <location filename="src/BasicMainWindow.cpp" line="401"/>
         <source>Waiting for connection</source>
         <translation>接続を待機しています</translation>
     </message>
     <message>
-        <location filename="src/BasicMainWindow.cpp" line="404"/>
+        <location filename="src/BasicMainWindow.cpp" line="416"/>
         <source>Pause in %1 later</source>
         <translation>あと %1 で停止します</translation>
     </message>
     <message>
-        <location filename="src/BasicMainWindow.cpp" line="785"/>
+        <location filename="src/BasicMainWindow.cpp" line="797"/>
         <source>Failed to load playlist.</source>
         <translation>プレイリストの読み込みに失敗しました。</translation>
     </message>
     <message>
-        <location filename="src/BasicMainWindow.cpp" line="805"/>
+        <location filename="src/BasicMainWindow.cpp" line="817"/>
         <source>The playlist contains the unsupported playlist item.</source>
         <translation>このプレイリストには対応していないアイテムが含まれています。</translation>
     </message>
     <message>
-        <location filename="src/BasicMainWindow.cpp" line="807"/>
+        <location filename="src/BasicMainWindow.cpp" line="819"/>
         <source>This operation probably does not work as expected.</source>
         <translation>この操作は期待通りに動作しない可能性があります。</translation>
     </message>
     <message>
-        <location filename="src/BasicMainWindow.cpp" line="809"/>
+        <location filename="src/BasicMainWindow.cpp" line="821"/>
         <source>Do you want to continue ?</source>
         <translation>続行しますか？</translation>
     </message>
     <message>
-        <location filename="src/BasicMainWindow.cpp" line="828"/>
+        <location filename="src/BasicMainWindow.cpp" line="840"/>
         <source>Failed to save playlist.</source>
         <translation>プレイリストの保存に失敗しました。</translation>
     </message>
     <message>
-        <location filename="src/BasicMainWindow.cpp" line="906"/>
+        <location filename="src/BasicMainWindow.cpp" line="918"/>
         <source>Overlapped item was not found.</source>
         <translation>重複したアイテムは見つかりませんでした。</translation>
     </message>
     <message>
-        <location filename="src/BasicMainWindow.cpp" line="352"/>
+        <location filename="src/BasicMainWindow.cpp" line="364"/>
         <source>Pause</source>
         <translation>一時停止</translation>
     </message>
     <message>
-        <location filename="src/BasicMainWindow.cpp" line="357"/>
+        <location filename="src/BasicMainWindow.cpp" line="369"/>
         <source>&amp;Pause</source>
         <translation>一時停止(&amp;P)</translation>
     </message>
     <message>
-        <location filename="src/BasicMainWindow.cpp" line="360"/>
+        <location filename="src/BasicMainWindow.cpp" line="372"/>
         <source>Play</source>
         <translation>再生</translation>
     </message>
     <message>
-        <location filename="src/BasicMainWindow.cpp" line="365"/>
+        <location filename="src/BasicMainWindow.cpp" line="377"/>
         <source>&amp;Play</source>
         <translation>再生(&amp;P)</translation>
     </message>
@@ -340,17 +340,17 @@
         <translation>閉じる(&amp;C)</translation>
     </message>
     <message>
-        <location filename="src/EditPlaylistDialog.cpp" line="190"/>
+        <location filename="src/EditPlaylistDialog.cpp" line="197"/>
         <source>Delete the playlist:</source>
         <translation>プレイリストを削除します:</translation>
     </message>
     <message>
-        <location filename="src/EditPlaylistDialog.cpp" line="190"/>
+        <location filename="src/EditPlaylistDialog.cpp" line="197"/>
         <source>Are you sure ?</source>
         <translation>よろしいですか？</translation>
     </message>
     <message>
-        <location filename="src/EditPlaylistDialog.cpp" line="214"/>
+        <location filename="src/EditPlaylistDialog.cpp" line="221"/>
         <source>The name is invalid.</source>
         <translation>名前が不正です。</translation>
     </message>
@@ -372,7 +372,7 @@
     </message>
     <message>
         <location filename="src/MainWindow.ui" line="109"/>
-        <location filename="src/MainWindow.ui" line="932"/>
+        <location filename="src/MainWindow.ui" line="939"/>
         <source>Previous</source>
         <translation>前</translation>
     </message>
@@ -384,21 +384,21 @@
     <message>
         <location filename="src/MainWindow.ui" line="141"/>
         <location filename="src/MainWindow.ui" line="144"/>
-        <location filename="src/MainWindow.ui" line="947"/>
+        <location filename="src/MainWindow.ui" line="954"/>
         <source>Next</source>
         <translation>次</translation>
     </message>
     <message>
         <location filename="src/MainWindow.ui" line="176"/>
         <location filename="src/MainWindow.ui" line="179"/>
-        <location filename="src/MainWindow.ui" line="917"/>
+        <location filename="src/MainWindow.ui" line="924"/>
         <source>Stop</source>
         <translation>停止</translation>
     </message>
     <message>
         <location filename="src/MainWindow.ui" line="211"/>
         <location filename="src/MainWindow.ui" line="214"/>
-        <location filename="src/MainWindow.ui" line="902"/>
+        <location filename="src/MainWindow.ui" line="909"/>
         <source>Play</source>
         <translation>再生</translation>
     </message>
@@ -419,13 +419,13 @@
     </message>
     <message>
         <location filename="src/MainWindow.ui" line="362"/>
-        <location filename="src/MainWindow.ui" line="882"/>
+        <location filename="src/MainWindow.ui" line="889"/>
         <source>Repeat</source>
         <translation>リピート</translation>
     </message>
     <message>
         <location filename="src/MainWindow.ui" line="397"/>
-        <location filename="src/MainWindow.ui" line="864"/>
+        <location filename="src/MainWindow.ui" line="871"/>
         <source>Random</source>
         <translation>ランダム</translation>
     </message>
@@ -436,13 +436,13 @@
     </message>
     <message>
         <location filename="src/MainWindow.ui" line="467"/>
-        <location filename="src/MainWindow.ui" line="1121"/>
+        <location filename="src/MainWindow.ui" line="1128"/>
         <source>Consume</source>
         <translation>自動削除</translation>
     </message>
     <message>
         <location filename="src/MainWindow.ui" line="502"/>
-        <location filename="src/MainWindow.cpp" line="491"/>
+        <location filename="src/MainWindow.cpp" line="496"/>
         <source>Volume</source>
         <translation>ボリューム</translation>
     </message>
@@ -498,378 +498,387 @@
         <translation>プレイリスト(&amp;L)</translation>
     </message>
     <message>
-        <location filename="src/MainWindow.ui" line="861"/>
+        <location filename="src/MainWindow.ui" line="833"/>
+        <source>&amp;Load</source>
+        <translation>読み込み(&amp;L)</translation>
+    </message>
+    <message>
+        <location filename="src/MainWindow.ui" line="868"/>
         <source>Ra&amp;ndom</source>
         <translation>ランダム(&amp;N)</translation>
     </message>
     <message>
-        <location filename="src/MainWindow.ui" line="899"/>
+        <location filename="src/MainWindow.ui" line="906"/>
         <source>&amp;Play</source>
         <translation>再生(&amp;P)</translation>
     </message>
     <message>
-        <location filename="src/MainWindow.ui" line="998"/>
+        <location filename="src/MainWindow.ui" line="1005"/>
         <source>Ctrl+T</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="src/MainWindow.ui" line="1107"/>
+        <location filename="src/MainWindow.ui" line="1114"/>
         <source>Shift+F6</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="src/MainWindow.ui" line="1112"/>
+        <location filename="src/MainWindow.ui" line="1119"/>
         <source>Unify</source>
         <translation>重複の削除</translation>
     </message>
     <message>
-        <location filename="src/MainWindow.ui" line="1138"/>
+        <location filename="src/MainWindow.ui" line="1145"/>
         <source>Sleep &amp;timer...</source>
         <translation>スリープタイマー(&amp;T)...</translation>
     </message>
     <message>
-        <location filename="src/MainWindow.ui" line="1141"/>
+        <location filename="src/MainWindow.ui" line="1148"/>
         <source>Shift+F1</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="src/MainWindow.ui" line="1064"/>
+        <location filename="src/MainWindow.ui" line="1071"/>
         <source>Close</source>
         <translation>閉じる</translation>
     </message>
     <message>
-        <location filename="src/MainWindow.ui" line="1067"/>
+        <location filename="src/MainWindow.ui" line="1074"/>
         <source>Ctrl+W</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="src/MainWindow.ui" line="1072"/>
+        <location filename="src/MainWindow.ui" line="1079"/>
         <source>Quick save 1</source>
         <translation>クイックセーブ1</translation>
     </message>
     <message>
-        <location filename="src/MainWindow.ui" line="1075"/>
+        <location filename="src/MainWindow.ui" line="1082"/>
         <source>Shift+F7</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="src/MainWindow.ui" line="1083"/>
+        <location filename="src/MainWindow.ui" line="1090"/>
         <source>Shift+F8</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="src/MainWindow.ui" line="1126"/>
+        <location filename="src/MainWindow.ui" line="1133"/>
         <source>Reconnect</source>
         <translation>再接続</translation>
     </message>
     <message>
-        <location filename="src/MainWindow.ui" line="1129"/>
+        <location filename="src/MainWindow.ui" line="1136"/>
         <source>Shift+F5</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="src/MainWindow.ui" line="1080"/>
+        <location filename="src/MainWindow.ui" line="1087"/>
         <source>Quick save 2</source>
         <translation>クイックセーブ2</translation>
     </message>
     <message>
-        <location filename="src/MainWindow.ui" line="1088"/>
+        <location filename="src/MainWindow.ui" line="1095"/>
         <source>Quick load 1</source>
         <translation>クイックロード1</translation>
     </message>
     <message>
-        <location filename="src/MainWindow.ui" line="1091"/>
+        <location filename="src/MainWindow.ui" line="1098"/>
         <source>F7</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="src/MainWindow.ui" line="1096"/>
+        <location filename="src/MainWindow.ui" line="1103"/>
         <source>Quick load 2</source>
         <translation>クイックロード2</translation>
     </message>
     <message>
-        <location filename="src/MainWindow.ui" line="1099"/>
+        <location filename="src/MainWindow.ui" line="1106"/>
         <source>F8</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="src/MainWindow.ui" line="1104"/>
+        <location filename="src/MainWindow.ui" line="1111"/>
         <source>&amp;Clear</source>
         <translation>消去(&amp;C)</translation>
     </message>
     <message>
-        <location filename="src/MainWindow.ui" line="885"/>
+        <location filename="src/MainWindow.ui" line="892"/>
         <source>Ctrl+R</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="src/MainWindow.ui" line="890"/>
+        <location filename="src/MainWindow.ui" line="897"/>
         <source>Debug</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="src/MainWindow.ui" line="905"/>
+        <location filename="src/MainWindow.ui" line="912"/>
         <source>F1</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="src/MainWindow.ui" line="920"/>
+        <location filename="src/MainWindow.ui" line="927"/>
         <source>F4</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="src/MainWindow.ui" line="935"/>
+        <location filename="src/MainWindow.ui" line="942"/>
         <source>F2</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="src/MainWindow.ui" line="950"/>
+        <location filename="src/MainWindow.ui" line="957"/>
         <source>F3</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="src/MainWindow.ui" line="955"/>
+        <location filename="src/MainWindow.ui" line="962"/>
         <source>About</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="src/MainWindow.ui" line="1018"/>
+        <location filename="src/MainWindow.ui" line="1025"/>
         <source>Ctrl+I</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="src/MainWindow.ui" line="1029"/>
+        <location filename="src/MainWindow.ui" line="1036"/>
         <source>F6</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="src/MainWindow.ui" line="914"/>
+        <location filename="src/MainWindow.ui" line="921"/>
         <source>&amp;Stop</source>
         <translation>停止(&amp;S)</translation>
     </message>
     <message>
-        <location filename="src/MainWindow.ui" line="944"/>
+        <location filename="src/MainWindow.ui" line="951"/>
         <source>&amp;Next</source>
         <translation>次(&amp;N)</translation>
     </message>
     <message>
-        <location filename="src/MainWindow.ui" line="960"/>
+        <location filename="src/MainWindow.ui" line="967"/>
         <source>&amp;Copy</source>
         <translation>コピー(&amp;C)</translation>
     </message>
     <message>
-        <location filename="src/MainWindow.ui" line="867"/>
+        <location filename="src/MainWindow.ui" line="874"/>
         <source>Ctrl+N</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="src/MainWindow.ui" line="879"/>
+        <location filename="src/MainWindow.ui" line="886"/>
         <source>&amp;Repeat</source>
         <translation>リピート(&amp;R)</translation>
     </message>
     <message>
-        <location filename="src/MainWindow.ui" line="929"/>
+        <location filename="src/MainWindow.ui" line="936"/>
         <source>Pre&amp;vious</source>
         <translation>前(&amp;V)</translation>
     </message>
     <message>
-        <location filename="src/MainWindow.ui" line="963"/>
+        <location filename="src/MainWindow.ui" line="970"/>
         <source>Ctrl+C</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="src/MainWindow.ui" line="968"/>
+        <location filename="src/MainWindow.ui" line="975"/>
         <source>Cu&amp;t</source>
         <translation>切り取り(&amp;T)</translation>
     </message>
     <message>
-        <location filename="src/MainWindow.ui" line="971"/>
+        <location filename="src/MainWindow.ui" line="978"/>
         <source>Ctrl+X</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="src/MainWindow.ui" line="976"/>
+        <location filename="src/MainWindow.ui" line="983"/>
         <source>Paste (&amp;Bottom)</source>
         <translation>最後に貼り付け(&amp;B)</translation>
     </message>
     <message>
-        <location filename="src/MainWindow.ui" line="979"/>
+        <location filename="src/MainWindow.ui" line="986"/>
         <source>Paste (Bottom)</source>
         <translation>最後に貼り付け</translation>
     </message>
     <message>
-        <location filename="src/MainWindow.ui" line="982"/>
+        <location filename="src/MainWindow.ui" line="989"/>
         <source>Ctrl+B</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="src/MainWindow.ui" line="987"/>
+        <location filename="src/MainWindow.ui" line="994"/>
         <source>&amp;Delete</source>
         <translation>削除(&amp;D)</translation>
     </message>
     <message>
-        <location filename="src/MainWindow.ui" line="990"/>
+        <location filename="src/MainWindow.ui" line="997"/>
         <source>Del</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="src/MainWindow.ui" line="995"/>
+        <location filename="src/MainWindow.ui" line="1002"/>
         <source>&amp;Connect...</source>
         <translation>接続(&amp;C)...</translation>
     </message>
     <message>
-        <location filename="src/MainWindow.ui" line="1003"/>
+        <location filename="src/MainWindow.ui" line="1010"/>
         <source>&amp;Disconnect</source>
         <translation>切断(&amp;D)</translation>
     </message>
     <message>
-        <location filename="src/MainWindow.ui" line="1015"/>
+        <location filename="src/MainWindow.ui" line="1022"/>
         <source>S&amp;ingle</source>
         <translation>シングル(&amp;I)</translation>
     </message>
     <message>
-        <location filename="src/MainWindow.ui" line="1023"/>
+        <location filename="src/MainWindow.ui" line="1030"/>
         <source>&amp;Edit...</source>
         <translation>編集(&amp;E)...</translation>
     </message>
     <message>
-        <location filename="src/MainWindow.ui" line="1026"/>
-        <location filename="src/MainWindow.cpp" line="905"/>
+        <location filename="src/MainWindow.ui" line="1033"/>
+        <location filename="src/MainWindow.cpp" line="906"/>
         <source>Edit</source>
         <translation>編集</translation>
     </message>
     <message>
-        <location filename="src/MainWindow.ui" line="1034"/>
+        <location filename="src/MainWindow.ui" line="1041"/>
         <source>Paste (&amp;Insert)</source>
         <translation>ここに貼り付け(&amp;I)</translation>
     </message>
     <message>
-        <location filename="src/MainWindow.ui" line="1037"/>
-        <location filename="src/MainWindow.cpp" line="908"/>
+        <location filename="src/MainWindow.ui" line="1044"/>
+        <location filename="src/MainWindow.cpp" line="909"/>
         <source>Paste (Insert)</source>
         <translation>ここに貼り付け</translation>
     </message>
     <message>
-        <location filename="src/MainWindow.ui" line="1040"/>
+        <location filename="src/MainWindow.ui" line="1047"/>
         <source>Ctrl+V</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="src/MainWindow.ui" line="1045"/>
+        <location filename="src/MainWindow.ui" line="1052"/>
         <source>&amp;Add location...</source>
         <translation>場所を追加(&amp;A)...</translation>
     </message>
     <message>
-        <location filename="src/MainWindow.ui" line="1048"/>
-        <location filename="src/MainWindow.cpp" line="913"/>
+        <location filename="src/MainWindow.ui" line="1055"/>
+        <location filename="src/MainWindow.cpp" line="914"/>
         <source>Add location</source>
         <translation>場所を追加</translation>
     </message>
     <message>
-        <location filename="src/MainWindow.ui" line="1053"/>
+        <location filename="src/MainWindow.ui" line="1060"/>
         <source>&amp;Update</source>
         <translation>更新(&amp;U)</translation>
     </message>
     <message>
-        <location filename="src/MainWindow.ui" line="1056"/>
+        <location filename="src/MainWindow.ui" line="1063"/>
         <source>Update</source>
         <translation>更新</translation>
     </message>
     <message>
-        <location filename="src/MainWindow.ui" line="1059"/>
+        <location filename="src/MainWindow.ui" line="1066"/>
         <source>F5</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="src/MainWindow.cpp" line="101"/>
         <source>&amp;About SkyMPC</source>
-        <translation>SkyMPCについて(&amp;A)</translation>
+        <translation type="vanished">SkyMPCについて(&amp;A)</translation>
     </message>
     <message>
-        <location filename="src/MainWindow.cpp" line="1065"/>
+        <location filename="src/MainWindow.cpp" line="1066"/>
         <source>%1 songs in playlist</source>
         <translation>プレイリストに%1曲あります</translation>
     </message>
     <message>
-        <location filename="src/MainWindow.cpp" line="213"/>
+        <location filename="src/MainWindow.cpp" line="223"/>
         <source>Now sleep timer is working.</source>
         <translation>スリープタイマーが動作中です。</translation>
     </message>
     <message>
-        <location filename="src/MainWindow.cpp" line="214"/>
+        <location filename="src/MainWindow.cpp" line="104"/>
+        <source>&amp;About %1</source>
+        <translation>%1 について(&amp;A)</translation>
+    </message>
+    <message>
+        <location filename="src/MainWindow.cpp" line="224"/>
         <source>If this program is closed, the sleep timer will be canceled.</source>
         <oldsource>If this application is closed, the sleep timer will be canceled.</oldsource>
         <translation>プログラムを終了した場合、スリープタイマーはキャンセルされます。</translation>
     </message>
     <message>
-        <location filename="src/MainWindow.cpp" line="215"/>
+        <location filename="src/MainWindow.cpp" line="225"/>
         <source>Are you sure you want to close ?</source>
         <translation>終了してよろしいですか？</translation>
     </message>
     <message>
-        <location filename="src/MainWindow.cpp" line="884"/>
+        <location filename="src/MainWindow.cpp" line="885"/>
         <source>Add to play list</source>
         <translation>プレイリストに追加</translation>
     </message>
     <message>
-        <location filename="src/MainWindow.cpp" line="904"/>
+        <location filename="src/MainWindow.cpp" line="905"/>
         <source>Play from here</source>
         <translation>ここから再生</translation>
     </message>
     <message>
-        <location filename="src/MainWindow.cpp" line="906"/>
+        <location filename="src/MainWindow.cpp" line="907"/>
         <source>Cut</source>
         <translation>切り取り</translation>
     </message>
     <message>
-        <location filename="src/MainWindow.cpp" line="907"/>
+        <location filename="src/MainWindow.cpp" line="908"/>
         <source>Copy</source>
         <translation>コピー</translation>
     </message>
     <message>
-        <location filename="src/MainWindow.cpp" line="909"/>
+        <location filename="src/MainWindow.cpp" line="910"/>
         <source>Paste (Append)</source>
         <translation>最後に貼り付け</translation>
     </message>
     <message>
-        <location filename="src/MainWindow.cpp" line="910"/>
+        <location filename="src/MainWindow.cpp" line="911"/>
         <source>Delete</source>
         <translation>削除</translation>
     </message>
     <message>
-        <location filename="src/MainWindow.cpp" line="911"/>
+        <location filename="src/MainWindow.cpp" line="912"/>
         <source>Clear play list</source>
         <translation>プレイリストを消去</translation>
     </message>
     <message>
-        <location filename="src/MainWindow.cpp" line="1067"/>
+        <location filename="src/MainWindow.cpp" line="1068"/>
         <source>%1 songs selected</source>
         <translation>%1曲が選択されています</translation>
     </message>
     <message>
-        <location filename="src/MainWindow.cpp" line="1278"/>
+        <location filename="src/MainWindow.cpp" line="1309"/>
         <source>Please select only one item before use this command.</source>
         <oldsource>Please select only one item before run this item.</oldsource>
         <translation>アイテムと一つ洗濯してから実行してください。</translation>
     </message>
     <message>
-        <location filename="src/MainWindow.cpp" line="885"/>
-        <location filename="src/MainWindow.cpp" line="912"/>
+        <location filename="src/MainWindow.cpp" line="886"/>
+        <location filename="src/MainWindow.cpp" line="913"/>
         <source>Property</source>
         <translation>プロパティ</translation>
     </message>
     <message>
-        <location filename="src/MainWindow.cpp" line="494"/>
+        <location filename="src/MainWindow.cpp" line="499"/>
         <source>Volume change is not supported</source>
         <translation>ボリュームの変更はサポートされていません</translation>
     </message>
     <message>
-        <location filename="src/MainWindow.cpp" line="1198"/>
+        <location filename="src/MainWindow.cpp" line="1229"/>
         <source>Reconnected</source>
         <translation>再接続しました</translation>
     </message>
     <message>
-        <location filename="src/MainWindow.cpp" line="1249"/>
+        <location filename="src/MainWindow.cpp" line="1280"/>
         <source>The name is invalid.</source>
         <translation>名前が不正です。</translation>
     </message>
