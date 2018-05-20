@@ -15,7 +15,14 @@ enum {
 	ITEM_SongIdRole,
 };
 
-extern bool start_with_shift_key;
-extern QString application_data_dir;
+struct ApplicationSettings {
+	bool remember_and_restore_window_position = true;
+	bool enable_high_dpi_scaling = true;
+	static ApplicationSettings defaultSettings()
+	{
+		ApplicationSettings s;
+		return s;
+	}
+};
 
 #endif // MAIN_H

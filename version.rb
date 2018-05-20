@@ -5,8 +5,12 @@ $description = "MPD Client"
 $copyright_year = 2018
 $version_a = 1
 $version_b = 6
-$version_c = 4
+$version_c = 5
 $version_d = 0
+
+# v1.6.5 ()
+#	* ウィンドウの位置とサイズを保存するかしないか設定できるようにした
+#	* 高DPIディスプレイ対応
 
 # v1.6.4 (2018-04-04)
 #   * プレイリストの保存で、上書き保存できるようにした

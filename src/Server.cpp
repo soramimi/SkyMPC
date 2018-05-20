@@ -5,6 +5,7 @@
 #include <QXmlStreamWriter>
 #include <QTime>
 #include <stdint.h>
+#include "ApplicationGlobal.h"
 #include "misc.h"
 
 static const char SERVERS_XML[] = "servers.xml";
@@ -50,7 +51,7 @@ bool loadPresetServers(std::vector<ServerItem> *out)
 {
 	out->clear();
 	bool ok = false;
-	QString path = pathcat(application_data_dir, SERVERS_XML);
+	QString path = pathcat(global->application_data_dir, SERVERS_XML);
 	QFile file(path);
 	if (file.open(QFile::ReadOnly)) {
 		std::vector<State> state_stack;
@@ -103,7 +104,7 @@ bool loadPresetServers(std::vector<ServerItem> *out)
 
 bool savePresetServers(std::vector<ServerItem> const *servers)
 {
-	QString path = pathcat(application_data_dir, SERVERS_XML);
+	QString path = pathcat(global->application_data_dir, SERVERS_XML);
 	QFile file(path);
 	if (!file.open(QFile::WriteOnly)) {
 		return false;

@@ -71,7 +71,11 @@ SOURCES += src/main.cpp \
 	src/BasicConnectionDialog.cpp \
 	src/AskRemoveOverlappedFileDialog.cpp \
     version.c \
-    src/StatusLabel.cpp
+    src/StatusLabel.cpp \
+    src/SettingsDialog.cpp \
+    src/AbstractSettingForm.cpp \
+    src/SettingGeneralForm.cpp \
+    src/ApplicationGlobal.cpp
 
 HEADERS  += src/MainWindow.h \
 	src/MusicPlayerClient.h \
@@ -116,7 +120,11 @@ HEADERS  += src/MainWindow.h \
 	src/TinyConnectionDialog.h \
 	src/BasicConnectionDialog.h \
 	src/AskRemoveOverlappedFileDialog.h \
-    src/StatusLabel.h
+    src/StatusLabel.h \
+    src/SettingsDialog.h \
+    src/AbstractSettingForm.h \
+    src/SettingGeneralForm.h \
+    src/ApplicationGlobal.h
 
 FORMS    += src/MainWindow.ui \
 	src/VerticalVolumePopup.ui \
@@ -134,7 +142,9 @@ FORMS    += src/MainWindow.ui \
 	src/SleepTimerDialog.ui \
 	src/TinyMainWindow.ui \
 	src/TinyConnectionDialog.ui \
-	src/AskRemoveOverlappedFileDialog.ui
+	src/AskRemoveOverlappedFileDialog.ui \
+    src/SettingsDialog.ui \
+    src/SettingGeneralForm.ui
 
 RESOURCES += \
 	resources.qrc

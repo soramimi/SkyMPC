@@ -11,6 +11,8 @@
 #include "MySettings.h"
 #include "Server.h"
 #include "SongPropertyDialog.h"
+#include "SettingsDialog.h"
+#include "ApplicationGlobal.h"
 #include <QClipboard>
 #include <QKeyEvent>
 #include <QMessageBox>
@@ -129,9 +131,9 @@ MainWindow::MainWindow(QWidget *parent) :
 	setRepeatEnabled(false);
 	setRandomEnabled(false);
 
-	if (!start_with_shift_key) {
+	MySettings settings;
+	if (!global->start_with_shift_key && m->appsettings.remember_and_restore_window_position) {
 		Qt::WindowStates state = windowState();
-		MySettings settings;
 
 		settings.beginGroup("MainWindow");
 		bool maximized = settings.value("Maximized").toBool();
@@ -142,7 +144,8 @@ MainWindow::MainWindow(QWidget *parent) :
 			state |= Qt::WindowMaximized;
 			setWindowState(state);
 		}
-
+	}
+	{
 		settings.beginGroup("Connection");
 		QString addr = settings.value("Address").toString();
 		int port = settings.value("Port").toInt();
@@ -1457,3 +1460,11 @@ void MainWindow::on_action_debug_triggered()
 {
 }
 
+
+void MainWindow::on_action_settings_triggered()
+{
+	SettingsDialog dlg(this);
+	if (dlg.exec() == QDialog::Accepted) {
+
+	}
+}

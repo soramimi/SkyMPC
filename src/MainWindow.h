@@ -132,6 +132,7 @@ private slots:
 	void on_comboBox_servers1_currentIndexChanged(int index);
 	void on_comboBox_servers2_currentIndexChanged(int index);
 	void on_listWidget_playlist_itemSelectionChanged();
+	void on_action_settings_triggered();
 };
 
 #endif // MAINWINDOW_H

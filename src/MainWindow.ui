@@ -774,7 +774,7 @@
      <x>0</x>
      <y>0</y>
      <width>763</width>
-     <height>24</height>
+     <height>17</height>
     </rect>
    </property>
    <widget class="QMenu" name="menu_File">
@@ -814,6 +814,8 @@
     <addaction name="action_edit_paste_insert"/>
     <addaction name="action_edit_paste_bottom"/>
     <addaction name="action_edit_delete"/>
+    <addaction name="separator"/>
+    <addaction name="action_settings"/>
    </widget>
    <widget class="QMenu" name="menu_Network">
     <property name="title">
@@ -1146,6 +1148,11 @@
    </property>
    <property name="shortcut">
     <string>Shift+F1</string>
+   </property>
+  </action>
+  <action name="action_settings">
+   <property name="text">
+    <string>Settings</string>
    </property>
   </action>
  </widget>

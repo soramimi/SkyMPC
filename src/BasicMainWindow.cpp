@@ -11,6 +11,7 @@
 #include "SleepTimerDialog.h"
 #include "TinyMainWindow.h"
 #include "Toast.h"
+#include "SettingsDialog.h"
 #include <QApplication>
 #include <QComboBox>
 #include <QListWidget>
@@ -24,6 +25,8 @@ BasicMainWindow::BasicMainWindow(QWidget *parent)
 	m = new Private();
 	connect(&m->volume_popup, SIGNAL(valueChanged()), this, SLOT(onVolumeChanged()));
 	connect(&m->status_thread, SIGNAL(onUpdate()), this, SLOT(onUpdateStatus()));
+
+	SettingsDialog::loadSettings(&m->appsettings);
 }
 
 BasicMainWindow::~BasicMainWindow()

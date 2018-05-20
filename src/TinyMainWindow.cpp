@@ -19,6 +19,7 @@
 #include "VolumeIndicatorPopup.h"
 #include "webclient.h"
 #include "TinyConnectionDialog.h"
+#include "ApplicationGlobal.h"
 #include <QBuffer>
 #include <QClipboard>
 #include <QKeyEvent>
@@ -81,7 +82,7 @@ TinyMainWindow::TinyMainWindow(QWidget *parent) :
 	setRepeatEnabled(false);
 	setRandomEnabled(false);
 
-	if (!start_with_shift_key) {
+	if (!global->start_with_shift_key) {
 		MySettings settings;
 
 		settings.beginGroup("Connection");

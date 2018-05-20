@@ -6,6 +6,7 @@
 #include "VolumeIndicatorPopup.h"
 #include "StatusThread.h"
 #include "StatusLabel.h"
+#include "main.h"
 #include <QTimer>
 #include <QWaitCondition>
 #include <QMenu>
@@ -30,7 +31,8 @@ struct SongItem {
 };
 
 struct BasicMainWindow::Private {
-    StatusLabel *status_label1;
+	ApplicationSettings appsettings;
+	StatusLabel *status_label1;
     StatusLabel *status_label2;
     StatusLabel *status_label3;
 	bool connected = false;
