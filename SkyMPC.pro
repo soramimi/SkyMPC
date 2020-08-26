@@ -14,7 +14,7 @@ CONFIG += c++11
 unix:QMAKE_CXXFLAGS += -Wall -Wextra -Werror=return-type -Werror=trigraphs -Wno-switch
 unix:QMAKE_RPATHDIR += $ORIGIN
 
-linux:QTPLUGIN += ibusplatforminputcontextplugin
+#linux:QTPLUGIN += ibusplatforminputcontextplugin
 
 INCLUDEPATH += $$PWD/src
 
@@ -29,14 +29,17 @@ PRE_TARGETDEPS += prepare
 
 
 SOURCES += src/main.cpp \
+	src/ColorSlider.cpp \
 	src/MainWindow.cpp \
 	src/MusicPlayerClient.cpp \
 	src/MyTreeWidget.cpp \
 	src/MySettings.cpp \
 	src/MainWindowPrivate.cpp \
 	src/MyListWidget.cpp \
+	src/RingSlider.cpp \
 	src/VerticalVolumePopup.cpp \
 	src/AboutDialog.cpp \
+	src/joinpath.cpp \
 	src/misc.cpp \
 	src/SavePlaylistDialog.cpp \
 	src/TestConnectResultDialog.cpp \
@@ -78,11 +81,14 @@ SOURCES += src/main.cpp \
     src/ApplicationGlobal.cpp
 
 HEADERS  += src/MainWindow.h \
+	src/ColorSlider.h \
 	src/MusicPlayerClient.h \
 	src/MyTreeWidget.h \
 	src/MySettings.h \
 	src/MainWindowPrivate.h \
 	src/MyListWidget.h \
+	src/RingSlider.h \
+	src/joinpath.h \
 	src/main.h \
 	src/VerticalVolumePopup.h \
 	src/AboutDialog.h \

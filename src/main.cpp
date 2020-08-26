@@ -13,6 +13,8 @@
 #include <QSplashScreen>
 #include <QProxyStyle>
 #include <QStandardPaths>
+#include <QDir>
+#include "joinpath.h"
 
 
 #define USE_SPLASH 0
@@ -39,15 +41,12 @@ public:
     }
 };
 
-static bool isHighDpiScalingEnabled(int argc, char *argv[])
+static bool isHighDpiScalingEnabled()
 {
-	QApplication dummy(argc, argv);
-	dummy.setOrganizationName(ORGANIZTION_NAME);
-	dummy.setApplicationName(APPLICATION_NAME);
 	MySettings s;
 	s.beginGroup("UI");
 	QVariant v = s.value("EnableHighDpiScaling");
-	return v.isNull() || v.toBool();
+	return !v.isNull() && v.toBool();
 }
 
 int main(int argc, char *argv[])
@@ -55,9 +54,25 @@ int main(int argc, char *argv[])
 	ApplicationGlobal g;
 	global = &g;
 
-	if (isHighDpiScalingEnabled(argc, argv)){
-		QCoreApplication::setAttribute(Qt::AA_EnableHighDpiScaling);
+	global->organization_name = ORGANIZATION_NAME;
+	global->application_name = APPLICATION_NAME;
+	global->generic_config_dir = QStandardPaths::writableLocation(QStandardPaths::GenericConfigLocation);
+	global->app_config_dir = global->generic_config_dir / global->organization_name / global->application_name;
+	global->config_file_path = joinpath(global->app_config_dir, global->application_name + ".ini");
+	if (!QFileInfo(global->app_config_dir).isDir()) {
+		QDir().mkpath(global->app_config_dir);
 	}
+
+#if (QT_VERSION < QT_VERSION_CHECK(5, 6, 0))
+	qDebug() << "High DPI scaling is not supported";
+#else
+	if (isHighDpiScalingEnabled()) {
+		QCoreApplication::setAttribute(Qt::AA_EnableHighDpiScaling);
+	} else {
+		QCoreApplication::setAttribute(Qt::AA_DisableHighDpiScaling);
+	}
+	QCoreApplication::setAttribute(Qt::AA_UseHighDpiPixmaps);
+#endif
 
 	QApplication a(argc, argv);
 
@@ -92,8 +107,8 @@ int main(int argc, char *argv[])
 
 	QSettings::setDefaultFormat(QSettings::IniFormat);
 
-	a.setOrganizationName(ORGANIZTION_NAME);
-	a.setApplicationName(APPLICATION_NAME);
+	a.setOrganizationName(global->organization_name);
+	a.setApplicationName(global->application_name);
 
 	global->application_data_dir = makeApplicationDataDir();
 	if (global->application_data_dir.isEmpty()) {

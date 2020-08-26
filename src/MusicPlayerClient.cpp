@@ -210,7 +210,7 @@ void MusicPlayerClient::parse_result(QStringList const &lines, QList<Item> *out)
 			}
 			it++;
 		}
-		bool low = iswlower(key.utf16()[0]);
+		bool low = QChar(key.utf16()[0]).isLower();
 		if (low || end) {
 			if (!info.kind.isEmpty() || !info.map.empty()) {
 				out->push_back(info);

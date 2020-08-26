@@ -460,6 +460,7 @@ void MainWindow::keyPressEvent(QKeyEvent *event)
 	case Qt::Key_Escape:
 		ui->treeWidget->setFocus();
 		event->accept();
+		return;
 #ifdef Q_OS_MAC
 	case Qt::Key_Delete:
 		ui->action_edit_delete->trigger();
@@ -564,10 +565,14 @@ void MainWindow::displayProgress(QString const &text)
 
 void MainWindow::seekProgressSlider(double elapsed, double total)
 {
+//	if (QWidget::mouseGrabber() == ui->horizontalSlider) return;
+
+	bool b = ui->horizontalSlider->blockSignals(true);
 	ui->horizontalSlider->setUpdatesEnabled(false);
 	ui->horizontalSlider->setMaximum((int)(total * 100));
 	ui->horizontalSlider->setValue((int)(elapsed * 100));
 	ui->horizontalSlider->setUpdatesEnabled(true);
+	ui->horizontalSlider->blockSignals(b);
 }
 
 void MainWindow::displayCurrentSongLabels(QString const &title, QString const &artist, QString const &disc)
@@ -1459,7 +1464,6 @@ void MainWindow::on_listWidget_playlist_itemSelectionChanged()
 void MainWindow::on_action_debug_triggered()
 {
 }
-
 
 void MainWindow::on_action_settings_triggered()
 {

@@ -2,90 +2,91 @@
 
 $product_name = "SkyMPC"
 $description = "MPD Client"
-$copyright_year = 2018
+$copyright_year = 2020
 $version_a = 1
 $version_b = 6
 $version_c = 5
 $version_d = 0
 
-# v1.6.5 ()
-#	* �E�B���h�E�̈ʒu�ƃT�C�Y��ۑ����邩���Ȃ����ݒ�ł���悤�ɂ���
-#	* ��DPI�f�B�X�v���C�Ή�
+# v1.6.5 (2020-08-26)
+#	* ウィンドウの位置とサイズを保存するかしないか設定できるようにした
+#	* 高DPIディスプレイ対応
+#	* スライダー描画変更
 
 # v1.6.4 (2018-04-04)
-#   * �v���C���X�g�̕ۑ��ŁA�㏑���ۑ��ł���悤�ɂ���
-#   * Linux�ŃV�X�e���t�H���g���g�p����悤�ɂ���
-#	* �����폜���[�h���A�Ȃ��ς�����Ƃ��A�v���C���X�g���X�V����悤�ɂ���
-#	* ���j���[�o�[����v���C���X�g�����[�h�ł���悤�ɂ����B
+#   * プレイリストの保存で、上書き保存できるようにした
+#   * Linuxでシステムフォントを使用するようにした
+#	* 自動削除モード時、曲が変わったとき、プレイリストを更新するようにした
+#	* メニューバーからプレイリストをロードできるようにした。
 
 # v1.6.3 (2017-06-12)
-#	* �X�e�[�^�X�o�[�������Ȃ肷�������AMainWindow�̃T�C�Y���ς��Ȃ��悤�ɂ���
-#	* �s���t�@�C����ǉ��iLinux�ł̂݁j
+#	* ステータスバーが長くなりすぎた時、MainWindowのサイズが変わらないようにした
+#	* 不足ファイルを追加（Linux版のみ）
 
 # v1.6.2 (2017-05-25)
-#	* Qt 5.8.0 �̕s��̂��߁AQt 5.7.1 �Ƀ_�E���O���[�h
-#	* �ڑ��_�C�A���O�{�b�N�X�ɃL�����Z���{�^����ǉ�
+#	* Qt 5.8.0 の不具合のため、Qt 5.7.1 にダウングレード
+#	* 接続ダイアログボックスにキャンセルボタンを追加
 
 # v1.6.1 (2017-05-23)
-#	* Qt 5.8.0 �Ń��r���h
-#	* Linux:���{����͑Ή�
+#	* Qt 5.8.0 でリビルド
+#	* Linux:日本語入力対応
 
 # v1.6.0 (2016-03-23)
-#	* �X���[�v�^�C�}�[�@�\�ǉ�
-#	* �ڑ��_�C�A���O�{�b�N�X����
-#	* �ꏊ��ǉ��_�C�A���O���ǁi�C���^�[�l�b�g���W�I�Ή������j
-#	* �F�ؑΉ�
-#	* cue�t�@�C���ɑΉ��i���j
-#	* �Đڑ��@�\
-#	* UI����
-#	* Raspberry Pi �ł����J
-#	* �iLinux�j�ݒ�t�@�C���̕ۑ�����A ~/.soramimi.jp/SkyMPC ���� ~/.local/share/soramimi.jp/SkyMPC �ɕύX
-#	* �iOS X�j�ݒ�t�@�C���̕ۑ�����A ~/.soramimi.jp/SkyMPC ���� ~/Library/Application Support/soramimi.jp/SkyMPC �ɕύX
+#	* スリープタイマー機能追加
+#	* 接続ダイアログボックス改良
+#	* 場所を追加ダイアログ改良（インターネットラジオ対応強化）
+#	* 認証対応
+#	* cueファイルに対応（仮）
+#	* 再接続機能
+#	* UI調整
+#	* Raspberry Pi 版を公開
+#	* （Linux）設定ファイルの保存先を、 ~/.soramimi.jp/SkyMPC から ~/.local/share/soramimi.jp/SkyMPC に変更
+#	* （OS X）設定ファイルの保存先を、 ~/.soramimi.jp/SkyMPC から ~/Library/Application Support/soramimi.jp/SkyMPC に変更
 
 
 # v1.6.0 (2016-03-28)
-#	* �X�e�[�^�X�X�V�̂��߂̒ʐM���}���`�X���b�h�񓯊���
-#	* �����R�}���h�̃L�[���蓖�Ă� Shift+F5 ���� Shift+F6 �ɕύX
-#	* �Đڑ��R�}���h��ǉ��iShift+F6�j
-#	* �v���C���X�g�Ɂu�ꎞ�I�ȃA�C�e����\���v�`�F�b�N�{�b�N�X��ǉ�
-#	* �ڑ��e�X�g���}���`�X���b�h��
-#	* �F�؂ɑΉ�
+#	* ステータス更新のための通信をマルチスレッド非同期化
+#	* 消去コマンドのキー割り当てを Shift+F5 から Shift+F6 に変更
+#	* 再接続コマンドを追加（Shift+F6）
+#	* プレイリストに「一時的なアイテムを表示」チェックボックスを追加
+#	* 接続テストをマルチスレッド化
+#	* 認証に対応
 
 # v1.5.3.1 (2015-10-14)
-#	* �\�[�X�R�[�h�̈ꕔ��C++11�̕��@���g�p
+#	* ソースコードの一部にC++11の文法を使用
 
 # v1.5.3 (2015-07-11)
-#	* Qt5.5.0���̗p�B
-#	* �ڑ��_�C�A���O�{�b�N�X�̋��������P�B
-#	* Windows�ł̓X�^�e�B�b�N�����N����悤�ɂ����B
+#	* Qt5.5.0を採用。
+#	* 接続ダイアログボックスの挙動を改善。
+#	* Windows版はスタティックリンクするようにした。
 
 # v1.5.2 (2015-03-14)
-#	* �X�e�[�^�X�o�[����ɕ\������悤�ɂ����B
-#	* Windows�łŃR���p�C���̃o�[�W�����w�肪�Ԉ���Ă����̂ŁA�R���p�C�����������B
+#	* ステータスバーを常に表示するようにした。
+#	* Windows版でコンパイラのバージョン指定が間違っていたので、コンパイルし直した。
 
 # v1.5.1 (2015-02-06)
-#	* �J�������ڍs�FQt5.4
-#	* �c���[�r���[�̌����ڂ�ύX
+#	* 開発環境を移行：Qt5.4
+#	* ツリービューの見た目を変更
 
 # v1.5.0 (2015-01-05)
-#	* �v���C���X�g�̏d���폜�@�\�𓋍�
-#	* �v���C���X�g�̎����폜�@�\�ɑΉ�
+#	* プレイリストの重複削除機能を搭載
+#	* プレイリストの自動削除機能に対応
 
 # v1.4.0 (2014-09-16)
-#	* �N�C�b�N�Z�[�u�@�\�𓋍�
-#	* �ڑ��_�C�A���O�{�b�N�X������
-#	* Linux�ł����J
+#	* クイックセーブ機能を搭載
+#	* 接続ダイアログボックスを改良
+#	* Linux版を公開
 
 # v1.3.0 (2014-03-21)
-#	* �t�@���N�V�����L�[�̊��蓖�Ă�ύX
-#	* �ʐM�^�C���A�E�g�̔�����ɘa
-#	* Mac OS X�ł����J
+#	* ファンクションキーの割り当てを変更
+#	* 通信タイムアウトの判定を緩和
+#	* Mac OS X版を公開
 
 # v1.2.0 (2013-12-01)
-#	* ������MPD�T�[�o���Ǘ����Ă��āA�R���{�{�b�N�X�Ő؂�ւ����Ƃ��A�{�����[���R���g���[���̗L���������������s���Ȃ������s����C���B
-#	* �R���p�C����VC2010����VC2008�ɕύX�B
+#	* 複数のMPDサーバを管理していて、コンボボックスで切り替えたとき、ボリュームコントロールの有効無効が正しく行われなかった不具合を修正。
+#	* コンパイラをVC2010からVC2008に変更。
 
 # v1.1.0 (2013-10-25)
-#	* �E�y�C���Ƀt�H�[�J�X�������ċȂ�I�����Ă����Ԃ�Enter�������Ƃ��̋Ȃ��Đ�����悤�ɂ����B
+#	* 右ペインにフォーカスがあって曲を選択している状態でEnterを押すとその曲を再生するようにした。
 
 # v1.0.0 (2013-07-27)

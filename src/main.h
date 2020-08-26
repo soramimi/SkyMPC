@@ -17,7 +17,7 @@ enum {
 
 struct ApplicationSettings {
 	bool remember_and_restore_window_position = true;
-	bool enable_high_dpi_scaling = true;
+	bool enable_high_dpi_scaling = false;
 	static ApplicationSettings defaultSettings()
 	{
 		ApplicationSettings s;

@@ -1,10 +1,16 @@
 #include "MySettings.h"
-#include "main.h"
-#include "pathcat.h"
-#include <QApplication>
+#include "ApplicationGlobal.h"
+
 #include <QDir>
-#include <QString>
+#include <QFileInfo>
 #include <QStandardPaths>
+//#include "main.h"
+//#include "pathcat.h"
+//#include <QApplication>
+//#include <QDebug>
+//#include <QDir>
+//#include <QStandardPaths>
+//#include <QString>
 
 char const *KEY_AutoReconnect = "AutoReconnect";
 
@@ -19,7 +25,7 @@ QString makeApplicationDataDir()
 }
 
 MySettings::MySettings(QObject *)
-	: QSettings(pathcat(makeApplicationDataDir(), qApp->applicationName() + ".ini"), QSettings::IniFormat)
+	: QSettings(global->config_file_path, QSettings::IniFormat)
 {
 }
 

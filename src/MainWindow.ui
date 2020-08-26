@@ -589,7 +589,13 @@
              </widget>
             </item>
             <item>
-             <widget class="QSlider" name="horizontalSlider">
+             <widget class="ColorSlider" name="horizontalSlider">
+              <property name="minimumSize">
+               <size>
+                <width>0</width>
+                <height>20</height>
+               </size>
+              </property>
               <property name="orientation">
                <enum>Qt::Horizontal</enum>
               </property>
@@ -774,7 +780,7 @@
      <x>0</x>
      <y>0</y>
      <width>763</width>
-     <height>17</height>
+     <height>35</height>
     </rect>
    </property>
    <widget class="QMenu" name="menu_File">
@@ -1172,6 +1178,11 @@
    <class>ServersComboBox</class>
    <extends>QComboBox</extends>
    <header>ServersComboBox.h</header>
+  </customwidget>
+  <customwidget>
+   <class>ColorSlider</class>
+   <extends>QSlider</extends>
+   <header>ColorSlider.h</header>
   </customwidget>
  </customwidgets>
  <tabstops>
