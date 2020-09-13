@@ -2,6 +2,7 @@
 #include <QDebug>
 #include <QKeyEvent>
 #include <QPainter>
+#include <QPainterPath>
 #include <math.h>
 
 template <typename T> static inline T clamp(T v, T min, T max)
