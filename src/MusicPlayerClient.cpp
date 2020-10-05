@@ -367,7 +367,19 @@ bool MusicPlayerClient::do_playlist(QList<Item> *out)
 
 bool MusicPlayerClient::do_playlistinfo(QString const &path, QList<Item> *out)
 {
-	return info_("playlistinfo", path, out);
+	if (info_("playlistinfo", path, out)) {
+		int song_id = 0;
+		for (int i = 0; i < out->size(); i++) {
+			if ((*out)[i].kind == "file") {
+				if ((*out)[i].map.map.find("Id") == (*out)[i].map.map.end()) { // for compatibility
+					(*out)[i].map.map["Id"] = QString::number(song_id);
+				}
+				song_id++;
+			}
+		}
+		return true;
+	}
+	return false;
 }
 
 bool MusicPlayerClient::do_add(QString const &path)
@@ -379,7 +391,7 @@ bool MusicPlayerClient::do_add(QString const &path)
 bool MusicPlayerClient::do_deleteid(int id)
 {
 	QStringList lines;
-	return exec(QString("deleteid ") + QString::number(id), &lines);
+	return exec(QString("delete ") + QString::number(id), &lines);
 }
 
 bool MusicPlayerClient::do_move(int from, int to)
