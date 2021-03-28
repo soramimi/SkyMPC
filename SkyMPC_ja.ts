@@ -43,7 +43,7 @@
     </message>
     <message>
         <location filename="src/AskRemoveOverlappedFileDialog.ui" line="27"/>
-        <source>Are you sure you want to remove them ?</source>
+        <source>Are you sure you want to remove them?</source>
         <translation>これらを削除してもよろしいですか？</translation>
     </message>
     <message>
@@ -91,7 +91,7 @@
     </message>
     <message>
         <location filename="src/BasicConnectionDialog.cpp" line="250"/>
-        <source>Are you sure you want to delete &apos;%1&apos; ?</source>
+        <source>Are you sure you want to delete &apos;%1&apos;?</source>
         <translation>&apos;%1&apos; を削除します。よろしいですか？</translation>
     </message>
 </context>
@@ -134,7 +134,7 @@
     </message>
     <message>
         <location filename="src/BasicMainWindow.cpp" line="821"/>
-        <source>Do you want to continue ?</source>
+        <source>Do you want to continue?</source>
         <translation>続行しますか？</translation>
     </message>
     <message>
@@ -346,7 +346,7 @@
     </message>
     <message>
         <location filename="src/EditPlaylistDialog.cpp" line="197"/>
-        <source>Are you sure ?</source>
+        <source>Are you sure?</source>
         <translation>よろしいですか？</translation>
     </message>
     <message>
@@ -812,7 +812,7 @@
     </message>
     <message>
         <location filename="src/MainWindow.cpp" line="225"/>
-        <source>Are you sure you want to close ?</source>
+        <source>Are you sure you want to close?</source>
         <translation>終了してよろしいですか？</translation>
     </message>
     <message>
@@ -1518,7 +1518,7 @@
     </message>
     <message>
         <location filename="src/TinyMainWindow.cpp" line="134"/>
-        <source>Are you sure you want to close ?</source>
+        <source>Are you sure you want to close?</source>
         <translation>終了してよろしいですか？</translation>
     </message>
     <message>
