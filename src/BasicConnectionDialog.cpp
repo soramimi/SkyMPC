@@ -247,7 +247,7 @@ void BasicConnectionDialog::deleteConnection()
 		};
 		if (server.name == new_connection && server.host.address().isEmpty()) {
 			DO();
-		} else if (QMessageBox::warning(this, qApp->applicationName(), tr("Are you sure you want to delete '%1' ?").arg(server.name), QMessageBox::Ok, QMessageBox::Cancel) == QMessageBox::Ok) {
+		} else if (QMessageBox::warning(this, qApp->applicationName(), tr("Are you sure you want to delete '%1'?").arg(server.name), QMessageBox::Ok, QMessageBox::Cancel) == QMessageBox::Ok) {
 			DO();
 		}
 	}

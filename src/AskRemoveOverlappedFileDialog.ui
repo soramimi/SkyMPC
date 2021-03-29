@@ -24,7 +24,7 @@
    <item>
     <widget class="QLabel" name="label_2">
      <property name="text">
-      <string>Are you sure you want to remove them ?</string>
+      <string>Are you sure you want to remove them?</string>
      </property>
     </widget>
    </item>

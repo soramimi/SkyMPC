@@ -132,7 +132,7 @@ void TinyMainWindow::closeEvent(QCloseEvent *event)
 		QString text;
 		text += tr("Now sleep timer is working.") + '\n';
 		text += tr("If this program is closed, the sleep timer will be canceled.") + '\n';
-		text += tr("Are you sure you want to close ?");
+		text += tr("Are you sure you want to close?");
 		if (QMessageBox::warning(this, qApp->applicationName(), text, QMessageBox::Yes, QMessageBox::No) != QMessageBox::Yes) {
 			event->ignore();
 			return;

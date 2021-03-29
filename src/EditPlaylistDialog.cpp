@@ -194,7 +194,7 @@ void EditPlaylistDialog::on_pushButton_delete_clicked()
 	QListWidgetItem *listitem = ui->listWidget_list->currentItem();
 	if (!listitem) return;
 	QString name = listitem->text();
-	if (QMessageBox::warning(this, QApplication::applicationName(), tr("Delete the playlist:") + " \"" + name + "\"\n" + tr("Are you sure ?"), QMessageBox::Ok | QMessageBox::Cancel) == QMessageBox::Ok) {
+	if (QMessageBox::warning(this, QApplication::applicationName(), tr("Delete the playlist:") + " \"" + name + "\"\n" + tr("Are you sure?"), QMessageBox::Ok | QMessageBox::Cancel) == QMessageBox::Ok) {
 		mpc()->do_rm(name);
 		updatePlaylistList();
 	}

@@ -821,7 +821,7 @@ bool BasicMainWindow::validateForSavePlaylist()
 		msg += '\n';
 		msg += tr("This operation probably does not work as expected.");
 		msg += '\n';
-		msg += tr("Do you want to continue ?");
+		msg += tr("Do you want to continue?");
 		ok = QMessageBox::warning(this, qApp->applicationName(), msg, QMessageBox::Ok, QMessageBox::Cancel) == QMessageBox::Ok;
 	}
 
