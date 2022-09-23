@@ -5,7 +5,7 @@
 #include "SelectLocationDialog.h"
 #include <QDesktopServices>
 #include <QMessageBox>
-#include <QObjectUserData>
+//#include <QObjectUserData>
 #include <QUrl>
 
 EditLocationDialog::EditLocationDialog(QWidget *parent) :
@@ -97,7 +97,7 @@ void EditLocationDialog::accept()
 {
 	QString loc = location();
 	if (loc.startsWith("http://")) {
-		QStringList list = loc.split(' ', QString::SkipEmptyParts);
+		QStringList list = loc.split(' ', Qt::SkipEmptyParts);
 		if (list.size() == 1) {
 			loc = list[0];
 			getLocations(this, loc, &list);

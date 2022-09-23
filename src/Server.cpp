@@ -66,13 +66,13 @@ bool loadPresetServers(std::vector<ServerItem> *out)
 			switch (reader.readNext()) {
 			case QXmlStreamReader::StartElement:
 				if (state_stack.empty()) {
-					if (reader.name() == "servers") {
+					if (reader.name() == QString("servers")) {
 						state = STATE_SERVERS;
 					}
 				} else if (laststate == STATE_SERVERS) {
-					QStringRef data;
+					QStringView data;
 					QXmlStreamAttributes atts = reader.attributes();
-					if (reader.name() == "item") {
+					if (reader.name() == QString("item")) {
 						QString name = atts.value("name").toString();
 						QString address = atts.value("address").toString();
 						int port = atts.value("port").toString().toInt();

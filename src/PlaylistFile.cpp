@@ -3,6 +3,7 @@
 #include "webclient.h"
 
 #include <QBuffer>
+#include <QStringView>
 #include <QXmlStreamReader>
 
 bool PlaylistFile::parse_pls(char const *begin, char const *end, std::vector<PlaylistFile::Item> *out)
@@ -141,10 +142,10 @@ bool PlaylistFile::parse_xspf(char const *begin, char const *end, std::vector<Pl
 			case QXmlStreamReader::StartElement:
 				if (state_stack.empty()) {
 					if (CompareName("playlist")) {
-						QStringRef data;
+						QStringView data;
 //						QXmlStreamAttributes atts = reader.attributes();
 						data = reader.namespaceUri();
-						if (!data.startsWith("http://xspf.org/ns/")) {
+						if (!data.startsWith(QString("http://xspf.org/ns/"))) {
 							return false;
 						}
 						state = STATE_PLAYLIST;

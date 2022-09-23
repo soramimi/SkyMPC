@@ -3,6 +3,7 @@
 #include "main.h"
 #include <QPainter>
 
+
 extern "C" int copyright_year;
 extern "C" char const product_version[];
 extern "C" char const source_revision[];

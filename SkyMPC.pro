@@ -75,12 +75,12 @@ SOURCES += src/main.cpp \
 	src/TinyConnectionDialog.cpp \
 	src/BasicConnectionDialog.cpp \
 	src/AskRemoveOverlappedFileDialog.cpp \
-    version.c \
     src/StatusLabel.cpp \
     src/SettingsDialog.cpp \
     src/AbstractSettingForm.cpp \
     src/SettingGeneralForm.cpp \
-    src/ApplicationGlobal.cpp
+    src/ApplicationGlobal.cpp \
+	version.c
 
 HEADERS  += src/MainWindow.h \
 	src/ColorSlider.h \
