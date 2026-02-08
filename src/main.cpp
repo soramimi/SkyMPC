@@ -6,7 +6,7 @@
 #include "LegacyWindowsStyleTreeControl.h"
 #include "ApplicationGlobal.h"
 #include <QApplication>
-#include <QTextCodec>
+//#include <QTextCodec>
 #include <QMessageBox>
 #include <QSettings>
 #include <QTranslator>

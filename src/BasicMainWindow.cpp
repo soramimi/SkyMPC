@@ -387,7 +387,7 @@ void BasicMainWindow::timerEvent(QTimerEvent *)
 	QString text2;
 	QString text3;
 	if (m->connected) {
-		QTime time;
+		QElapsedTimer time;
 		time.start();
 		if (mpc()->ping(1)) {
 			int ms = time.elapsed();
@@ -856,9 +856,9 @@ void BasicMainWindow::execAddLocationDialog()
 		QStringList locs;
 		QString text = dlg.location().trimmed();
 		if (text.startsWith(http)) {
-			locs = text.split(' ', QString::SkipEmptyParts);
+			locs = text.split(' ', Qt::SkipEmptyParts);
 		} else {
-			locs = text.split('\n', QString::SkipEmptyParts);
+			locs = text.split('\n', Qt::SkipEmptyParts);
 		}
 		for (QString const &loc : locs) {
 			if (!loc.isEmpty()) {
