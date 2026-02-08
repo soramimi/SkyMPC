@@ -6,3 +6,4 @@ win.rc
 Info.plist
 .DS_Store
 _bin/
+build/

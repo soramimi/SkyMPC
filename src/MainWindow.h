@@ -67,7 +67,7 @@ protected:
 	virtual void keyPressEvent(QKeyEvent *);
 	virtual void mouseReleaseEvent(QMouseEvent *);
 	void changeEvent(QEvent *e);
-	void deletePlaylistItem(QListWidgetItem *item, bool updateplaylist);
+	void deletePlaylistItem(QList<QListWidgetItem *> items, bool updateplaylist);
 	void deleteSelectedSongs();
 	void displayCurrentSongLabels(QString const &title, QString const &artist, QString const &disc);
 	void refreshTreeItem(QTreeWidgetItem *item);

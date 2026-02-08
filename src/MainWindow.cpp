@@ -789,10 +789,19 @@ void MainWindow::on_treeWidget_itemDoubleClicked(QTreeWidgetItem *item, int /*co
 	}
 }
 
-void MainWindow::deletePlaylistItem(QListWidgetItem *item, bool updateplaylist)
+void MainWindow::deletePlaylistItem(QList<QListWidgetItem*> items, bool updateplaylist)
 {
-	int id = item->data(ITEM_SongIdRole).toInt();
-	mpc()->do_deleteid(id);
+	std::vector<int> ids;
+
+	for (auto item : items) {
+		int id = item->data(ITEM_SongIdRole).toInt();
+		ids.push_back(id);
+	}
+
+	std::sort(ids.begin(), ids.end(), std::greater<int>());
+	for (int id : ids) {
+		mpc()->do_deleteid(id);
+	}
 
 	if (updateplaylist) updatePlaylist();
 }
@@ -802,10 +811,7 @@ void MainWindow::deleteSelectedSongs()
 	int row = ui->listWidget_playlist->currentRow();
 
 	auto list = ui->listWidget_playlist->selectedItems();
-	for (int i = 0; i < list.size(); i++) {
-		QListWidgetItem *item = list.at(i);
-		deletePlaylistItem(item, false);
-	}
+	deletePlaylistItem(list, false);
 	updatePlaylist();
 
 	int count = playlistFileCount();
@@ -1309,7 +1315,7 @@ void MainWindow::on_edit_location()
 		EditLocationDialog dlg(this);
 		dlg.setLocation(path);
 		if (dlg.exec() == QDialog::Accepted) {
-			deletePlaylistItem(item, false);
+			deletePlaylistItem({item}, false);
 			QString path = dlg.location();
 			addToPlaylist(path, row, true);
 		}

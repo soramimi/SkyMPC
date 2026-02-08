@@ -14,6 +14,7 @@
 #include "SettingsDialog.h"
 #include <QApplication>
 #include <QComboBox>
+#include <QElapsedTimer>
 #include <QListWidget>
 #include <QMessageBox>
 #include <QToolButton>
