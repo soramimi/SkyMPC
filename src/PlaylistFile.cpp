@@ -1,5 +1,6 @@
 #include "MemoryReader.h"
 #include "PlaylistFile.h"
+#include "inetclient.h"
 #include "webclient.h"
 
 #include <QBuffer>
@@ -217,13 +218,13 @@ bool PlaylistFile::parse(const QString &loc, std::vector<Item> *out)
 {
 	out->clear();
 	bool parsed = false;
-	WebContext wc;
+	WebContext wc(WebClient::HTTP_1_1);
 	WebClient web(&wc);
 	MyWebClientHandler handler;
-	int s = web.get(WebClient::URL(loc.toStdString().c_str()), &handler);
-	if (s == 200 && !web.response()->content.empty()) {
-		char const *begin = &web.response()->content[0];
-		char const *end = begin + web.response()->content.size();
+	int s = web.get(InetClient::Request(loc.toStdString().c_str()), &handler);
+	if (s == 200 && !web.response().content.empty()) {
+		char const *begin = &web.response().content[0];
+		char const *end = begin + web.response().content.size();
 		parsed = parsed || PlaylistFile::parse_pls(begin, end, out);
 		parsed = parsed || PlaylistFile::parse_m3u(begin, end, out);
 		parsed = parsed || PlaylistFile::parse_xspf(begin, end, out);

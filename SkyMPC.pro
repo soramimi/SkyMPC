@@ -16,6 +16,8 @@ DESTDIR = $$PWD/_bin
 unix:QMAKE_CXXFLAGS += -Wall -Wextra -Werror=return-type -Werror=trigraphs -Wno-switch
 unix:QMAKE_RPATHDIR += $ORIGIN
 
+LIBS += -lssl -lcrypto
+
 #linux:QTPLUGIN += ibusplatforminputcontextplugin
 
 INCLUDEPATH += $$PWD/src
@@ -41,6 +43,9 @@ SOURCES += src/main.cpp \
 	src/RingSlider.cpp \
 	src/VerticalVolumePopup.cpp \
 	src/AboutDialog.cpp \
+	src/base64.cpp \
+	src/inetclient.cpp \
+	src/inetresolver.cpp \
 	src/joinpath.cpp \
 	src/misc.cpp \
 	src/SavePlaylistDialog.cpp \
@@ -90,6 +95,9 @@ HEADERS  += src/MainWindow.h \
 	src/MainWindowPrivate.h \
 	src/MyListWidget.h \
 	src/RingSlider.h \
+	src/base64.h \
+	src/inetclient.h \
+	src/inetresolver.h \
 	src/joinpath.h \
 	src/main.h \
 	src/VerticalVolumePopup.h \
