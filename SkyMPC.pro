@@ -1,8 +1,4 @@
-#-------------------------------------------------
-#
-# Project created by QtCreator 2013-06-22T12:02:00
-#
-#-------------------------------------------------
+QMAKE_PROJECT_DEPTH = 0
 
 QT       += core gui xml network svg widgets
 
@@ -16,7 +12,7 @@ DESTDIR = $$PWD/_bin
 unix:QMAKE_CXXFLAGS += -Wall -Wextra -Werror=return-type -Werror=trigraphs -Wno-switch
 unix:QMAKE_RPATHDIR += $ORIGIN
 
-LIBS += -lssl -lcrypto
+win32:INCLUDEPATH += C:/vcpkg/installed/x64-windows/include
 
 #linux:QTPLUGIN += ibusplatforminputcontextplugin
 
@@ -31,6 +27,23 @@ prepare.commands = cd $$PWD && ruby -W0 prepare.rb
 QMAKE_EXTRA_TARGETS += prepare
 PRE_TARGETDEPS += prepare
 
+# OpenSSL
+
+linux {
+	static_link_openssl {
+		LIBS += $$OPENSSL_LIB_DIR/libssl.a $$OPENSSL_LIB_DIR/libcrypto.a -ldl
+	} else {
+		LIBS += -lssl -lcrypto
+	}
+}
+haiku:LIBS += -lssl -lcrypto -lnetwork
+macx:INCLUDEPATH += /opt/homebrew/include
+macx:LIBS += /opt/homebrew/lib/libssl.a /opt/homebrew/lib/libcrypto.a
+win32:LIBS += -llibcrypto -llibssl
+
+win32:LIBS += -LC:/vcpkg/installed/x64-windows/lib
+
+#
 
 SOURCES += src/main.cpp \
 	src/ColorSlider.cpp \
